@@ -34,6 +34,7 @@ import {useRootLoaderData} from '~/root';
 import type {LayoutQuery} from 'storefrontapi.generated';
 
 import {Header} from './Header';
+import {Account, Bag, Login} from './icons';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -333,20 +334,26 @@ function MenuMobileNav({
 //   );
 // }
 
-export function AccountLink({className}: {className?: string}) {
-  const rootData = useRootLoaderData();
-  const isLoggedIn = rootData?.isLoggedIn;
+// export function AccountLink({className}: {className?: string}) {
+//   const rootData = useRootLoaderData();
+//   const isLoggedIn = rootData?.isLoggedIn;
 
-  return (
-    <Link to="/account" className={className}>
-      <Suspense fallback={<IconLogin />}>
-        <Await resolve={isLoggedIn} errorElement={<IconLogin />}>
-          {(isLoggedIn) => (isLoggedIn ? <IconAccount /> : <IconLogin />)}
-        </Await>
-      </Suspense>
-    </Link>
-  );
-}
+//   return (
+//     <Link to="/account" className={className}>
+//       <Suspense fallback={<IconLogin />}>
+//         <Await resolve={isLoggedIn} errorElement={<IconLogin />}>
+//           {(isLoggedIn) =>
+//             isLoggedIn ? (
+//               <Login className="headerLink" />
+//             ) : (
+//               <Account className="headerLink bg-red-400" />
+//             )
+//           }
+//         </Await>
+//       </Suspense>
+//     </Link>
+//   );
+// }
 
 export function CartCount({
   isHome,
@@ -378,13 +385,8 @@ function Badge({openCart, count}: {count: number; openCart: () => void}) {
   const BadgeCounter = useMemo(
     () => (
       <>
-        <IconBag />
-        <div
-          // className={`${
-          //   dark ? 'text-primary bg-contrast' : 'text-contrast bg-primary'
-          // } absolute text-primary bg-contrast bottom-1 right-1 text-[0.625rem] font-medium subpixel-antialiased h-3 min-w-[0.75rem] flex items-center justify-center leading-none text-center rounded-full w-auto px-[0.125rem] pb-px`}
-          className="absolute text-primary bg-contrast bottom-1 right-1 text-[0.625rem] font-medium subpixel-antialiased h-3 min-w-[0.75rem] flex items-center justify-center leading-none text-center rounded-full w-auto px-[0.125rem] pb-px"
-        >
+        <Bag />
+        <div className="absolute text-black bg-white bottom-1 right-1 text-[0.75rem] font-switzer  subpixel-antialiased h-3 min-w-[0.75rem] flex items-center justify-center leading-none text-center rounded-full w-auto px-[0.125rem] pb-px">
           <span>{count || 0}</span>
         </div>
       </>

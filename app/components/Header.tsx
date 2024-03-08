@@ -1,16 +1,18 @@
 import {useWindowScroll} from 'react-use';
 import {CartForm, Image} from '@shopify/hydrogen';
-import {useEffect} from 'react';
-import {Form, useLoaderData, useParams} from '@remix-run/react';
+import {Suspense, useEffect, useState} from 'react';
+import {Await, Form, useLoaderData, useParams} from '@remix-run/react';
 import {motion} from 'framer-motion';
 
 import type {EnhancedMenu} from '~/lib/utils';
 import {useIsHomePath} from '~/lib/utils';
 import {useCartFetchers} from '~/hooks/useCartFetchers';
+import {useRootLoaderData} from '~/root';
 
 import {useDrawer} from './Drawer';
-import {AccountLink, CartCount, CartDrawer, MenuDrawer} from './Layout';
-import {IconMenu, IconSearch} from './Icon';
+import {CartCount, CartDrawer, MenuDrawer} from './Layout';
+import {IconLogin, IconMenu, IconSearch} from './Icon';
+import {Account, Login} from './icons';
 
 import {Heading, Input, Link} from '.';
 
@@ -148,6 +150,14 @@ function DesktopHeader({
 }) {
   const params = useParams();
   const {y} = useWindowScroll();
+  const [isBigHeader, setIsBigHeader] = useState(true);
+  const [isSmallHeader, setIsSmallHeader] = useState(false);
+
+  useEffect(() => {
+    const changeHeaderState = isHome && y <= 100;
+    setIsBigHeader(changeHeaderState);
+    setIsSmallHeader(!changeHeaderState);
+  }, [isHome, y]);
 
   return (
     <motion.header
@@ -155,11 +165,11 @@ function DesktopHeader({
       animate={isHome && y < 100 ? {height: '500px'} : {height: '32px'}}
       transition={{duration: 1, ease: [0.6, 0.01, 0.05, 0.95]}}
       role="banner"
-      className="hidden bg-white lg:flex justify-between items-end fixed z-40 top-0 w-full"
+      className="hidden bg-white lg:flex justify-between items-end fixed z-40 top-0 w-full px-[1.1rem]"
     >
       <div className="flex gap-12">
         {/* MENU */}
-        <nav className="flex gap-8">
+        <nav className="switzerLink flex gap-[1rem]">
           {/* Top level menu items */}
           {(menu?.items || []).map((item) => (
             <Link
@@ -181,28 +191,28 @@ function DesktopHeader({
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
             w-fit h-fit"
         >
-          <motion.img
-            animate={`${
-              (isHome && y > 100) || !isHome ? {opacity: 0} : {opacity: 1}
-            }`}
-            transition={{delay: 0.5}}
-            src="/logo/mainLogo.png"
-            alt="logo"
-            className={`${
-              (isHome && y > 100) || !isHome ? 'hidden' : 'block w-[25rem]'
-            }`}
-          />
-          <motion.img
-            animate={`${
-              (isHome && y > 100) || !isHome ? {opacity: 1} : {opacity: 0}
-            }`}
-            transition={{delay: 0.5}}
-            src="/logo/subLogo.png"
-            alt="logo"
-            className={`${
-              (isHome && y > 100) || !isHome ? 'block w-[3rem]' : 'hidden'
-            }`}
-          />
+          {isBigHeader && (
+            <motion.img
+              initial={{opacity: 0}}
+              whileInView={{opacity: 1}}
+              transition={{duration: 1, ease: [0.6, 0.01, 0.05, 0.95]}}
+              exit={{opacity: 0}}
+              src="/logo/mainLogo.png"
+              alt="logo"
+              className="w-[25rem] bg-blue-200"
+            />
+          )}
+          {isSmallHeader && (
+            <motion.img
+              initial={{opacity: 0}}
+              whileInView={{opacity: 1}}
+              transition={{duration: 1, ease: [0.6, 0.01, 0.05, 0.95]}}
+              exit={{opacity: 0}}
+              src="/logo/subLogo.png"
+              alt="logo"
+              className="w-[3rem]"
+            />
+          )}
         </Link>
       </div>
       {
@@ -226,14 +236,39 @@ function DesktopHeader({
           /> */}
           <button
             type="submit"
-            className="relative flex items-center justify-center w-8 h-8 focus:ring-primary/5"
+            // className="relative flex items-center justify-center w-8 h-8 focus:ring-primary/5"
+            className="switzerLink flex items-center"
           >
             <IconSearch />
+            RECHERCHER
           </button>
         </Form>
-        <AccountLink className="relative flex items-center justify-center w-8 h-8 focus:ring-primary/5" />
-        <CartCount isHome={isHome} openCart={openCart} />
+        <div className="flex items-center justify-end gap-[.6rem] overflow-hidden">
+          <AccountLink />
+          <CartCount isHome={isHome} openCart={openCart} />
+        </div>
       </div>
     </motion.header>
+  );
+}
+
+export function AccountLink({className}: {className?: string}) {
+  const rootData = useRootLoaderData();
+  const isLoggedIn = rootData?.isLoggedIn;
+
+  return (
+    <Link to="/account" className={className}>
+      <Suspense fallback={<Login />}>
+        <Await resolve={isLoggedIn} errorElement={<IconLogin />}>
+          {(isLoggedIn) =>
+            isLoggedIn ? (
+              <Login className="headerIcon" />
+            ) : (
+              <Account className="headerIcon" />
+            )
+          }
+        </Await>
+      </Suspense>
+    </Link>
   );
 }

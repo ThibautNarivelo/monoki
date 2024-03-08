@@ -6,6 +6,10 @@ export default {
   content: ['./app/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        didot: ['Didot', 'serif'],
+        switzer: ['Switzer', 'sans-serif'],
+      },
       colors: {
         primary: 'rgb(var(--color-primary) / <alpha-value>)',
         contrast: 'rgb(var(--color-contrast) / <alpha-value>)',
@@ -37,10 +41,6 @@ export default {
       },
       width: {
         mobileGallery: 'calc(100vw - 3rem)',
-      },
-      fontFamily: {
-        sans: ['Helvetica Neue', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        serif: ['"IBMPlexSerif"', 'Palatino', 'ui-serif'],
       },
       fontSize: {
         display: ['var(--font-size-display)', '1.1'],

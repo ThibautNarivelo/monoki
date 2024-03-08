@@ -15,9 +15,8 @@ export default function HeroCollection({
       {pages && (
         <>
           {pages.nodes.map((page) => (
-            <>
+            <div key={page.id}>
               <Link
-                key={page.id}
                 to={`/collections/${page.collectionLink?.reference?.handle}`}
                 className="relative "
               >
@@ -37,7 +36,7 @@ export default function HeroCollection({
               <h1 className="fixed bottom-0 left-0 p-[5rem] will-change-contents">
                 {pages.nodes[0].pageTitle?.value}
               </h1>
-            </>
+            </div>
           ))}
         </>
       )}
