@@ -33,14 +33,14 @@ export default function Page() {
 
   return (
     <>
-      <PageHeader heading={page.title}>
+      <PageHeader heading={page.pageTitle?.value}>
         <div dangerouslySetInnerHTML={{__html: page.body}} className="prose" />
       </PageHeader>
     </>
   );
 }
 
-const PAGE_QUERY = `#graphql
+export const PAGE_QUERY = `#graphql
   query PageDetails($language: LanguageCode, $handle: String!)
   @inContext(language: $language) {
     page(handle: $handle) {
@@ -51,6 +51,9 @@ const PAGE_QUERY = `#graphql
         description
         title
       }
+      pageTitle: metafield(namespace: "page", key: "title") {
+        value
+        }
     }
   }
 `;

@@ -1,13 +1,17 @@
 import {defer, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {Suspense} from 'react';
-import {Await, useLoaderData} from '@remix-run/react';
-import {AnalyticsPageType} from '@shopify/hydrogen';
+import {Await, Link, useLoaderData} from '@remix-run/react';
+import {AnalyticsPageType, Image} from '@shopify/hydrogen';
+import {motion} from 'framer-motion';
+import {useWindowScroll} from 'react-use';
 
 import {ProductSwimlane, FeaturedCollections, Hero} from '~/components';
 import {MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
 import {getHeroPlaceholder} from '~/lib/placeholders';
 import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
+import HeroCollection from '~/components/HeroCollection';
+import {useIsHomePath} from '~/lib/utils';
 
 export const headers = routeHeaders;
 
@@ -18,9 +22,15 @@ export async function loader({params, context}: LoaderFunctionArgs) {
     variables: {handle: 'freestyle'},
   });
 
+  const {pages} = await context.storefront.query(ALL_PAGES_QUERY, {
+    variables: {country, language},
+  });
+
   const seo = seoPayload.home();
 
   return defer({
+    pages,
+
     shop,
     primaryHero: hero,
     // These different queries are separated to illustrate how 3rd party content
@@ -62,12 +72,14 @@ export async function loader({params, context}: LoaderFunctionArgs) {
     analytics: {
       pageType: AnalyticsPageType.home,
     },
+
     seo,
   });
 }
 
 export default function Homepage() {
   const {
+    pages,
     primaryHero,
     secondaryHero,
     tertiaryHero,
@@ -77,10 +89,37 @@ export default function Homepage() {
 
   // TODO: skeletons vs placeholders
   const skeletons = getHeroPlaceholder([{}, {}, {}]);
+  const isHome = useIsHomePath();
+  const {y} = useWindowScroll();
 
   return (
-    <>
-      {primaryHero && (
+    <motion.div
+      initial={isHome ? {marginTop: '500px'} : {marginTop: '100px'}}
+      animate={isHome && y < 100 ? {marginTop: '500px'} : {marginTop: '100px'}}
+      transition={{duration: 0.5, ease: 'easeInOut'}}
+      className="min-w-screen overflow-hidden "
+    >
+      <HeroCollection pages={pages} />
+      {/* {pages && (
+        <div className="mt-[500px]">
+          {pages.nodes.map((page) => (
+            <Link
+              key={page.id}
+              to={`/collections/${page.collectionLink?.reference?.handle}`}
+            >
+              <h1>{page.pageTitle?.value}</h1>
+              <Image
+                src={page.imageCover?.reference?.image?.url}
+                alt={page.imageCover?.reference?.image?.altText || ''}
+                width={page.imageCover?.reference?.image?.width || 0}
+                height={page.imageCover?.reference?.image?.height || 0}
+              />
+            </Link>
+          ))}
+        </div>
+      )} */}
+
+      {/* {primaryHero && (
         <Hero {...primaryHero} height="full" top loading="eager" />
       )}
 
@@ -137,8 +176,8 @@ export default function Homepage() {
             }}
           </Await>
         </Suspense>
-      )}
-    </>
+      )} */}
+    </motion.div>
   );
 }
 
@@ -225,6 +264,44 @@ export const FEATURED_COLLECTIONS_QUERY = `#graphql
           width
           height
           url
+        }
+      }
+    }
+  }
+` as const;
+
+export const ALL_PAGES_QUERY = `#graphql
+  query AllPages($country: CountryCode, $language: LanguageCode)
+  @inContext(country: $country, language: $language) {
+    pages(first: 100, query: "Homepage") {
+      nodes {
+        id
+        title
+        handle
+        pageTitle: metafield(namespace: "page", key: "title") {
+        value
+        }
+        imageCover: metafield(key: "image_cover", namespace: "page") {
+          reference {
+            ... on MediaImage {
+              id
+              image {
+                altText
+                height
+                id
+                url
+                width
+              }
+            }
+          }
+        }
+        collectionLink: metafield(key: "collection_link", namespace: "page") {
+          reference {
+            ... on Collection {
+              id
+              handle
+            }
+          }
         }
       }
     }

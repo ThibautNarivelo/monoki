@@ -1,10 +1,10 @@
-import {useParams, Form, Await} from '@remix-run/react';
+import {useParams, Form, Await, useLoaderData, defer} from '@remix-run/react';
 import {useWindowScroll} from 'react-use';
 import {Disclosure} from '@headlessui/react';
 import {Suspense, useEffect, useMemo} from 'react';
 import {CartForm} from '@shopify/hydrogen';
+import type {LoaderFunctionArgs} from '@remix-run/server-runtime';
 
-import {type LayoutQuery} from 'storefrontapi.generated';
 import {
   Drawer,
   useDrawer,
@@ -31,6 +31,7 @@ import {
 import {useIsHydrated} from '~/hooks/useIsHydrated';
 import {useCartFetchers} from '~/hooks/useCartFetchers';
 import {useRootLoaderData} from '~/root';
+import type {LayoutQuery} from 'storefrontapi.generated';
 
 import {Header} from './Header';
 
@@ -44,6 +45,7 @@ type LayoutProps = {
 
 export function Layout({children, layout}: LayoutProps) {
   const {headerMenu, footerMenu} = layout || {};
+
   return (
     <>
       <div className="flex flex-col min-h-screen">
@@ -59,7 +61,7 @@ export function Layout({children, layout}: LayoutProps) {
           {children}
         </main>
       </div>
-      {footerMenu && <Footer menu={footerMenu} />}
+      {/* {footerMenu && <Footer menu={footerMenu} />} */}
     </>
   );
 }

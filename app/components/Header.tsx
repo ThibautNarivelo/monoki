@@ -1,7 +1,8 @@
 import {useWindowScroll} from 'react-use';
-import {CartForm} from '@shopify/hydrogen';
+import {CartForm, Image} from '@shopify/hydrogen';
 import {useEffect} from 'react';
-import {Form, useParams} from '@remix-run/react';
+import {Form, useLoaderData, useParams} from '@remix-run/react';
+import {motion} from 'framer-motion';
 
 import type {EnhancedMenu} from '~/lib/utils';
 import {useIsHomePath} from '~/lib/utils';
@@ -42,18 +43,20 @@ export function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
       {menu && (
         <MenuDrawer isOpen={isMenuOpen} onClose={closeMenu} menu={menu} />
       )}
-      <DesktopHeader
-        isHome={isHome}
-        title={title}
-        menu={menu}
-        openCart={openCart}
-      />
-      <MobileHeader
-        isHome={isHome}
-        title={title}
-        openCart={openCart}
-        openMenu={openMenu}
-      />
+      <>
+        <DesktopHeader
+          isHome={isHome}
+          title={title}
+          menu={menu}
+          openCart={openCart}
+        />
+        <MobileHeader
+          isHome={isHome}
+          title={title}
+          openCart={openCart}
+          openMenu={openMenu}
+        />
+      </>
     </>
   );
 }
@@ -145,21 +148,17 @@ function DesktopHeader({
 }) {
   const params = useParams();
   const {y} = useWindowScroll();
+
   return (
-    <header
+    <motion.header
+      initial={isHome ? {height: '500px'} : {height: '32px'}}
+      animate={isHome && y < 100 ? {height: '500px'} : {height: '32px'}}
+      transition={{duration: 1, ease: [0.6, 0.01, 0.05, 0.95]}}
       role="banner"
-      className={`${
-        isHome
-          ? 'bg-primary/80  text-contrast  shadow-darkHeader'
-          : 'bg-contrast/80 text-primary'
-      } ${
-        !isHome && y > 50 && ' shadow-lightHeader'
-      } hidden h-nav lg:flex items-center sticky transition duration-300 backdrop-blur-lg z-40 top-0 justify-between w-full leading-none gap-8 px-12 py-8`}
+      className="hidden bg-white lg:flex justify-between items-end fixed z-40 top-0 w-full"
     >
       <div className="flex gap-12">
-        <Link className="font-bold" to="/" prefetch="intent">
-          {title} test
-        </Link>
+        {/* MENU */}
         <nav className="flex gap-8">
           {/* Top level menu items */}
           {(menu?.items || []).map((item) => (
@@ -176,14 +175,47 @@ function DesktopHeader({
             </Link>
           ))}
         </nav>
+        {/* LOGO */}
+        <Link
+          to="/"
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+            w-fit h-fit"
+        >
+          <motion.img
+            animate={`${
+              (isHome && y > 100) || !isHome ? {opacity: 0} : {opacity: 1}
+            }`}
+            transition={{delay: 0.5}}
+            src="/logo/mainLogo.png"
+            alt="logo"
+            className={`${
+              (isHome && y > 100) || !isHome ? 'hidden' : 'block w-[25rem]'
+            }`}
+          />
+          <motion.img
+            animate={`${
+              (isHome && y > 100) || !isHome ? {opacity: 1} : {opacity: 0}
+            }`}
+            transition={{delay: 0.5}}
+            src="/logo/subLogo.png"
+            alt="logo"
+            className={`${
+              (isHome && y > 100) || !isHome ? 'block w-[3rem]' : 'hidden'
+            }`}
+          />
+        </Link>
       </div>
+      {
+        // CAT
+      }
+      {/* SEARCH */}
       <div className="flex items-center gap-1">
         <Form
           method="get"
           action={params.locale ? `/${params.locale}/search` : '/search'}
           className="flex items-center gap-2"
         >
-          <Input
+          {/* <Input
             className={
               isHome ? 'focus:border-contrast/20 ' : 'focus:border-primary/20'
             }
@@ -191,7 +223,7 @@ function DesktopHeader({
             variant="minisearch"
             placeholder="Search"
             name="q"
-          />
+          /> */}
           <button
             type="submit"
             className="relative flex items-center justify-center w-8 h-8 focus:ring-primary/5"
@@ -202,6 +234,6 @@ function DesktopHeader({
         <AccountLink className="relative flex items-center justify-center w-8 h-8 focus:ring-primary/5" />
         <CartCount isHome={isHome} openCart={openCart} />
       </div>
-    </header>
+    </motion.header>
   );
 }
