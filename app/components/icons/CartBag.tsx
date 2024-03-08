@@ -1,8 +1,8 @@
-type IconProps = {
+type CartBagProps = {
   className?: string;
 };
 
-export function Bag({className}: IconProps) {
+export function CartBag({className}: CartBagProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
