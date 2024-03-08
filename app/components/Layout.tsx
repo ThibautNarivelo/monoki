@@ -385,7 +385,7 @@ function Badge({openCart, count}: {count: number; openCart: () => void}) {
   const BadgeCounter = useMemo(
     () => (
       <>
-        <CartBag />
+        <CartBag className="headerIcon" />
         <div className="absolute text-black bg-white bottom-1 right-1 text-[0.75rem] font-switzer  subpixel-antialiased h-3 min-w-[0.75rem] flex items-center justify-center leading-none text-center rounded-full w-auto px-[0.125rem] pb-px">
           <span>{count || 0}</span>
         </div>
