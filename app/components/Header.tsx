@@ -12,7 +12,7 @@ import {useRootLoaderData} from '~/root';
 import {useDrawer} from './Drawer';
 import {CartCount, CartDrawer, MenuDrawer} from './Layout';
 import {IconLogin, IconMenu, IconSearch} from './Icon';
-import {Account, Login} from './icons';
+import {Account, Login, Search} from './icons';
 
 import {Heading, Input, Link} from '.';
 
@@ -199,7 +199,7 @@ function DesktopHeader({
               exit={{opacity: 0}}
               src="/logo/mainLogo.png"
               alt="logo"
-              className="w-[25rem] bg-blue-200"
+              className="w-[30rem]"
             />
           )}
           {isSmallHeader && (
@@ -215,38 +215,22 @@ function DesktopHeader({
           )}
         </Link>
       </div>
-      {
-        // CAT
-      }
-      {/* SEARCH */}
-      <div className="flex items-center gap-1">
+
+      <div className="flex items-center justify-end gap-[.6rem] overflow-hidden">
         <Form
           method="get"
           action={params.locale ? `/${params.locale}/search` : '/search'}
-          className="flex items-center gap-2"
+          className="flex gap-10 "
         >
-          {/* <Input
-            className={
-              isHome ? 'focus:border-contrast/20 ' : 'focus:border-primary/20'
-            }
-            type="search"
-            variant="minisearch"
-            placeholder="Search"
-            name="q"
-          /> */}
           <button
             type="submit"
-            // className="relative flex items-center justify-center w-8 h-8 focus:ring-primary/5"
-            className="switzerLink flex items-center"
+            className="switzerLink h-fit flex gap-1 items-end"
           >
-            <IconSearch />
-            RECHERCHER
+            <Search className="headerIcon" />
           </button>
         </Form>
-        <div className="flex items-center justify-end gap-[.6rem] overflow-hidden">
-          <AccountLink />
-          <CartCount isHome={isHome} openCart={openCart} />
-        </div>
+        <AccountLink />
+        <CartCount isHome={isHome} openCart={openCart} />
       </div>
     </motion.header>
   );
