@@ -102,7 +102,7 @@ export default function Homepage() {
     <motion.div
       className={`${
         isHome && y < 100
-          ? 'mt-[200px] lg:mt-[500px]'
+          ? 'mt-[200px] lg:mt-[300px]'
           : 'mt-[32px] lg:mt-[100px]'
       } min-w-screen overflow-hidden transition-all duration-[.5s] ease-in-out-monoki`}
     >

@@ -2,7 +2,7 @@ import {useWindowScroll} from 'react-use';
 import {CartForm, Image} from '@shopify/hydrogen';
 import {Suspense, useEffect, useState} from 'react';
 import {Await, Form, useLoaderData, useParams} from '@remix-run/react';
-import {motion} from 'framer-motion';
+import {motion, useAnimate, stagger, animate} from 'framer-motion';
 
 import type {EnhancedMenu} from '~/lib/utils';
 import {useIsHomePath} from '~/lib/utils';
@@ -13,9 +13,9 @@ import {useDrawer} from './Drawer';
 import {CartCount, CartDrawer, MenuDrawer} from './Layout';
 import {IconLogin, IconMenu, IconSearch} from './Icon';
 import {Account, Login, Search} from './icons';
+import {Burger} from './icons/Burger';
 
 import {Heading, Input, Link} from '.';
-import {Burger} from './icons/Burger';
 
 export function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
   const isHome = useIsHomePath();
@@ -94,7 +94,7 @@ function MobileHeader({
       initial={isHome ? {height: '200px'} : {height: '32px'}}
       animate={isHome && y < 100 ? {height: '200px'} : {height: '32px'}}
       transition={{duration: 0.5, ease: [0.6, 0.01, 0.05, 0.95]}}
-      className="fixed flex lg:hidden items-end justify-between w-full bg-white z-40 top-0"
+      className="fixed flex lg:hidden items-end justify-between w-full bg-white z-40 top-0 px-[.7rem]"
     >
       <div className="flex items-center justify-start w-full gap-4">
         <button
@@ -105,60 +105,93 @@ function MobileHeader({
         </button>
       </div>
 
-      <Link
-        to="/"
-        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
-            w-fit h-fit"
-      >
-        {isBigHeader && (
+      <div className="flex flex-col justify-center items-center w-auto p-[2rem] h-fit gap-5">
+        <div className="overflow-hidden h-auto w-auto">
           <motion.img
-            initial={{opacity: 0}}
-            whileInView={{opacity: 1}}
+            initial={{y: 40}}
+            whileInView={{y: 0}}
             transition={{duration: 1.5, ease: [0.6, 0.01, 0.05, 0.95]}}
-            exit={{opacity: 0}}
-            src="/logo/mainLogo.png"
-            alt="logo"
-            className="w-[13rem]"
-          />
-        )}
-        {isSmallHeader && (
-          <motion.img
-            initial={{opacity: 0}}
-            whileInView={{opacity: 1}}
-            transition={{duration: 1.5, ease: [0.6, 0.01, 0.05, 0.95]}}
-            exit={{opacity: 0}}
             src="/logo/subLogo.png"
             alt="logo"
-            className="w-[2.7rem]"
+            className={`${isSmallHeader ? 'w-[1rem] mt-5' : 'w-[2.5rem]'} `}
           />
-        )}
-      </Link>
+        </div>
+        <div className="flex flex-col justify-center items-center overflow-hidden">
+          {isBigHeader && (
+            <>
+              <motion.div
+                initial={{y: -32}}
+                whileInView={{y: 0}}
+                exit={{y: -32}}
+                transition={{
+                  duration: 1,
+                  ease: [0.6, 0.01, 0.05, 0.95],
+                  delay: 0.5,
+                }}
+                className="font-didot text-[2.35rem] uppercase -tracking-widest leading-[32px] bg-whit  z-10"
+              >
+                MONOKI
+              </motion.div>
+              <motion.div
+                initial={{y: -45}}
+                whileInView={{y: 0}}
+                exit={{y: -45}}
+                transition={{
+                  duration: 1,
+                  ease: [0.6, 0.01, 0.05, 0.95],
+                  delay: 0.8,
+                }}
+                className="font-didot text-[1rem] truncate mt-[-5px]"
+              >
+                by Diane Goldstein
+              </motion.div>
+            </>
+          )}
+        </div>
+      </div>
 
-      <div className="flex items-center justify-end w-full gap-[.3rem]">
+      <div className="flex items-center justify-end w-full gap-[.3rem] overflow-hidden">
         <Form
           method="get"
           action={params.locale ? `/${params.locale}/search` : '/search'}
-          className="items-center gap-2 sm:flex"
+          className="flex gap-10 "
         >
-          <button
+          <motion.button
             type="submit"
-            className="relative flex items-center justify-center w-8 h-8"
+            initial={{opacity: 0, y: 100}}
+            animate={{opacity: 1, y: 0}}
+            transition={{
+              duration: 1,
+              ease: [0.6, 0.01, 0.05, 0.95],
+              delay: 0.4,
+            }}
+            className="switzerLink h-fit flex gap-1 items-end"
           >
-            {/* <IconSearch /> */}
             <Search className="headerIcon" />
-          </button>
-          <Input
-            className={
-              isHome ? 'focus:border-contrast/20 ' : 'focus:border-primary/20'
-            }
-            type="search"
-            variant="minisearch"
-            placeholder="Search"
-            name="q"
-          />
+          </motion.button>
         </Form>
-        <AccountLink className="relative flex items-center justify-center w-8 h-8" />
-        <CartCount isHome={isHome} openCart={openCart} />
+        <motion.div
+          initial={{opacity: 0, y: 100}}
+          animate={{opacity: 1, y: 0}}
+          transition={{
+            duration: 1,
+            ease: [0.6, 0.01, 0.05, 0.95],
+            delay: 0.25,
+          }}
+        >
+          <AccountLink />
+        </motion.div>
+        <motion.div
+          initial={{opacity: 0, y: 100}}
+          animate={{opacity: 1, y: 0}}
+          transition={{
+            duration: 1,
+            ease: [0.6, 0.01, 0.05, 0.95],
+            delay: 0,
+          }}
+        >
+          <CartCount isHome={isHome} openCart={openCart} />
+        </motion.div>
       </div>
     </motion.header>
   );
@@ -177,6 +210,7 @@ function DesktopHeader({
 }) {
   const params = useParams();
   const {y} = useWindowScroll();
+
   const [isBigHeader, setIsBigHeader] = useState(true);
   const [isSmallHeader, setIsSmallHeader] = useState(false);
 
@@ -188,58 +222,157 @@ function DesktopHeader({
 
   return (
     <motion.header
-      initial={isHome ? {height: '500px'} : {height: '32px'}}
-      animate={isHome && y < 100 ? {height: '500px'} : {height: '32px'}}
+      initial={isHome ? {height: '300px'} : {height: '32px'}}
+      animate={isHome && y < 100 ? {height: '300px'} : {height: '32px'}}
       transition={{duration: 1, ease: [0.6, 0.01, 0.05, 0.95]}}
       role="banner"
-      className="hidden bg-white lg:flex justify-between items-end fixed z-40 top-0 w-full px-[1.1rem]"
+      className="hidden bg-white lg:flex justify-between items-end fixed z-40 top-0 w-full px-[1.1rem] overflow-hidden"
     >
       <div className="flex gap-12">
         {/* MENU */}
-        <nav className="switzerLink flex gap-[1rem]">
-          {/* Top level menu items */}
-          {(menu?.items || []).map((item) => (
-            <Link
-              key={item.id}
-              to={item.to}
-              target={item.target}
-              prefetch="intent"
-              className={({isActive}) =>
-                isActive ? 'pb-1 border-b -mb-px' : 'pb-1'
-              }
+        <motion.nav
+          className="switzerLink flex gap-[1rem]"
+          initial={{y: 200}}
+          animate={{y: 0}}
+          transition={{
+            duration: 1,
+            staggerChildren: 1,
+            delayChildren: 0.5,
+            ease: [0.6, 0.01, 0.05, 0.95],
+          }}
+        >
+          {/* Top level menu items
+          {(menu?.items || []).map(
+            (item) => (
+              console.log(item),
+              (
+                <Link
+                  key={item.id}
+                  to={item.to}
+                  target={item.target}
+                  prefetch="intent"
+                  className={({isActive}) =>
+                    isActive ? 'pb-1 border-b -mb-px overflow-hidden' : 'pb-1'
+                  }
+                >
+                  {item.title}
+                </Link>
+              )
+            ),
+          )} */}
+          {menu?.items[0] && (
+            <motion.div
+              initial={{opacity: 0, y: 100}}
+              animate={{opacity: 1, y: 0}}
+              transition={{duration: 1, ease: [0.6, 0.01, 0.05, 0.95]}}
             >
-              {item.title}
-            </Link>
-          ))}
-        </nav>
+              <Link
+                to={menu.items[0].to}
+                target={menu.items[0].target}
+                prefetch="intent"
+                className={({isActive}) =>
+                  isActive ? 'pb-1 border-b -mb-px overflow-hidden' : 'pb-1'
+                }
+              >
+                {menu.items[0].title}
+              </Link>
+            </motion.div>
+          )}
+          {menu?.items[1] && (
+            <motion.div
+              initial={{opacity: 0, y: 100}}
+              animate={{opacity: 1, y: 0}}
+              transition={{
+                duration: 1,
+                ease: [0.6, 0.01, 0.05, 0.95],
+                delay: 0.35,
+              }}
+            >
+              <Link
+                to={menu.items[1].to}
+                target={menu.items[1].target}
+                prefetch="intent"
+                className={({isActive}) =>
+                  isActive ? 'pb-1 border-b -mb-px overflow-hidden' : 'pb-1'
+                }
+              >
+                {menu.items[1].title}
+              </Link>
+            </motion.div>
+          )}
+          {menu?.items[2] && (
+            <motion.div
+              initial={{opacity: 0, y: 100}}
+              animate={{opacity: 1, y: 0}}
+              transition={{
+                duration: 1,
+                ease: [0.6, 0.01, 0.05, 0.95],
+                delay: 0.5,
+              }}
+            >
+              <Link
+                to={menu.items[2].to}
+                target={menu.items[2].target}
+                prefetch="intent"
+                className={({isActive}) =>
+                  isActive ? 'pb-1 border-b -mb-px overflow-hidden' : 'pb-1'
+                }
+              >
+                {menu.items[2].title}
+              </Link>
+            </motion.div>
+          )}
+        </motion.nav>
         {/* LOGO */}
         <Link
           to="/"
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
-            w-fit h-fit"
+            w-fit h-fit overflow-hidden"
         >
-          {isBigHeader && (
-            <motion.img
-              initial={{opacity: 0}}
-              whileInView={{opacity: 1}}
-              transition={{duration: 1.5, ease: [0.6, 0.01, 0.05, 0.95]}}
-              exit={{opacity: 0}}
-              src="/logo/mainLogo.png"
-              alt="logo"
-              className="w-[30rem]"
-            />
-          )}
-          {isSmallHeader && (
-            <motion.img
-              initial={{opacity: 0}}
-              whileInView={{opacity: 1}}
-              transition={{duration: 1.5, ease: [0.6, 0.01, 0.05, 0.95]}}
-              exit={{opacity: 0}}
-              src="/logo/subLogo.png"
-              alt="logo"
-              className="w-[3rem]"
-            />
-          )}
+          <div className="flex flex-col justify-center items-center w-auto p-[2rem] h-fit gap-5">
+            <div className="overflow-hidden h-auto w-auto">
+              <motion.img
+                initial={{y: 75}}
+                whileInView={{y: 0}}
+                transition={{duration: 1.5, ease: [0.6, 0.01, 0.05, 0.95]}}
+                src="/logo/subLogo.png"
+                alt="logo"
+                className={`${isSmallHeader ? 'w-[2.5rem] mt-5' : 'w-[5rem]'} `}
+              />
+            </div>
+            <div className="flex flex-col overflow-hidden">
+              {isBigHeader && (
+                <>
+                  <motion.div
+                    initial={{y: -65}}
+                    whileInView={{y: 0}}
+                    exit={{y: -65}}
+                    transition={{
+                      duration: 1,
+                      ease: [0.6, 0.01, 0.05, 0.95],
+                      delay: 0.5,
+                    }}
+                    className="font-didot text-[5rem] uppercase -tracking-widest leading-[65px] bg-white  z-10"
+                  >
+                    MONOKI
+                  </motion.div>
+                  <motion.div
+                    initial={{y: -105}}
+                    whileInView={{y: 0}}
+                    exit={{y: -105}}
+                    transition={{
+                      duration: 1,
+                      ease: [0.6, 0.01, 0.05, 0.95],
+                      delay: 0.8,
+                    }}
+                    className="font-didot text-[2.25rem] truncate mt-[-10px]"
+                  >
+                    by Diane Goldstein
+                  </motion.div>
+                </>
+              )}
+            </div>
+          </div>
         </Link>
       </div>
 
@@ -249,15 +382,42 @@ function DesktopHeader({
           action={params.locale ? `/${params.locale}/search` : '/search'}
           className="flex gap-10 "
         >
-          <button
+          <motion.button
             type="submit"
+            initial={{opacity: 0, y: 100}}
+            animate={{opacity: 1, y: 0}}
+            transition={{
+              duration: 1,
+              ease: [0.6, 0.01, 0.05, 0.95],
+              delay: 0.4,
+            }}
             className="switzerLink h-fit flex gap-1 items-end"
           >
             <Search className="headerIcon" />
-          </button>
+          </motion.button>
         </Form>
-        <AccountLink />
-        <CartCount isHome={isHome} openCart={openCart} />
+        <motion.div
+          initial={{opacity: 0, y: 100}}
+          animate={{opacity: 1, y: 0}}
+          transition={{
+            duration: 1,
+            ease: [0.6, 0.01, 0.05, 0.95],
+            delay: 0.25,
+          }}
+        >
+          <AccountLink />
+        </motion.div>
+        <motion.div
+          initial={{opacity: 0, y: 100}}
+          animate={{opacity: 1, y: 0}}
+          transition={{
+            duration: 1,
+            ease: [0.6, 0.01, 0.05, 0.95],
+            delay: 0,
+          }}
+        >
+          <CartCount isHome={isHome} openCart={openCart} />
+        </motion.div>
       </div>
     </motion.header>
   );

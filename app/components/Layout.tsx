@@ -31,7 +31,7 @@ import {
 import {useIsHydrated} from '~/hooks/useIsHydrated';
 import {useCartFetchers} from '~/hooks/useCartFetchers';
 import {useRootLoaderData} from '~/root';
-import type {LayoutQuery} from 'storefrontapi.generated';
+import type {LayoutQuery} from 'storefrontapi.generated.d';
 
 import {Header} from './Header';
 import {CartBag} from './icons';
@@ -168,7 +168,7 @@ function Badge({openCart, count}: {count: number; openCart: () => void}) {
     () => (
       <>
         <CartBag className="headerIcon" />
-        <div className="absolute text-black bg-white bottom-1 right-1 text-[0.75rem] font-switzer  subpixel-antialiased h-3 min-w-[0.75rem] flex items-center justify-center leading-none text-center rounded-full w-auto px-[0.125rem] pb-px">
+        <div className="absolute text-black bg-white bottom-1 right-1 text-[0.75rem] font-switzer font-light subpixel-antialiased h-3 min-w-[0.75rem] flex items-center justify-center leading-none text-center rounded-full w-auto px-[0.125rem] pb-px">
           <span>{count || 0}</span>
         </div>
       </>
