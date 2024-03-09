@@ -14,6 +14,7 @@ export {Heading, Section, Text, PageHeader} from './Text';
 export {Hero} from './Hero';
 export {Input} from './Input';
 export {Layout} from './Layout';
+export {TextInput} from './TextInput';
 export {Link} from './Link';
 export {Modal} from './Modal';
 export {OrderCard} from './OrderCard';
