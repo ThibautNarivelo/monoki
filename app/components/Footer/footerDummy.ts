@@ -8,7 +8,7 @@ export const footerDummy: EnhancedMenu = {
       title: 'Item 1',
       tags: ['tag1', 'tag2'],
       to: '/',
-      type: 'ARTICLE',
+      type: 'HTTP',
       target: '_blank',
       items: [
         {
