@@ -75,6 +75,10 @@ export function isDiscounted(price: MoneyV2, compareAtPrice: MoneyV2) {
   return false;
 }
 
+export function pxToRem(px: number, base = 16) {
+  return `${px / base}rem`;
+}
+
 function resolveToFromType(
   {
     customPrefixes,
