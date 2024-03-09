@@ -77,15 +77,23 @@ function MobileHeader({
   // useHeaderStyleFix(containerStyle, setContainerStyle, isHome);
 
   const params = useParams();
+  const {y} = useWindowScroll();
+  const [isBigHeader, setIsBigHeader] = useState(true);
+  const [isSmallHeader, setIsSmallHeader] = useState(false);
+
+  useEffect(() => {
+    const changeHeaderState = isHome && y <= 100;
+    setIsBigHeader(changeHeaderState);
+    setIsSmallHeader(!changeHeaderState);
+  }, [isHome, y]);
 
   return (
-    <header
+    <motion.header
       role="banner"
-      // className={`${
-      //   isHome
-      //     ? 'bg-primary/80  text-contrast  shadow-darkHeader'
-      //     : 'bg-contrast/80 text-primary'
-      // } flex lg:hidden items-center h-nav sticky backdrop-blur-lg z-40 top-0 justify-between w-full leading-none gap-4 px-4 md:px-8`}
+      initial={isHome ? {height: '200px'} : {height: '32px'}}
+      animate={isHome && y < 100 ? {height: '200px'} : {height: '32px'}}
+      transition={{duration: 1, ease: [0.6, 0.01, 0.05, 0.95]}}
+      className="fixed flex lg:hidden items-center justify-between w-full bg-red-200 z-40 top-0"
     >
       <div className="flex items-center justify-start w-full gap-4">
         <button
@@ -118,22 +126,39 @@ function MobileHeader({
       </div>
 
       <Link
-        className="flex items-center self-stretch leading-[3rem] md:leading-[4rem] justify-center flex-grow w-full h-full"
         to="/"
+        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+            w-fit h-fit"
       >
-        <Heading
-          className="font-bold text-center leading-none"
-          as={isHome ? 'h1' : 'h2'}
-        >
-          {title}
-        </Heading>
+        {isBigHeader && (
+          <motion.img
+            initial={{opacity: 0}}
+            whileInView={{opacity: 1}}
+            transition={{duration: 1.5, ease: [0.6, 0.01, 0.05, 0.95]}}
+            exit={{opacity: 0}}
+            src="/logo/mainLogo.png"
+            alt="logo"
+            className="w-[30rem]"
+          />
+        )}
+        {isSmallHeader && (
+          <motion.img
+            initial={{opacity: 0}}
+            whileInView={{opacity: 1}}
+            transition={{duration: 1.5, ease: [0.6, 0.01, 0.05, 0.95]}}
+            exit={{opacity: 0}}
+            src="/logo/subLogo.png"
+            alt="logo"
+            className="w-[3rem]"
+          />
+        )}
       </Link>
 
       <div className="flex items-center justify-end w-full gap-4">
         <AccountLink className="relative flex items-center justify-center w-8 h-8" />
         <CartCount isHome={isHome} openCart={openCart} />
       </div>
-    </header>
+    </motion.header>
   );
 }
 
@@ -195,7 +220,7 @@ function DesktopHeader({
             <motion.img
               initial={{opacity: 0}}
               whileInView={{opacity: 1}}
-              transition={{duration: 1, ease: [0.6, 0.01, 0.05, 0.95]}}
+              transition={{duration: 1.5, ease: [0.6, 0.01, 0.05, 0.95]}}
               exit={{opacity: 0}}
               src="/logo/mainLogo.png"
               alt="logo"
@@ -206,7 +231,7 @@ function DesktopHeader({
             <motion.img
               initial={{opacity: 0}}
               whileInView={{opacity: 1}}
-              transition={{duration: 1, ease: [0.6, 0.01, 0.05, 0.95]}}
+              transition={{duration: 1.5, ease: [0.6, 0.01, 0.05, 0.95]}}
               exit={{opacity: 0}}
               src="/logo/subLogo.png"
               alt="logo"

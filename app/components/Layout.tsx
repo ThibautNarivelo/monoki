@@ -62,7 +62,7 @@ export function Layout({children, layout}: LayoutProps) {
           {children}
         </main>
       </div>
-      {/* {footerMenu && <Footer menu={footerMenu} />} */}
+      {footerMenu && <Footer menu={footerMenu} />}
     </>
   );
 }

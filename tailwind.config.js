@@ -10,6 +10,11 @@ export default {
         didot: ['Didot', 'serif'],
         switzer: ['Switzer', 'sans-serif'],
       },
+      transitionTimingFunction: {
+        'in-out-monoki': 'cubic-bezier(0.6, 0.01, 0.05, 0.95)',
+      },
+
+      // TEMPLATE VARIABLES
       colors: {
         primary: 'rgb(var(--color-primary) / <alpha-value>)',
         contrast: 'rgb(var(--color-contrast) / <alpha-value>)',

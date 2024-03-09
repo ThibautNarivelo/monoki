@@ -94,90 +94,103 @@ export default function Homepage() {
 
   return (
     <motion.div
-      initial={isHome ? {marginTop: '500px'} : {marginTop: '100px'}}
-      animate={isHome && y < 100 ? {marginTop: '500px'} : {marginTop: '100px'}}
-      transition={{duration: 0.5, ease: 'easeInOut'}}
-      className="min-w-screen overflow-hidden "
+      className={`${
+        isHome && y < 100
+          ? 'mt-[200px] lg:mt-[500px]'
+          : 'mt-[32px] lg:mt-[100px]'
+      } min-w-screen overflow-hidden transition-all duration-[.5s] ease-in-out-monoki`}
     >
       <HeroCollection pages={pages} />
-      {/* {pages && (
-        <div className="mt-[500px]">
-          {pages.nodes.map((page) => (
-            <Link
-              key={page.id}
-              to={`/collections/${page.collectionLink?.reference?.handle}`}
-            >
-              <h1>{page.pageTitle?.value}</h1>
-              <Image
-                src={page.imageCover?.reference?.image?.url}
-                alt={page.imageCover?.reference?.image?.altText || ''}
-                width={page.imageCover?.reference?.image?.width || 0}
-                height={page.imageCover?.reference?.image?.height || 0}
-              />
-            </Link>
-          ))}
-        </div>
-      )} */}
-
-      {/* {primaryHero && (
-        <Hero {...primaryHero} height="full" top loading="eager" />
-      )}
-
-      {featuredProducts && (
-        <Suspense>
-          <Await resolve={featuredProducts}>
-            {({products}) => {
-              if (!products?.nodes) return <></>;
-              return (
-                <ProductSwimlane
-                  products={products}
-                  title="Featured Products"
-                  count={4}
-                />
-              );
-            }}
-          </Await>
-        </Suspense>
-      )}
-
-      {secondaryHero && (
-        <Suspense fallback={<Hero {...skeletons[1]} />}>
-          <Await resolve={secondaryHero}>
-            {({hero}) => {
-              if (!hero) return <></>;
-              return <Hero {...hero} />;
-            }}
-          </Await>
-        </Suspense>
-      )}
-
-      {featuredCollections && (
-        <Suspense>
-          <Await resolve={featuredCollections}>
-            {({collections}) => {
-              if (!collections?.nodes) return <></>;
-              return (
-                <FeaturedCollections
-                  collections={collections}
-                  title="Collections"
-                />
-              );
-            }}
-          </Await>
-        </Suspense>
-      )}
-
-      {tertiaryHero && (
-        <Suspense fallback={<Hero {...skeletons[2]} />}>
-          <Await resolve={tertiaryHero}>
-            {({hero}) => {
-              if (!hero) return <></>;
-              return <Hero {...hero} />;
-            }}
-          </Await>
-        </Suspense>
-      )} */}
     </motion.div>
+
+    // TEMPLATE CODE
+    // <motion.div
+    //   initial={isHome ? {marginTop: '500px'} : {marginTop: '100px'}}
+    //   animate={isHome && y < 100 ? {marginTop: '500px'} : {marginTop: '100px'}}
+    //   transition={{duration: 0.5, ease: 'easeInOut'}}
+    //   className="min-w-screen overflow-hidden "
+    // >
+
+    //   {/* KEEP THE CODE BELOW COMMENTED FOR NOW AS EXAMPLE */}
+
+    //   {/* {pages && (
+    //     <div className="mt-[500px]">
+    //       {pages.nodes.map((page) => (
+    //         <Link
+    //           key={page.id}
+    //           to={`/collections/${page.collectionLink?.reference?.handle}`}
+    //         >
+    //           <h1>{page.pageTitle?.value}</h1>
+    //           <Image
+    //             src={page.imageCover?.reference?.image?.url}
+    //             alt={page.imageCover?.reference?.image?.altText || ''}
+    //             width={page.imageCover?.reference?.image?.width || 0}
+    //             height={page.imageCover?.reference?.image?.height || 0}
+    //           />
+    //         </Link>
+    //       ))}
+    //     </div>
+    //   )} */}
+
+    //   {/* {primaryHero && (
+    //     <Hero {...primaryHero} height="full" top loading="eager" />
+    //   )}
+
+    //   {featuredProducts && (
+    //     <Suspense>
+    //       <Await resolve={featuredProducts}>
+    //         {({products}) => {
+    //           if (!products?.nodes) return <></>;
+    //           return (
+    //             <ProductSwimlane
+    //               products={products}
+    //               title="Featured Products"
+    //               count={4}
+    //             />
+    //           );
+    //         }}
+    //       </Await>
+    //     </Suspense>
+    //   )}
+
+    //   {secondaryHero && (
+    //     <Suspense fallback={<Hero {...skeletons[1]} />}>
+    //       <Await resolve={secondaryHero}>
+    //         {({hero}) => {
+    //           if (!hero) return <></>;
+    //           return <Hero {...hero} />;
+    //         }}
+    //       </Await>
+    //     </Suspense>
+    //   )}
+
+    //   {featuredCollections && (
+    //     <Suspense>
+    //       <Await resolve={featuredCollections}>
+    //         {({collections}) => {
+    //           if (!collections?.nodes) return <></>;
+    //           return (
+    //             <FeaturedCollections
+    //               collections={collections}
+    //               title="Collections"
+    //             />
+    //           );
+    //         }}
+    //       </Await>
+    //     </Suspense>
+    //   )}
+
+    //   {tertiaryHero && (
+    //     <Suspense fallback={<Hero {...skeletons[2]} />}>
+    //       <Await resolve={tertiaryHero}>
+    //         {({hero}) => {
+    //           if (!hero) return <></>;
+    //           return <Hero {...hero} />;
+    //         }}
+    //       </Await>
+    //     </Suspense>
+    //   )} */}
+    // </motion.div>
   );
 }
 
