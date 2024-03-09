@@ -1,21 +1,22 @@
 import {useWindowScroll} from 'react-use';
-import {CartForm, Image} from '@shopify/hydrogen';
-import {Suspense, useEffect, useState} from 'react';
-import {Await, Form, useLoaderData, useParams} from '@remix-run/react';
-import {motion, useAnimate, stagger, animate} from 'framer-motion';
+import {CartForm} from '@shopify/hydrogen';
+import {useEffect, useState} from 'react';
+import {Form, useParams} from '@remix-run/react';
+import {motion} from 'framer-motion';
 
 import type {EnhancedMenu} from '~/lib/utils';
 import {useIsHomePath} from '~/lib/utils';
 import {useCartFetchers} from '~/hooks/useCartFetchers';
-import {useRootLoaderData} from '~/root';
+
+import {Search} from '../icons';
+import {Burger} from '../icons/Burger';
+import {CartCount} from '../cart/CartCount';
+import {CartDrawer} from '../cart/CartDrawer';
+import {Link} from '..';
 
 import {useDrawer} from './Drawer';
-import {CartCount, CartDrawer, MenuDrawer} from './Layout';
-import {IconLogin, IconMenu, IconSearch} from './Icon';
-import {Account, Login, Search} from './icons';
-import {Burger} from './icons/Burger';
-
-import {Heading, Input, Link} from '.';
+import {MenuDrawer} from './MenuDrawer';
+import {AccountLink} from './AccountLink';
 
 export function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
   const isHome = useIsHomePath();
@@ -352,7 +353,7 @@ function DesktopHeader({
                       ease: [0.6, 0.01, 0.05, 0.95],
                       delay: 0.5,
                     }}
-                    className="font-didot text-[5rem] uppercase -tracking-widest leading-[65px] bg-white  z-10"
+                    className="font-didot text-[5rem] uppercase -tracking-widest leading-[65px] bg-white z-10"
                   >
                     MONOKI
                   </motion.div>
@@ -420,26 +421,5 @@ function DesktopHeader({
         </motion.div>
       </div>
     </motion.header>
-  );
-}
-
-export function AccountLink({className}: {className?: string}) {
-  const rootData = useRootLoaderData();
-  const isLoggedIn = rootData?.isLoggedIn;
-
-  return (
-    <Link to="/account" className={className}>
-      <Suspense fallback={<Login />}>
-        <Await resolve={isLoggedIn} errorElement={<IconLogin />}>
-          {(isLoggedIn) =>
-            isLoggedIn ? (
-              <Login className="headerIcon" />
-            ) : (
-              <Account className="headerIcon" />
-            )
-          }
-        </Await>
-      </Suspense>
-    </Link>
   );
 }
