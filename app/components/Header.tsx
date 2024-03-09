@@ -15,6 +15,7 @@ import {IconLogin, IconMenu, IconSearch} from './Icon';
 import {Account, Login, Search} from './icons';
 
 import {Heading, Input, Link} from '.';
+import {Burger} from './icons/Burger';
 
 export function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
   const isHome = useIsHomePath();
@@ -92,16 +93,48 @@ function MobileHeader({
       role="banner"
       initial={isHome ? {height: '200px'} : {height: '32px'}}
       animate={isHome && y < 100 ? {height: '200px'} : {height: '32px'}}
-      transition={{duration: 1, ease: [0.6, 0.01, 0.05, 0.95]}}
-      className="fixed flex lg:hidden items-center justify-between w-full bg-red-200 z-40 top-0"
+      transition={{duration: 0.5, ease: [0.6, 0.01, 0.05, 0.95]}}
+      className="fixed flex lg:hidden items-end justify-between w-full bg-white z-40 top-0"
     >
       <div className="flex items-center justify-start w-full gap-4">
         <button
           onClick={openMenu}
           className="relative flex items-center justify-center w-8 h-8"
         >
-          <IconMenu />
+          <Burger className="headerIcon" />
         </button>
+      </div>
+
+      <Link
+        to="/"
+        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+            w-fit h-fit"
+      >
+        {isBigHeader && (
+          <motion.img
+            initial={{opacity: 0}}
+            whileInView={{opacity: 1}}
+            transition={{duration: 1.5, ease: [0.6, 0.01, 0.05, 0.95]}}
+            exit={{opacity: 0}}
+            src="/logo/mainLogo.png"
+            alt="logo"
+            className="w-[13rem]"
+          />
+        )}
+        {isSmallHeader && (
+          <motion.img
+            initial={{opacity: 0}}
+            whileInView={{opacity: 1}}
+            transition={{duration: 1.5, ease: [0.6, 0.01, 0.05, 0.95]}}
+            exit={{opacity: 0}}
+            src="/logo/subLogo.png"
+            alt="logo"
+            className="w-[2.7rem]"
+          />
+        )}
+      </Link>
+
+      <div className="flex items-center justify-end w-full gap-[.3rem]">
         <Form
           method="get"
           action={params.locale ? `/${params.locale}/search` : '/search'}
@@ -111,7 +144,8 @@ function MobileHeader({
             type="submit"
             className="relative flex items-center justify-center w-8 h-8"
           >
-            <IconSearch />
+            {/* <IconSearch /> */}
+            <Search className="headerIcon" />
           </button>
           <Input
             className={
@@ -123,39 +157,6 @@ function MobileHeader({
             name="q"
           />
         </Form>
-      </div>
-
-      <Link
-        to="/"
-        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
-            w-fit h-fit"
-      >
-        hello thibaut
-        {isBigHeader && (
-          <motion.img
-            initial={{opacity: 0}}
-            whileInView={{opacity: 1}}
-            transition={{duration: 1.5, ease: [0.6, 0.01, 0.05, 0.95]}}
-            exit={{opacity: 0}}
-            src="/logo/mainLogo.png"
-            alt="logo"
-            className="w-[30rem]"
-          />
-        )}
-        {isSmallHeader && (
-          <motion.img
-            initial={{opacity: 0}}
-            whileInView={{opacity: 1}}
-            transition={{duration: 1.5, ease: [0.6, 0.01, 0.05, 0.95]}}
-            exit={{opacity: 0}}
-            src="/logo/subLogo.png"
-            alt="logo"
-            className="w-[3rem]"
-          />
-        )}
-      </Link>
-
-      <div className="flex items-center justify-end w-full gap-4">
         <AccountLink className="relative flex items-center justify-center w-8 h-8" />
         <CartCount isHome={isHome} openCart={openCart} />
       </div>
