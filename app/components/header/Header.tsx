@@ -332,97 +332,82 @@ function DesktopHeader({
         <Link
           to="/"
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+            flex flex-col justify-center items-center
             w-fit h-fit overflow-hidden"
         >
-          <motion.div
-            initial={{opacity: 0}}
-            animate={{opacity: 1}}
-            exit={{opacity: 0}}
-            transition={{
-              duration: 1,
-              ease: [0.6, 0.01, 0.05, 0.95],
-            }}
-            // className="relative flex flex-col justify-center items-center overflow-hidden bg-red-200"
-            className={
-              isBigHeader
-                ? 'relative flex flex-col justify-center items-center overflow-hidden min-h-[300px] will-change-auto'
-                : 'relative flex flex-col justify-center items-center overflow-hidden min-h-[32px]'
-            }
-          >
-            <AnimatePresence>
-              {isBigHeader && (
-                <div className="overflow-hidden">
-                  <motion.img
-                    initial={{y: -80}}
+          <AnimatePresence>
+            {isBigHeader && (
+              <div className="overflow-hidden">
+                <motion.img
+                  initial={{y: -80}}
+                  whileInView={{y: 0}}
+                  exit={{y: -80, transition: {duration: 0.3}}}
+                  transition={{
+                    duration: 1,
+                    ease: [0.6, 0.01, 0.05, 0.95],
+                  }}
+                  layout
+                  src="/logo/subLogo.png"
+                  alt="logo"
+                  className="w-[5rem]"
+                />
+              </div>
+            )}
+          </AnimatePresence>
+
+          <AnimatePresence>
+            {isBigHeader && (
+              <div className="flex flex-col justify-center items-center min-w-[500px]">
+                <div className="overflow-hidden px-2">
+                  <motion.div
+                    initial={{y: -65}}
                     whileInView={{y: 0}}
-                    exit={{y: -80, transition: {duration: 0.3}}}
+                    exit={{
+                      y: -65,
+                      transition: {duration: 0.3},
+                    }}
                     transition={{
                       duration: 1,
                       ease: [0.6, 0.01, 0.05, 0.95],
                     }}
-                    layout
-                    src="/logo/subLogo.png"
-                    alt="logo"
-                    className="w-[5rem]"
-                  />
+                    className="font-didot text-[5rem] uppercase -tracking-widest leading-[65px] bg-white z-10"
+                  >
+                    MONOKI
+                  </motion.div>
                 </div>
-              )}
-            </AnimatePresence>
-
-            <AnimatePresence>
-              {isBigHeader && (
-                <div className="flex flex-col justify-center items-center min-w-[500px]">
-                  <div className="overflow-hidden px-2">
-                    <motion.div
-                      initial={{y: -65}}
-                      whileInView={{y: 0}}
-                      exit={{
-                        y: -65,
-                        transition: {duration: 0.3},
-                      }}
-                      transition={{
-                        duration: 1,
-                        ease: [0.6, 0.01, 0.05, 0.95],
-                      }}
-                      className="font-didot text-[5rem] uppercase -tracking-widest leading-[65px] bg-white z-10"
-                    >
-                      MONOKI
-                    </motion.div>
-                  </div>
-                  <div className="overflow-hidden">
-                    <motion.div
-                      initial={{y: -50}}
-                      whileInView={{y: 0}}
-                      exit={{y: -50, opacity: 0, transition: {duration: 0.3}}}
-                      transition={{
-                        duration: 1,
-                        delay: 0.5,
-                        ease: [0.6, 0.01, 0.05, 0.95],
-                      }}
-                      className="font-didot text-[2.75rem] -tracking-widest truncate mt-[-10px]"
-                    >
-                      by Diane Goldstein
-                    </motion.div>
-                  </div>
+                <div className="overflow-hidden">
+                  <motion.div
+                    initial={{y: -50}}
+                    whileInView={{y: 0}}
+                    exit={{y: -50, opacity: 0, transition: {duration: 0.3}}}
+                    transition={{
+                      duration: 1,
+                      delay: 0.5,
+                      ease: [0.6, 0.01, 0.05, 0.95],
+                    }}
+                    className="font-didot text-[2.75rem] -tracking-widest truncate mt-[-10px]"
+                  >
+                    by Diane Goldstein
+                  </motion.div>
                 </div>
-              )}
-            </AnimatePresence>
+              </div>
+            )}
+          </AnimatePresence>
 
-            <div className="overflow-hidden ">
-              <motion.img
-                initial={{opacity: 0}}
-                whileInView={{opacity: 1}}
-                transition={{
-                  duration: 0.5,
-                  ease: [0.6, 0.01, 0.05, 0.95],
-                }}
-                layout
-                src="/logo/subLogo.png"
-                alt="logo"
-                className={isBigHeader ? 'hidden' : 'block w-[2rem]'}
-              />
-            </div>
-          </motion.div>
+          <div className="overflow-hidden ">
+            <motion.img
+              initial={{opacity: 0}}
+              whileInView={{opacity: 1}}
+              transition={{
+                duration: 0.5,
+                ease: [0.6, 0.01, 0.05, 0.95],
+              }}
+              layout
+              src="/logo/subLogo.png"
+              alt="logo"
+              className={isBigHeader ? 'hidden' : 'block w-[2rem]'}
+            />
+          </div>
         </Link>
       </div>
 
