@@ -2,7 +2,7 @@ import {useWindowScroll} from 'react-use';
 import {CartForm} from '@shopify/hydrogen';
 import {useEffect, useState} from 'react';
 import {Form, useParams} from '@remix-run/react';
-import {motion} from 'framer-motion';
+import {AnimatePresence, motion} from 'framer-motion';
 
 import type {EnhancedMenu} from '~/lib/utils';
 import {useIsHomePath} from '~/lib/utils';
@@ -225,9 +225,10 @@ function DesktopHeader({
     <motion.header
       initial={isHome ? {height: '300px'} : {height: '32px'}}
       animate={isHome && y < 100 ? {height: '300px'} : {height: '32px'}}
+      exit={isHome ? {height: '300px'} : {height: '32px'}}
       transition={{duration: 1, ease: [0.6, 0.01, 0.05, 0.95]}}
       role="banner"
-      className="hidden bg-white lg:flex justify-between items-end fixed z-40 top-0 w-full px-[1.1rem] overflow-hidden"
+      className="hidden bg-white lg:flex justify-between items-end fixed z-40 top-0  w-full px-[1.1rem] overflow-hidden"
     >
       <div className="flex gap-12">
         {/* MENU */}
@@ -261,6 +262,8 @@ function DesktopHeader({
               )
             ),
           )} */}
+
+          {/* NAV TAB */}
           {menu?.items[0] && (
             <motion.div
               initial={{opacity: 0, y: 100}}
@@ -324,56 +327,102 @@ function DesktopHeader({
             </motion.div>
           )}
         </motion.nav>
+
         {/* LOGO */}
         <Link
           to="/"
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
             w-fit h-fit overflow-hidden"
         >
-          <div className="flex flex-col justify-center items-center w-auto p-[2rem] h-fit gap-5">
-            <div className="overflow-hidden h-auto w-auto">
+          <motion.div
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            exit={{opacity: 0}}
+            transition={{
+              duration: 1,
+              ease: [0.6, 0.01, 0.05, 0.95],
+            }}
+            // className="relative flex flex-col justify-center items-center overflow-hidden bg-red-200"
+            className={
+              isBigHeader
+                ? 'relative flex flex-col justify-center items-center overflow-hidden min-h-[300px] will-change-auto'
+                : 'relative flex flex-col justify-center items-center overflow-hidden min-h-[32px]'
+            }
+          >
+            <AnimatePresence>
+              {isBigHeader && (
+                <div className="overflow-hidden">
+                  <motion.img
+                    initial={{y: -80}}
+                    whileInView={{y: 0}}
+                    exit={{y: -80, transition: {duration: 0.3}}}
+                    transition={{
+                      duration: 1,
+                      ease: [0.6, 0.01, 0.05, 0.95],
+                    }}
+                    layout
+                    src="/logo/subLogo.png"
+                    alt="logo"
+                    className="w-[5rem]"
+                  />
+                </div>
+              )}
+            </AnimatePresence>
+
+            <AnimatePresence>
+              {isBigHeader && (
+                <div className="flex flex-col justify-center items-center min-w-[500px]">
+                  <div className="overflow-hidden px-2">
+                    <motion.div
+                      initial={{y: -65}}
+                      whileInView={{y: 0}}
+                      exit={{
+                        y: -65,
+                        transition: {duration: 0.3},
+                      }}
+                      transition={{
+                        duration: 1,
+                        ease: [0.6, 0.01, 0.05, 0.95],
+                      }}
+                      className="font-didot text-[5rem] uppercase -tracking-widest leading-[65px] bg-white z-10"
+                    >
+                      MONOKI
+                    </motion.div>
+                  </div>
+                  <div className="overflow-hidden">
+                    <motion.div
+                      initial={{y: -50}}
+                      whileInView={{y: 0}}
+                      exit={{y: -50, opacity: 0, transition: {duration: 0.3}}}
+                      transition={{
+                        duration: 1,
+                        delay: 0.5,
+                        ease: [0.6, 0.01, 0.05, 0.95],
+                      }}
+                      className="font-didot text-[2.75rem] -tracking-widest truncate mt-[-10px]"
+                    >
+                      by Diane Goldstein
+                    </motion.div>
+                  </div>
+                </div>
+              )}
+            </AnimatePresence>
+
+            <div className="overflow-hidden ">
               <motion.img
-                initial={{y: 75}}
-                whileInView={{y: 0}}
-                transition={{duration: 1.5, ease: [0.6, 0.01, 0.05, 0.95]}}
+                initial={{opacity: 0}}
+                whileInView={{opacity: 1}}
+                transition={{
+                  duration: 0.5,
+                  ease: [0.6, 0.01, 0.05, 0.95],
+                }}
+                layout
                 src="/logo/subLogo.png"
                 alt="logo"
-                className={`${isSmallHeader ? 'w-[2.5rem] mt-5' : 'w-[5rem]'} `}
+                className={isBigHeader ? 'hidden' : 'block w-[2rem]'}
               />
             </div>
-            <div className="flex flex-col overflow-hidden">
-              {isBigHeader && (
-                <>
-                  <motion.div
-                    initial={{y: -65}}
-                    whileInView={{y: 0}}
-                    exit={{y: -65}}
-                    transition={{
-                      duration: 1,
-                      ease: [0.6, 0.01, 0.05, 0.95],
-                      delay: 0.5,
-                    }}
-                    className="font-didot text-[5rem] uppercase -tracking-widest leading-[65px] bg-white z-10"
-                  >
-                    MONOKI
-                  </motion.div>
-                  <motion.div
-                    initial={{y: -105}}
-                    whileInView={{y: 0}}
-                    exit={{y: -105}}
-                    transition={{
-                      duration: 1,
-                      ease: [0.6, 0.01, 0.05, 0.95],
-                      delay: 0.8,
-                    }}
-                    className="font-didot text-[2.25rem] truncate mt-[-10px]"
-                  >
-                    by Diane Goldstein
-                  </motion.div>
-                </>
-              )}
-            </div>
-          </div>
+          </motion.div>
         </Link>
       </div>
 
