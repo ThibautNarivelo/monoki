@@ -106,50 +106,85 @@ function MobileHeader({
         </button>
       </div>
 
-      <div className="flex flex-col justify-center items-center w-auto p-[2rem] h-fit gap-5">
-        <div className="overflow-hidden h-auto w-auto">
+      <Link
+        to="/"
+        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+            flex flex-col justify-center items-center
+            w-fit h-fit overflow-hidden"
+      >
+        <AnimatePresence>
+          {isBigHeader && (
+            <div className="overflow-hidden">
+              <motion.img
+                initial={{y: -40}}
+                whileInView={{y: 0}}
+                exit={{y: -40, transition: {duration: 0.3}}}
+                transition={{
+                  duration: 1,
+                  ease: [0.6, 0.01, 0.05, 0.95],
+                }}
+                src="/logo/subLogo.png"
+                alt="logo"
+                className="w-[3rem]"
+              />
+            </div>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {isBigHeader && (
+            <div className="flex flex-col justify-center items-center min-w-[500px]">
+              <div className="overflow-hidden px-3">
+                <motion.div
+                  initial={{y: -45}}
+                  whileInView={{y: 0}}
+                  exit={{
+                    y: -45,
+                    transition: {duration: 0.3},
+                  }}
+                  transition={{
+                    duration: 1,
+                    ease: [0.6, 0.01, 0.05, 0.95],
+                  }}
+                  className="font-didot text-[3rem] uppercase -tracking-widest leading-[45px] bg-white z-10"
+                >
+                  MONOKI
+                </motion.div>
+              </div>
+              <div className="overflow-hidden">
+                <motion.div
+                  initial={{y: -30}}
+                  whileInView={{y: 0}}
+                  exit={{y: -30, opacity: 0, transition: {duration: 0.3}}}
+                  transition={{
+                    duration: 1,
+                    delay: 0.5,
+                    ease: [0.6, 0.01, 0.05, 0.95],
+                  }}
+                  className="font-didot text-[1.65rem] -tracking-widest truncate mt-[-7px]"
+                >
+                  by Diane Goldstein
+                </motion.div>
+              </div>
+            </div>
+          )}
+        </AnimatePresence>
+
+        <div className="overflow-hidden ">
           <motion.img
-            initial={{y: 40}}
-            whileInView={{y: 0}}
-            transition={{duration: 1.5, ease: [0.6, 0.01, 0.05, 0.95]}}
+            initial={{opacity: 0}}
+            whileInView={{opacity: 1}}
+            transition={{
+              duration: 0.5,
+              ease: [0.6, 0.01, 0.05, 0.95],
+            }}
+            layout
             src="/logo/subLogo.png"
             alt="logo"
-            className={`${isSmallHeader ? 'w-[1rem] mt-5' : 'w-[2.5rem]'} `}
+            className={isBigHeader ? 'hidden' : 'block w-[2rem]'}
           />
         </div>
-        <div className="flex flex-col justify-center items-center overflow-hidden">
-          {isBigHeader && (
-            <>
-              <motion.div
-                initial={{y: -32}}
-                whileInView={{y: 0}}
-                exit={{y: -32}}
-                transition={{
-                  duration: 1,
-                  ease: [0.6, 0.01, 0.05, 0.95],
-                  delay: 0.5,
-                }}
-                className="font-didot text-[2.35rem] uppercase -tracking-widest leading-[32px] bg-whit  z-10"
-              >
-                MONOKI
-              </motion.div>
-              <motion.div
-                initial={{y: -45}}
-                whileInView={{y: 0}}
-                exit={{y: -45}}
-                transition={{
-                  duration: 1,
-                  ease: [0.6, 0.01, 0.05, 0.95],
-                  delay: 0.8,
-                }}
-                className="font-didot text-[1rem] truncate mt-[-5px]"
-              >
-                by Diane Goldstein
-              </motion.div>
-            </>
-          )}
-        </div>
-      </div>
+      </Link>
 
       <div className="flex items-center justify-end w-full gap-[.3rem] overflow-hidden">
         <Form
