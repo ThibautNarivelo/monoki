@@ -264,7 +264,7 @@ function DesktopHeader({
   const [isBigHeader, setIsBigHeader] = useState(true);
   const [isSmallHeader, setIsSmallHeader] = useState(false);
 
-  const [isMenuOpen, setIsMenuOpen] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleMouseEnter = () => {
     setIsMenuOpen(true);
@@ -288,9 +288,9 @@ function DesktopHeader({
         {isMenuOpen && (
           <ShopMenu
             className={`${
-              isHome && y < 100 ? 'mt-[200px]' : 'mt-[32px]'
+              isHome && y < 100 ? 'mt-[300px]' : 'mt-[32px]'
             } fixed flex justify-center items-center bg-blue-200 w-screen inset-x-0 h-[350px] z-10
-            transition-all duration-500 ease-in-out-monoki`}
+            transition-all duration-[.5s] ease-in-out-monoki`}
             onEnter={handleMouseEnter}
             onLeave={handleMouseExit}
           />
