@@ -17,8 +17,6 @@ function PageLink({page}: {page: PageNode}) {
   const {y} = useWindowScroll();
   const scrollDirection = y > 0 ? 'down' : 'up';
 
-  // const hasLink = page.collectionLink?.reference?.handle !== null;
-
   const [hasLink, setHasLink] = useState(
     Boolean(page.collectionLink?.reference?.handle),
   );
