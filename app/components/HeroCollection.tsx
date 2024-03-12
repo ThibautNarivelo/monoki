@@ -13,31 +13,26 @@ type PageNode = AllPagesQuery['pages']['nodes'][0];
 
 function PageLink({page}: {page: PageNode}) {
   const ref = React.useRef<HTMLAnchorElement>(null);
-  const inView = useInView(ref);
-
-  useEffect(() => {
-    if (inView) {
-      // eslint-disable-next-line no-console
-      console.log(`Link ${page.id} is in view`);
-    }
-  }, [inView, page.id]);
-
+  const inView = useInView(ref, {amount: 0.05});
   const {y} = useWindowScroll();
   const scrollDirection = y > 0 ? 'down' : 'up';
 
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log('scrollDirection', scrollDirection);
-  }, [scrollDirection]);
+    if (inView && page) {
+      document.title = page.pageTitle?.value || '';
+      // eslint-disable-next-line no-console
+      console.log('page', page.pageTitle?.value);
+    }
+  }, [inView, page]);
 
   return (
     <Link
       key={page.id}
       ref={ref}
       to={`/collections/${page.collectionLink?.reference?.handle}`}
-      className="relative overflow-hidden bg-red-200"
+      className="relative overflow-hidden bg-red-200 mb-[32px]"
     >
-      <AnimatePresence initial={false}>
+      <AnimatePresence mode="sync">
         {inView && page && (
           <div
             className="fixed bottom-10 left-4 min-w-screen overflow-hidden
@@ -45,10 +40,10 @@ function PageLink({page}: {page: PageNode}) {
           >
             <motion.h1
               initial={{y: scrollDirection === 'down' ? -50 : 50}}
-              animate={{y: 0}}
+              animate={{y: 0, transition: {duration: 0.5, ease: 'easeInOut'}}}
               exit={{
-                y: scrollDirection === 'up' ? -50 : 50,
-                transition: {duration: 0.05, ease: [0.6, 0.01, 0.05, 0.95]},
+                y: scrollDirection === 'up' ? 50 : -50,
+                transition: {duration: 0.25, ease: [0.6, 0.01, 0.05, 0.95]},
               }}
               transition={{duration: 0.5, ease: [0.6, 0.01, 0.05, 0.95]}}
               className="titleCollection"
@@ -57,7 +52,7 @@ function PageLink({page}: {page: PageNode}) {
             </motion.h1>
             <AnimatePresence>
               {page.linkTitle?.value && (
-                <div className="overflow-hidden group">
+                <div className="overflow-hidden group ">
                   <motion.div
                     initial={{y: scrollDirection === 'down' ? -50 : 50}}
                     animate={{y: 0}}
@@ -91,7 +86,7 @@ function PageLink({page}: {page: PageNode}) {
         width={page.imageCover?.reference?.image?.width || 0}
         height={page.imageCover?.reference?.image?.height || 0}
         sizes="(min-width: 1024px) 50vw, 100vw"
-        className=" object-contain w-full"
+        className="object-cover w-full h-full object-top "
       />
     </Link>
   );

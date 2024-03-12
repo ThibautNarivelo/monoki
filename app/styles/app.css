@@ -205,7 +205,7 @@ shop-pay-button {
   }
 
   .titleCollection {
-    @apply leading-[55px] text-[3.125rem] uppercase font-extrabold text-white tracking-tighter
+    @apply leading-[55px] text-[3rem] uppercase font-extrabold text-white tracking-tighter
       lg:text-[4rem];
   }
 }
