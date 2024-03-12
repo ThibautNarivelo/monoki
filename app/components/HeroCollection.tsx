@@ -1,10 +1,13 @@
 import {Link} from '@remix-run/react';
 import {AnimatePresence, motion, useInView} from 'framer-motion';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image} from '@shopify/hydrogen';
 import {useWindowScroll} from 'react-use';
 
 import type {AllPagesQuery} from 'storefrontapi.generated';
+
+import {LinkArrow} from './icons';
+import {Underline} from './Underline';
 
 type PageNode = AllPagesQuery['pages']['nodes'][0];
 
@@ -32,23 +35,53 @@ function PageLink({page}: {page: PageNode}) {
       key={page.id}
       ref={ref}
       to={`/collections/${page.collectionLink?.reference?.handle}`}
-      className="relative"
+      className="relative overflow-hidden bg-red-200"
     >
       <AnimatePresence initial={false}>
-        {inView && page.pageTitle?.value && (
-          <div className="fixed bottom-10 left-10  min-w-screen  overflow-hidden">
+        {inView && page && (
+          <div
+            className="fixed bottom-10 left-4 min-w-screen overflow-hidden
+              lg:left-5"
+          >
             <motion.h1
               initial={{y: scrollDirection === 'down' ? -50 : 50}}
               animate={{y: 0}}
               exit={{
-                y: scrollDirection === 'down' ? -50 : 50,
-                // transition: {duration: 1, ease: [0.6, 0.01, 0.05, 0.95]},
+                y: scrollDirection === 'up' ? -50 : 50,
+                transition: {duration: 0.05, ease: [0.6, 0.01, 0.05, 0.95]},
               }}
               transition={{duration: 0.5, ease: [0.6, 0.01, 0.05, 0.95]}}
-              className="leading-[55px] uppercase font-bold text-white text-[3rem]"
+              className="titleCollection"
             >
               {page.pageTitle?.value}
             </motion.h1>
+            <AnimatePresence>
+              {page.linkTitle?.value && (
+                <div className="overflow-hidden group">
+                  <motion.div
+                    initial={{y: scrollDirection === 'down' ? -50 : 50}}
+                    animate={{y: 0}}
+                    exit={{
+                      y: scrollDirection === 'up' ? -50 : 50,
+                      transition: {
+                        duration: 0.5,
+                        ease: [0.6, 0.01, 0.05, 0.95],
+                      },
+                    }}
+                    transition={{duration: 0.7, ease: [0.6, 0.01, 0.05, 0.95]}}
+                    className="relative flex justify-start w-fit items-baseline 
+                    font-didot text-[1rem] text-white uppercase overflow-hidden
+                    lg:text-[1.125rem]"
+                  >
+                    <span className="mt-[-5px] lg:mt-[.5px]">
+                      {page.linkTitle?.value}
+                    </span>
+                    <LinkArrow className="w-3 h-3 ml-2 fill-white" />
+                    <Underline />
+                  </motion.div>
+                </div>
+              )}
+            </AnimatePresence>
           </div>
         )}
       </AnimatePresence>
@@ -57,7 +90,8 @@ function PageLink({page}: {page: PageNode}) {
         alt={page.imageCover?.reference?.image?.altText || ''}
         width={page.imageCover?.reference?.image?.width || 0}
         height={page.imageCover?.reference?.image?.height || 0}
-        className="w-full"
+        sizes="(min-width: 1024px) 50vw, 100vw"
+        className=" object-contain w-full"
       />
     </Link>
   );

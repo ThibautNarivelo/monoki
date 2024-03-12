@@ -203,4 +203,9 @@ shop-pay-button {
   .switzerLink {
     @apply font-switzer uppercase text-[1rem] tracking-[-.04rem] text-neutral-900;
   }
+
+  .titleCollection {
+    @apply leading-[55px] text-[3.125rem] uppercase font-extrabold text-white tracking-tighter
+      lg:text-[4rem];
+  }
 }

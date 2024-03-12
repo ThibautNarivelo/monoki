@@ -336,6 +336,7 @@ export type AllPagesQuery = {
     nodes: Array<
       Pick<StorefrontAPI.Page, 'id' | 'title' | 'handle'> & {
         pageTitle?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
+        linkTitle?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
         imageCover?: StorefrontAPI.Maybe<{
           reference?: StorefrontAPI.Maybe<
             Pick<StorefrontAPI.MediaImage, 'id'> & {
@@ -476,7 +477,7 @@ interface GeneratedQueryTypes {
     return: HomepageFeaturedCollectionsQuery;
     variables: HomepageFeaturedCollectionsQueryVariables;
   };
-  '#graphql\n  query AllPages($country: CountryCode, $language: LanguageCode)\n  @inContext(country: $country, language: $language) {\n    pages(first: 100, query: "Homepage") {\n      nodes {\n        id\n        title\n        handle\n        pageTitle: metafield(namespace: "page", key: "title") {\n        value\n        }\n        imageCover: metafield(key: "image_cover", namespace: "page") {\n          reference {\n            ... on MediaImage {\n              id\n              image {\n                altText\n                height\n                id\n                url\n                width\n              }\n            }\n          }\n        }\n        collectionLink: metafield(key: "collection_link", namespace: "page") {\n          reference {\n            ... on Collection {\n              id\n              handle\n            }\n          }\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  query AllPages($country: CountryCode, $language: LanguageCode)\n  @inContext(country: $country, language: $language) {\n    pages(first: 100, query: "Homepage") {\n      nodes {\n        id\n        title\n        handle\n        pageTitle: metafield(namespace: "page", key: "title") {\n          value\n        }\n        linkTitle: metafield(namespace: "page", key: "button") {\n          value\n        }\n        imageCover: metafield(key: "image_cover", namespace: "page") {\n          reference {\n            ... on MediaImage {\n              id\n              image {\n                altText\n                height\n                id\n                url\n                width\n              }\n            }\n          }\n        }\n        collectionLink: metafield(key: "collection_link", namespace: "page") {\n          reference {\n            ... on Collection {\n              id\n              handle\n            }\n          }\n        }\n      }\n    }\n  }\n': {
     return: AllPagesQuery;
     variables: AllPagesQueryVariables;
   };

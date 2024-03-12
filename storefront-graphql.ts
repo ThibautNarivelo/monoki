@@ -187,7 +187,10 @@ export const ALL_PAGES_QUERY = `#graphql
         title
         handle
         pageTitle: metafield(namespace: "page", key: "title") {
-        value
+          value
+        }
+        linkTitle: metafield(namespace: "page", key: "button") {
+          value
         }
         imageCover: metafield(key: "image_cover", namespace: "page") {
           reference {

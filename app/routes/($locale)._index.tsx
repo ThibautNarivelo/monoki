@@ -104,7 +104,7 @@ export default function Homepage() {
         isHome && y < 100
           ? 'mt-[200px] lg:mt-[300px]'
           : 'mt-[32px] lg:mt-[100px]'
-      } overflow-hidden transition-all duration-[.5s] ease-in-out-monoki min-h-full`}
+      } h-fit overflow-hidden transition-all duration-[.5s] ease-in-out-monoki min-h-full`}
     >
       <HeroCollection pages={pages} />
     </motion.div>
