@@ -13,39 +13,32 @@ type PageNode = AllPagesQuery['pages']['nodes'][0];
 
 function PageLink({page}: {page: PageNode}) {
   const ref = React.useRef<HTMLAnchorElement>(null);
-  const inView = useInView(ref, {amount: 0.05});
+  const inView = useInView(ref, {amount: 0.15});
+  const inViewDesktop = useInView(ref, {amount: 0.5});
   const {y} = useWindowScroll();
   const scrollDirection = y > 0 ? 'down' : 'up';
-
-  useEffect(() => {
-    if (inView && page) {
-      document.title = page.pageTitle?.value || '';
-      // eslint-disable-next-line no-console
-      console.log('page', page.pageTitle?.value);
-    }
-  }, [inView, page]);
 
   return (
     <Link
       key={page.id}
       ref={ref}
       to={`/collections/${page.collectionLink?.reference?.handle}`}
-      className="relative overflow-hidden bg-red-200 mb-[32px]"
+      className="relative overflow-hidden"
     >
       <AnimatePresence mode="sync">
         {inView && page && (
           <div
-            className="fixed bottom-10 left-4 min-w-screen overflow-hidden
+            className="fixed bottom-10 left-4 min-w-screen overflow-hidden mix-blend-exclusion
               lg:left-5"
           >
             <motion.h1
               initial={{y: scrollDirection === 'down' ? -50 : 50}}
-              animate={{y: 0, transition: {duration: 0.5, ease: 'easeInOut'}}}
+              animate={{y: 0}}
               exit={{
                 y: scrollDirection === 'up' ? 50 : -50,
                 transition: {duration: 0.25, ease: [0.6, 0.01, 0.05, 0.95]},
               }}
-              transition={{duration: 0.5, ease: [0.6, 0.01, 0.05, 0.95]}}
+              transition={{duration: 0.25, ease: [0.6, 0.01, 0.05, 0.95]}}
               className="titleCollection"
             >
               {page.pageTitle?.value}
@@ -85,8 +78,8 @@ function PageLink({page}: {page: PageNode}) {
         alt={page.imageCover?.reference?.image?.altText || ''}
         width={page.imageCover?.reference?.image?.width || 0}
         height={page.imageCover?.reference?.image?.height || 0}
-        sizes="(min-width: 1024px) 50vw, 100vw"
-        className="object-cover w-full h-screen lg:h-full object-top"
+        // sizes="(min-width: 1024px) 50vw, 100vw"
+        className="object-cover object-top aspect-square h-[50%] w-full"
       />
     </Link>
   );
