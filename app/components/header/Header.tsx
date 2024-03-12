@@ -201,7 +201,6 @@ function MobileHeader({
               ease: [0.6, 0.01, 0.05, 0.95],
               delay: 0.4,
             }}
-            className="switzerLink h-fit flex gap-1 items-end"
           >
             <Search className="headerIcon" />
           </motion.button>
