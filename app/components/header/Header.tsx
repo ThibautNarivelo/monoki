@@ -186,7 +186,7 @@ function MobileHeader({
         </div>
       </Link>
 
-      <div className="flex items-center justify-end w-full gap-[.3rem] overflow-hidden">
+      <div className="flex items-end justify-end w-full gap-[.3rem] overflow-hidden">
         <Form
           method="get"
           action={params.locale ? `/${params.locale}/search` : '/search'}
