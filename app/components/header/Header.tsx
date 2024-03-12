@@ -8,7 +8,7 @@ import type {EnhancedMenu} from '~/lib/utils';
 import {useIsHomePath} from '~/lib/utils';
 import {useCartFetchers} from '~/hooks/useCartFetchers';
 
-import {Search} from '../icons';
+import {Like, Search} from '../icons';
 import {Burger} from '../icons/Burger';
 import {CartCount} from '../cart/CartCount';
 import {CartDrawer} from '../cart/CartDrawer';
@@ -201,7 +201,7 @@ function MobileHeader({
               ease: [0.6, 0.01, 0.05, 0.95],
               delay: 0.4,
             }}
-            className="relative flex items-center justify-center w-8 h-8 focus:ring-primary/5"
+            className="relative flex items-center justify-center w-8 h-8"
           >
             <Search className="headerIcon" />
           </motion.button>
@@ -214,9 +214,21 @@ function MobileHeader({
             ease: [0.6, 0.01, 0.05, 0.95],
             delay: 0.25,
           }}
-          className="relative flex items-center justify-center w-8 h-8 focus:ring-primary/5"
+          className="relative flex items-center justify-center w-8 h-8"
         >
           <AccountLink />
+        </motion.div>
+        <motion.div
+          initial={{opacity: 0, y: 100}}
+          animate={{opacity: 1, y: 0}}
+          transition={{
+            duration: 1,
+            ease: [0.6, 0.01, 0.05, 0.95],
+            delay: 0.25,
+          }}
+          className="relative flex items-center justify-center w-8 h-8"
+        >
+          <Like className="headerIcon !fill-transparent" />
         </motion.div>
         <motion.div
           initial={{opacity: 0, y: 100}}
@@ -477,6 +489,19 @@ function DesktopHeader({
           }}
         >
           <AccountLink />
+        </motion.div>
+
+        {/* IMPLEMENT LIKE FUNCTIONALITY */}
+        <motion.div
+          initial={{opacity: 0, y: 100}}
+          animate={{opacity: 1, y: 0}}
+          transition={{
+            duration: 1,
+            ease: [0.6, 0.01, 0.05, 0.95],
+            delay: 0.25,
+          }}
+        >
+          <Like className="headerIcon !fill-transparent" />
         </motion.div>
         <motion.div
           initial={{opacity: 0, y: 100}}

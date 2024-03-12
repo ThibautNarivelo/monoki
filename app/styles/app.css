@@ -198,7 +198,7 @@ shop-pay-button {
 
   /* CUSTOM CLASS */
   .headerIcon {
-    @apply w-[1.6rem] h-fit fill-neutral-900;
+    @apply w-[1.6rem] h-fit fill-neutral-900 stroke-neutral-900;
   }
   .switzerLink {
     @apply font-switzer uppercase text-[1rem] tracking-[-.04rem] text-neutral-900;
