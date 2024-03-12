@@ -201,6 +201,7 @@ function MobileHeader({
               ease: [0.6, 0.01, 0.05, 0.95],
               delay: 0.4,
             }}
+            className="relative flex items-center justify-center w-8 h-8 focus:ring-primary/5"
           >
             <Search className="headerIcon" />
           </motion.button>
@@ -213,6 +214,7 @@ function MobileHeader({
             ease: [0.6, 0.01, 0.05, 0.95],
             delay: 0.25,
           }}
+          className="relative flex items-center justify-center w-8 h-8 focus:ring-primary/5"
         >
           <AccountLink />
         </motion.div>

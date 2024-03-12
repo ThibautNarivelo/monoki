@@ -196,6 +196,7 @@ shop-pay-button {
     }
   }
 
+  /* CUSTOM CLASS */
   .headerIcon {
     @apply w-[1.6rem] h-fit fill-neutral-900;
   }
