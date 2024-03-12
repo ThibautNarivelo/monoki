@@ -181,7 +181,7 @@ export const FEATURED_COLLECTIONS_QUERY = `#graphql
 export const ALL_PAGES_QUERY = `#graphql
   query AllPages($country: CountryCode, $language: LanguageCode)
   @inContext(country: $country, language: $language) {
-    pages(first: 100, query: "Homepage") {
+    pages(first: 100, query: "Homepage" sortKey: TITLE) {
       nodes {
         id
         title
