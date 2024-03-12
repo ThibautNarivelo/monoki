@@ -86,7 +86,7 @@ function PageLink({page}: {page: PageNode}) {
         width={page.imageCover?.reference?.image?.width || 0}
         height={page.imageCover?.reference?.image?.height || 0}
         sizes="(min-width: 1024px) 50vw, 100vw"
-        className="object-cover w-full h-full object-top "
+        className="object-cover w-full h-screen lg:h-full object-top"
       />
     </Link>
   );
