@@ -21,22 +21,44 @@ import {
 } from '~/lib/utils';
 import {useIsHydrated} from '~/hooks/useIsHydrated';
 import {useRootLoaderData} from '~/root';
-import type {LayoutQuery} from 'storefrontapi.generated.d';
+import type {
+  AllCollectionsQuery,
+  BoyfriendCollectionsQuery,
+  LayoutQuery,
+  WomenCollectionsQuery,
+} from 'storefrontapi.generated.d';
 
 import {Header} from './header/Header';
 import {CartBag} from './icons';
 
 type LayoutProps = {
+  collection: AllCollectionsQuery;
   children: React.ReactNode;
   layout?: LayoutQuery & {
     headerMenu?: EnhancedMenu | null;
+    subHeaderMenu?: EnhancedMenu | null;
     footerMenu?: EnhancedMenu | null;
   };
 };
 
-export function Layout({children, layout}: LayoutProps) {
-  const {headerMenu, footerMenu} = layout || {};
-
+export function Layout({
+  collection,
+  womenCollection,
+  boysCollection,
+  children,
+  layout,
+}: {
+  collection: AllCollectionsQuery;
+  womenCollection: WomenCollectionsQuery;
+  boysCollection: BoyfriendCollectionsQuery;
+  children: React.ReactNode;
+  layout?: LayoutQuery & {
+    headerMenu?: EnhancedMenu | null;
+    subHeaderMenu?: EnhancedMenu | null;
+    footerMenu?: EnhancedMenu | null;
+  };
+}) {
+  const {headerMenu, subHeaderMenu, footerMenu} = layout || {};
   return (
     <>
       <div className="flex flex-col min-h-screen">
@@ -45,8 +67,15 @@ export function Layout({children, layout}: LayoutProps) {
             Skip to content
           </a>
         </div>
-        {headerMenu && layout?.shop.name && (
-          <Header title={layout.shop.name} menu={headerMenu} />
+        {headerMenu && subHeaderMenu && layout?.shop.name && (
+          <Header
+            title={layout.shop.name}
+            menu={headerMenu}
+            subheader={subHeaderMenu}
+            collection={collection}
+            womenCollection={womenCollection}
+            boysCollection={boysCollection}
+          />
         )}
         <main role="main" id="mainContent" className="flex-grow">
           {children}

@@ -80,8 +80,17 @@ export async function loader({request, context}: LoaderFunctionArgs) {
 
   const seo = seoPayload.root({shop: layout.shop, url: request.url});
 
+  const collections = await storefront.query(ALL_COLLECTIONS_QUERY);
+  const womenCollections = await storefront.query(WOMEN_COLLECTIONS_QUERY);
+  const boyfriendCollections = await storefront.query(
+    BOYFRIEND_COLLECTIONS_QUERY,
+  );
+
   return defer(
     {
+      collections,
+      womenCollections,
+      boyfriendCollections,
       isLoggedIn: isLoggedInPromise,
       layout,
       selectedLocale: storefront.i18n,
@@ -122,6 +131,9 @@ export default function App() {
         <Layout
           key={`${locale.language}-${locale.country}`}
           layout={data.layout}
+          collection={data.collections}
+          womenCollection={data.womenCollections}
+          boysCollection={data.boyfriendCollections}
         >
           <Outlet />
         </Layout>
@@ -159,6 +171,9 @@ export function ErrorBoundary({error}: {error: Error}) {
       </head>
       <body>
         <Layout
+          collection={rootData?.collections}
+          womenCollection={rootData?.womenCollections}
+          boysCollection={rootData?.boyfriendCollections}
           layout={rootData?.layout}
           key={`${locale.language}-${locale.country}`}
         >
@@ -188,12 +203,16 @@ const LAYOUT_QUERY = `#graphql
   query layout(
     $language: LanguageCode
     $headerMenuHandle: String!
+    $subHeaderMenuHandle: String!
     $footerMenuHandle: String!
   ) @inContext(language: $language) {
     shop {
       ...Shop
     }
     headerMenu: menu(handle: $headerMenuHandle) {
+      ...Menu
+    }
+    subHeaderMenu: menu(handle: $subHeaderMenuHandle) {
       ...Menu
     }
     footerMenu: menu(handle: $footerMenuHandle) {
@@ -244,6 +263,7 @@ async function getLayoutData({storefront, env}: AppLoadContext) {
   const data = await storefront.query(LAYOUT_QUERY, {
     variables: {
       headerMenuHandle: 'main-menu',
+      subHeaderMenuHandle: 'sub-menu',
       footerMenuHandle: 'footer',
       language: storefront.i18n.language,
     },
@@ -270,6 +290,15 @@ async function getLayoutData({storefront, env}: AppLoadContext) {
       )
     : undefined;
 
+  const subHeaderMenu = data?.subHeaderMenu
+    ? parseMenu(
+        data.subHeaderMenu,
+        data.shop.primaryDomain.url,
+        env,
+        customPrefixes,
+      )
+    : undefined;
+
   const footerMenu = data?.footerMenu
     ? parseMenu(
         data.footerMenu,
@@ -279,5 +308,77 @@ async function getLayoutData({storefront, env}: AppLoadContext) {
       )
     : undefined;
 
-  return {shop: data.shop, headerMenu, footerMenu};
+  return {shop: data.shop, headerMenu, subHeaderMenu, footerMenu};
 }
+
+export const ALL_COLLECTIONS_QUERY = `#graphql
+  query allCollections {
+    collections(first: 100, sortKey: TITLE) {
+      edges {
+        node {
+          title
+          handle
+          id
+          image {
+            id
+            width
+            height
+            altText
+            url
+          }
+          titleCollections: metafield(key: "name", namespace: "collections", ) {
+          value
+        }
+        }
+      }
+    }
+  }
+` as const;
+
+export const WOMEN_COLLECTIONS_QUERY = `#graphql
+  query womenCollections {
+    collections(first: 50, query: "femme", sortKey: TITLE) {
+      edges {
+        node {
+          title
+          handle
+          id
+          image {
+            id
+            width
+            height
+            altText
+            url
+          }
+          titleCollections: metafield(key: "name", namespace: "collections") {
+            value
+          }
+        }
+      }
+    }
+  }
+` as const;
+
+export const BOYFRIEND_COLLECTIONS_QUERY = `#graphql
+  query boyfriendCollections {
+    collections(first: 50, query: "boyfriend", sortKey: TITLE) {
+      edges {
+        node {
+          title
+          handle
+          id
+          image {
+            id
+            width
+            height
+            altText
+            url
+          }
+          titleCollections: metafield(key: "name", namespace: "collections") {
+            value
+          }
+        }
+      }
+    }
+  }
+` as const;

@@ -1,58 +1,139 @@
+import {Link} from '@remix-run/react';
 import type {AnimationProps} from 'framer-motion';
 import {AnimatePresence, motion} from 'framer-motion';
+import {Image} from '@shopify/hydrogen';
+import {useEffect, useState} from 'react';
 
-type ShopMenuProps = {
-  shop?: string;
-  headerMenu?: string;
-  footerMenu?: string;
-  className?: string;
-  isHome?: boolean;
-  onEnter?: () => void;
-  onLeave?: () => void;
-  onOut?: () => void;
-  isOpen?: boolean;
-};
+import type {
+  AllCollectionsQuery,
+  WomenCollectionsQuery,
+} from 'storefrontapi.generated';
+import type {EnhancedMenu} from '~/lib/utils';
 
 export default function ShopMenu({
-  shop,
-  headerMenu,
-  footerMenu,
-  className,
-  isHome,
-  onEnter,
-  onLeave,
+  collection,
+  womenCollection,
+  boysCollection,
+  subMenu,
+}: {
+  collection: AllCollectionsQuery;
+  womenCollection: WomenCollectionsQuery;
+  boysCollection: WomenCollectionsQuery;
+  subMenu?: EnhancedMenu;
+}) {
+  const [isWomen, setIsWomen] = useState(false);
+  const [isBoyfriend, setIsBoyfriend] = useState(false);
+  const [isBijoux, setIsBijoux] = useState(false);
+  const [isAccessoires, setIsAccessoires] = useState(false);
 
-  isOpen,
-}: ShopMenuProps) {
+  const handleMouseEnter = (title: string) => {
+    switch (title) {
+      case subMenu?.items[0]?.title:
+        setIsWomen(true);
+        setIsBoyfriend(false);
+        setIsBijoux(false);
+        setIsAccessoires(false);
+        break;
+      case subMenu?.items[1]?.title:
+        setIsWomen(false);
+        setIsBoyfriend(true);
+        setIsBijoux(false);
+        setIsAccessoires(false);
+        break;
+      // case 'bijoux':
+      //   setIsWomen(false);
+      //   setIsBoyfriend(false);
+      //   setIsBijoux(true);
+      //   setIsAccessoires(false);
+      //   break;
+      // case 'accessoires':
+      //   setIsWomen(false);
+      //   setIsBoyfriend(false);
+      //   setIsBijoux(false);
+      //   setIsAccessoires(true);
+      //   break;
+      default:
+        setIsWomen(false);
+        setIsBoyfriend(false);
+        setIsBijoux(false);
+        setIsAccessoires(false);
+        break;
+    }
+  };
+
   return (
-    <div className="flex justify-around w-full h-full items-start gap-[4.1rem] p-[1.1rem] overflow-hidden">
-      <div className="h-full flex flex-col group">
-        <div className="subHeaderTitle relative inline-flex items-center pr-[.5rem] overflow-hidden">
-          Boutique femme
-          {/* <LinkArrow className="subHeaderIcon -translate-x-full" /> */}
+    <>
+      {/* WOMEN */}
+      <div className="w-full flex justify-start iten gap-[4rem] p-[1.1rem] ">
+        <div
+          // className="bg-red-200 flex flex-col justify-around w-full h-full items-start gap-[4.1rem] p-[1.1rem] overflow-hidden"
+          className="flex flex-col justify-start"
+        >
+          {subMenu?.items.map((item) => {
+            return (
+              <Link
+                key={item?.id}
+                to={item?.to}
+                onMouseEnter={() => handleMouseEnter(item?.title)}
+                onClick={() => handleMouseEnter(item?.title)}
+                className="subHeaderTitle flex justify-start"
+              >
+                {item?.title}
+              </Link>
+            );
+          })}
         </div>
-        <div className="subHeaderTitle relative inline-flex items-center pr-[.5rem] overflow-hidden">
-          Boutique homme
-        </div>
-        <div className="subHeaderTitle relative inline-flex items-center pr-[.5rem] overflow-hidden">
-          Bijoux
-        </div>
-        <div className="subHeaderTitle relative inline-flex items-center pr-[.5rem] overflow-hidden">
-          Accessoires
-        </div>
+        {isWomen && (
+          <div className="relative w-full h-full p-[1.1rem]">
+            {womenCollection?.collections?.edges.map((item) => {
+              return (
+                <div
+                  key={item?.node?.id}
+                  className="flex flex-row justify-between w-full"
+                >
+                  <Link to={item?.node?.handle} className="subHeaderLink">
+                    {item?.node?.titleCollections?.value || ''}
+                  </Link>
+                </div>
+              );
+            })}
+            <div className="absolute top-0 right-0 overflow-hidden">
+              <Image
+                src={womenCollection.collections.edges[0].node.image?.url || ''}
+                // alt={item?.node?.image?.altText || ''}
+                // width={item?.node?.image?.width || 100}
+                // height={item?.node?.image?.height || 100}
+                className="object-cover max-h-[300px]"
+              />
+            </div>
+          </div>
+        )}
+        {isBoyfriend && (
+          <div className="relative w-full h-full p-[1.1rem]">
+            {boysCollection?.collections?.edges.map((item) => {
+              return (
+                <div
+                  key={item?.node?.id}
+                  className="flex flex-row justify-between w-full"
+                >
+                  <Link to={item?.node?.handle} className="subHeaderLink">
+                    {item?.node?.titleCollections?.value || ''}
+                  </Link>
+                </div>
+              );
+            })}
+            <div className="absolute top-0 right-0 overflow-hidden">
+              <Image
+                src={boysCollection.collections.edges[0].node.image?.url || ''}
+                // alt={item?.node?.image?.altText || ''}
+                // width={item?.node?.image?.width || 100}
+                // height={item?.node?.image?.height || 100}
+                className="object-cover max-h-[300px]"
+              />
+            </div>
+          </div>
+        )}
       </div>
-      <div className="h-full flex flex-col w-full py-[1rem] group">
-        <div className="subHeaderLink inline-flex items-center">Tout</div>
-        <div className="subHeaderLink inline-flex items-center">Nouveautés</div>
-        <div className="subHeaderLink inline-flex items-center">Kimonos</div>
-        <div className="subHeaderLink inline-flex items-center">Tout</div>
-        <div className="subHeaderLink inline-flex items-center">Nouveautés</div>
-        <div className="subHeaderLink inline-flex items-center">Kimonos</div>
-        <div className="subHeaderLink inline-flex items-center">Kimonos</div>
-      </div>
-      <div className="bg-blue-200 w-[500px] h-full">
-        <span>IMAGE</span>
-      </div>
-    </div>
+    </>
   );
 }

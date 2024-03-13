@@ -8,7 +8,12 @@ export default {
     'storefrontapi.generated.d.ts': {
       schema,
       preset,
-      documents: ['storefront-graphql.{ts,tsx}', 'server.ts'],
+      documents: [
+        'storefront-graphql.{ts,tsx}',
+        'server.ts',
+        'app/components/Layout.tsx',
+        'app/root.tsx',
+      ],
     },
     // 'customer-account.generated.d.ts': {
     //   schema,

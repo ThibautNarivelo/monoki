@@ -223,12 +223,16 @@ export const LAYOUT_QUERY = `#graphql
   query layout(
     $language: LanguageCode
     $headerMenuHandle: String!
+    $subHeaderMenuHandle: String!
     $footerMenuHandle: String!
   ) @inContext(language: $language) {
     shop {
       ...Shop
     }
     headerMenu: menu(handle: $headerMenuHandle) {
+      ...Menu
+    }
+    subHeaderMenu: menu(handle: $subHeaderMenuHandle) {
       ...Menu
     }
     footerMenu: menu(handle: $footerMenuHandle) {

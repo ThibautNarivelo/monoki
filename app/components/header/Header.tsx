@@ -7,6 +7,11 @@ import {AnimatePresence, motion} from 'framer-motion';
 import type {EnhancedMenu} from '~/lib/utils';
 import {useIsHomePath} from '~/lib/utils';
 import {useCartFetchers} from '~/hooks/useCartFetchers';
+import type {
+  AllCollectionsQuery,
+  BoyfriendCollectionsQuery,
+  WomenCollectionsQuery,
+} from 'storefrontapi.generated';
 
 import {Like, Search} from '../icons';
 import {Burger} from '../icons/Burger';
@@ -19,7 +24,21 @@ import {MenuDrawer} from './MenuDrawer';
 import {AccountLink} from './AccountLink';
 import ShopMenu from './ShopMenu';
 
-export function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
+export function Header({
+  title,
+  menu,
+  collection,
+  womenCollection,
+  boysCollection,
+  subheader,
+}: {
+  title: string;
+  menu?: EnhancedMenu;
+  subheader?: EnhancedMenu;
+  collection: AllCollectionsQuery;
+  womenCollection: WomenCollectionsQuery;
+  boysCollection: BoyfriendCollectionsQuery;
+}) {
   const isHome = useIsHomePath();
 
   const {
@@ -53,7 +72,11 @@ export function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
           isHome={isHome}
           title={title}
           menu={menu}
+          subMenu={subheader}
           openCart={openCart}
+          collection={collection}
+          womenCollection={womenCollection}
+          boysCollection={boysCollection}
         />
         <MobileHeader
           isHome={isHome}
@@ -250,13 +273,21 @@ function MobileHeader({
 function DesktopHeader({
   isHome,
   menu,
+  subMenu,
   openCart,
   title,
+  collection,
+  womenCollection,
+  boysCollection,
 }: {
   isHome: boolean;
   openCart: () => void;
   menu?: EnhancedMenu;
+  subMenu?: EnhancedMenu;
   title: string;
+  collection: AllCollectionsQuery;
+  womenCollection: WomenCollectionsQuery;
+  boysCollection: BoyfriendCollectionsQuery;
 }) {
   const params = useParams();
   const {y} = useWindowScroll();
@@ -264,16 +295,14 @@ function DesktopHeader({
   const [isBigHeader, setIsBigHeader] = useState(true);
   const [isSmallHeader, setIsSmallHeader] = useState(false);
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(true);
 
   const handleMouseEnter = () => {
     setIsMenuOpen(true);
-    // console.log('mouse enter');
   };
 
   const handleMouseExit = () => {
     setIsMenuOpen(false);
-    // console.log('mouse exit');
   };
 
   useEffect(() => {
@@ -294,12 +323,17 @@ function DesktopHeader({
             className={`${
               isHome && y < 100 ? 'translate-y-[300px]' : 'translate-y-[32px]'
             } fixed bg-white inset-x-0 z-40 hidden lg:flex 
-          transition-transform duration-[.5s] ease-in-out-monoki overflow-hidden`}
+              transition-transform duration-[.5s] ease-in-out-monoki overflow-hidden`}
             onMouseEnter={handleMouseEnter}
             onMouseOver={handleMouseEnter}
             onMouseLeave={handleMouseExit}
           >
-            <ShopMenu />
+            <ShopMenu
+              collection={collection}
+              womenCollection={womenCollection}
+              boysCollection={boysCollection}
+              subMenu={subMenu}
+            />
           </motion.div>
         )}
       </AnimatePresence>
