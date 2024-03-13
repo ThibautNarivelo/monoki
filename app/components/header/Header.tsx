@@ -23,6 +23,7 @@ import {useDrawer} from './Drawer';
 import {MenuDrawer} from './MenuDrawer';
 import {AccountLink} from './AccountLink';
 import ShopMenu from './ShopMenu';
+import MobileSubHeader from './MobileSubHeader';
 
 export function Header({
   title,
@@ -64,9 +65,14 @@ export function Header({
   return (
     <>
       <CartDrawer isOpen={isCartOpen} onClose={closeCart} />
-      {menu && (
-        <MenuDrawer isOpen={isMenuOpen} onClose={closeMenu} menu={menu} />
-      )}
+      {/* <AnimatePresence>
+        {isDrawerOpen && menu && (
+          <div className="h-screen w-screen">
+            <MenuDrawer isOpen={isMenuOpen} onClose={closeMenu} menu={menu} />
+            <div className="bg-red-200">hello</div>
+          </div>
+        )}
+      </AnimatePresence> */}
       <>
         <DesktopHeader
           isHome={isHome}
@@ -94,18 +100,20 @@ function MobileHeader({
   isHome,
   openCart,
   openMenu,
+  menu,
 }: {
   title: string;
   isHome: boolean;
   openCart: () => void;
   openMenu: () => void;
+  menu?: EnhancedMenu;
 }) {
-  // useHeaderStyleFix(containerStyle, setContainerStyle, isHome);
-
   const params = useParams();
   const {y} = useWindowScroll();
+
   const [isBigHeader, setIsBigHeader] = useState(true);
   const [isSmallHeader, setIsSmallHeader] = useState(false);
+  const [isSubHeader, setIsSubHeader] = useState(false);
 
   useEffect(() => {
     const changeHeaderState = isHome && y <= 100;
@@ -113,160 +121,183 @@ function MobileHeader({
     setIsSmallHeader(!changeHeaderState);
   }, [isHome, y]);
 
-  return (
-    <motion.header
-      role="banner"
-      initial={isHome ? {height: '200px'} : {height: '32px'}}
-      animate={isHome && y < 100 ? {height: '200px'} : {height: '32px'}}
-      transition={{duration: 0.5, ease: [0.6, 0.01, 0.05, 0.95]}}
-      className="fixed flex lg:hidden items-end justify-between w-full bg-white z-40 top-0 px-[.7rem]"
-    >
-      <div className="flex items-center justify-start w-full gap-4">
-        <button
-          onClick={openMenu}
-          className="relative flex items-center justify-center w-8 h-8"
-        >
-          <Burger className="headerIcon" />
-        </button>
-      </div>
+  const handleSubHeader = () => {
+    setIsSubHeader(!isSubHeader);
+  };
 
-      <Link
-        to="/"
-        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+  return (
+    <>
+      <AnimatePresence>
+        {isSubHeader && (
+          <motion.div
+            initial={{x: '-100%'}}
+            animate={{x: 0}}
+            exit={{x: '-100%', transition: {duration: 0.2}}}
+            transition={{duration: 0.5, ease: [0.6, 0.01, 0.05, 0.95]}}
+            className="z-50 flex lg:hidden"
+          >
+            <MobileSubHeader
+              isOpen={false}
+              onClose={handleSubHeader}
+              menu={menu}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <motion.header
+        role="banner"
+        initial={isHome ? {height: '200px'} : {height: '32px'}}
+        animate={isHome && y < 100 ? {height: '200px'} : {height: '32px'}}
+        transition={{duration: 0.5, ease: [0.6, 0.01, 0.05, 0.95]}}
+        className="fixed flex lg:hidden items-end justify-between w-full bg-white z-40 top-0 px-[.7rem]"
+      >
+        <div className="flex items-center justify-start w-full gap-4">
+          <button
+            onClick={handleSubHeader}
+            className="relative flex items-center justify-center w-8 h-8"
+          >
+            <Burger className="headerIcon" />
+          </button>
+        </div>
+
+        <Link
+          to="/"
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
             flex flex-col justify-center items-center
             w-fit h-fit overflow-hidden"
-      >
-        <AnimatePresence>
-          {isBigHeader && (
-            <div className="overflow-hidden">
-              <motion.img
-                initial={{y: -40}}
-                whileInView={{y: 0}}
-                exit={{y: -40, transition: {duration: 0.3}}}
-                transition={{
-                  duration: 1,
-                  ease: [0.6, 0.01, 0.05, 0.95],
-                }}
-                src="/logo/subLogo.png"
-                alt="logo"
-                className="w-[3rem]"
-              />
-            </div>
-          )}
-        </AnimatePresence>
-
-        <AnimatePresence>
-          {isBigHeader && (
-            <div className="flex flex-col justify-center items-center min-w-[500px]">
-              <div className="overflow-hidden px-3">
-                <motion.div
-                  initial={{y: -45}}
-                  whileInView={{y: 0}}
-                  exit={{
-                    y: -45,
-                    transition: {duration: 0.3},
-                  }}
-                  transition={{
-                    duration: 1,
-                    ease: [0.6, 0.01, 0.05, 0.95],
-                  }}
-                  className="font-didot text-[3rem] uppercase -tracking-widest leading-[45px] bg-white z-10"
-                >
-                  MONOKI
-                </motion.div>
-              </div>
-              <div className="overflow-hidden">
-                <motion.div
-                  initial={{y: -30}}
-                  whileInView={{y: 0}}
-                  exit={{y: -30, opacity: 0, transition: {duration: 0.3}}}
-                  transition={{
-                    duration: 1,
-                    delay: 0.5,
-                    ease: [0.6, 0.01, 0.05, 0.95],
-                  }}
-                  className="font-didot text-[1.65rem] -tracking-widest truncate mt-[-7px]"
-                >
-                  by Diane Goldstein
-                </motion.div>
-              </div>
-            </div>
-          )}
-        </AnimatePresence>
-
-        <div className="overflow-hidden ">
-          <motion.img
-            initial={{opacity: 0}}
-            whileInView={{opacity: 1}}
-            transition={{
-              duration: 0.5,
-              ease: [0.6, 0.01, 0.05, 0.95],
-            }}
-            layout
-            src="/logo/subLogo.png"
-            alt="logo"
-            className={isBigHeader ? 'hidden' : 'block w-[2rem]'}
-          />
-        </div>
-      </Link>
-
-      <div className="flex items-end justify-end w-full gap-[.3rem] overflow-hidden">
-        <Form
-          method="get"
-          action={params.locale ? `/${params.locale}/search` : '/search'}
-          className="flex gap-10 "
         >
-          <motion.button
-            type="submit"
+          <AnimatePresence>
+            {isBigHeader && (
+              <div className="overflow-hidden">
+                <motion.img
+                  initial={{y: -40}}
+                  whileInView={{y: 0}}
+                  exit={{y: -40, transition: {duration: 0.3}}}
+                  transition={{
+                    duration: 1,
+                    ease: [0.6, 0.01, 0.05, 0.95],
+                  }}
+                  src="/logo/subLogo.png"
+                  alt="logo"
+                  className="w-[3rem]"
+                />
+              </div>
+            )}
+          </AnimatePresence>
+
+          <AnimatePresence>
+            {isBigHeader && (
+              <div className="flex flex-col justify-center items-center min-w-[500px]">
+                <div className="overflow-hidden px-3">
+                  <motion.div
+                    initial={{y: -45}}
+                    whileInView={{y: 0}}
+                    exit={{
+                      y: -45,
+                      transition: {duration: 0.3},
+                    }}
+                    transition={{
+                      duration: 1,
+                      ease: [0.6, 0.01, 0.05, 0.95],
+                    }}
+                    className="font-didot text-[3rem] uppercase -tracking-widest leading-[45px] bg-white z-10"
+                  >
+                    MONOKI
+                  </motion.div>
+                </div>
+                <div className="overflow-hidden">
+                  <motion.div
+                    initial={{y: -30}}
+                    whileInView={{y: 0}}
+                    exit={{y: -30, opacity: 0, transition: {duration: 0.3}}}
+                    transition={{
+                      duration: 1,
+                      delay: 0.5,
+                      ease: [0.6, 0.01, 0.05, 0.95],
+                    }}
+                    className="font-didot text-[1.65rem] -tracking-widest truncate mt-[-7px]"
+                  >
+                    by Diane Goldstein
+                  </motion.div>
+                </div>
+              </div>
+            )}
+          </AnimatePresence>
+
+          <div className="overflow-hidden ">
+            <motion.img
+              initial={{opacity: 0}}
+              whileInView={{opacity: 1}}
+              transition={{
+                duration: 0.5,
+                ease: [0.6, 0.01, 0.05, 0.95],
+              }}
+              layout
+              src="/logo/subLogo.png"
+              alt="logo"
+              className={isBigHeader ? 'hidden' : 'block w-[2rem]'}
+            />
+          </div>
+        </Link>
+
+        <div className="flex items-end justify-end w-full gap-[.3rem] overflow-hidden">
+          <Form
+            method="get"
+            action={params.locale ? `/${params.locale}/search` : '/search'}
+            className="flex gap-10 "
+          >
+            <motion.button
+              type="submit"
+              initial={{opacity: 0, y: 100}}
+              animate={{opacity: 1, y: 0}}
+              transition={{
+                duration: 1,
+                ease: [0.6, 0.01, 0.05, 0.95],
+                delay: 0.4,
+              }}
+              className="relative flex items-center justify-center w-8 h-8"
+            >
+              <Search className="headerIcon" />
+            </motion.button>
+          </Form>
+          <motion.div
             initial={{opacity: 0, y: 100}}
             animate={{opacity: 1, y: 0}}
             transition={{
               duration: 1,
               ease: [0.6, 0.01, 0.05, 0.95],
-              delay: 0.4,
+              delay: 0.25,
             }}
             className="relative flex items-center justify-center w-8 h-8"
           >
-            <Search className="headerIcon" />
-          </motion.button>
-        </Form>
-        <motion.div
-          initial={{opacity: 0, y: 100}}
-          animate={{opacity: 1, y: 0}}
-          transition={{
-            duration: 1,
-            ease: [0.6, 0.01, 0.05, 0.95],
-            delay: 0.25,
-          }}
-          className="relative flex items-center justify-center w-8 h-8"
-        >
-          <AccountLink />
-        </motion.div>
-        <motion.div
-          initial={{opacity: 0, y: 100}}
-          animate={{opacity: 1, y: 0}}
-          transition={{
-            duration: 1,
-            ease: [0.6, 0.01, 0.05, 0.95],
-            delay: 0.25,
-          }}
-          className="relative flex items-center justify-center w-8 h-8"
-        >
-          <Like className="headerIcon !fill-transparent" />
-        </motion.div>
-        <motion.div
-          initial={{opacity: 0, y: 100}}
-          animate={{opacity: 1, y: 0}}
-          transition={{
-            duration: 1,
-            ease: [0.6, 0.01, 0.05, 0.95],
-            delay: 0,
-          }}
-        >
-          <CartCount isHome={isHome} openCart={openCart} />
-        </motion.div>
-      </div>
-    </motion.header>
+            <AccountLink />
+          </motion.div>
+          <motion.div
+            initial={{opacity: 0, y: 100}}
+            animate={{opacity: 1, y: 0}}
+            transition={{
+              duration: 1,
+              ease: [0.6, 0.01, 0.05, 0.95],
+              delay: 0.25,
+            }}
+            className="relative flex items-center justify-center w-8 h-8"
+          >
+            <Like className="headerIcon !fill-transparent" />
+          </motion.div>
+          <motion.div
+            initial={{opacity: 0, y: 100}}
+            animate={{opacity: 1, y: 0}}
+            transition={{
+              duration: 1,
+              ease: [0.6, 0.01, 0.05, 0.95],
+              delay: 0,
+            }}
+          >
+            <CartCount isHome={isHome} openCart={openCart} />
+          </motion.div>
+        </div>
+      </motion.header>
+    </>
   );
 }
 
