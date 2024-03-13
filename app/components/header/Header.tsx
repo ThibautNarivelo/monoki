@@ -268,12 +268,12 @@ function DesktopHeader({
 
   const handleMouseEnter = () => {
     setIsMenuOpen(true);
-    console.log('mouse enter');
+    // console.log('mouse enter');
   };
 
   const handleMouseExit = () => {
     setIsMenuOpen(false);
-    console.log('mouse exit');
+    // console.log('mouse exit');
   };
 
   useEffect(() => {
@@ -286,21 +286,38 @@ function DesktopHeader({
     <>
       <AnimatePresence>
         {isMenuOpen && (
-          <ShopMenu
+          <motion.div
+            initial={{height: 0}}
+            animate={{height: '350px'}}
+            exit={{height: 0, transition: {duration: 0.2}}}
+            transition={{duration: 0.5, ease: [0.6, 0.01, 0.05, 0.95]}}
             className={`${
-              isHome && y < 100 ? 'mt-[300px]' : 'mt-[32px]'
-            } fixed flex justify-center items-center bg-blue-200 w-screen inset-x-0 h-[350px] z-10
-            transition-all duration-[.5s] ease-in-out-monoki`}
-            onEnter={handleMouseEnter}
-            onLeave={handleMouseExit}
-          />
+              isHome && y < 100 ? 'translate-y-[300px]' : 'translate-y-[32px]'
+            } fixed bg-white inset-x-0 z-40 hidden lg:flex 
+          transition-transform duration-[.5s] ease-in-out-monoki overflow-hidden`}
+            onMouseEnter={handleMouseEnter}
+            onMouseOver={handleMouseEnter}
+            onMouseLeave={handleMouseExit}
+          >
+            <ShopMenu />
+          </motion.div>
         )}
       </AnimatePresence>
       <motion.header
         initial={isHome ? {height: '300px'} : {height: '32px'}}
         animate={isHome && y < 100 ? {height: '300px'} : {height: '32px'}}
-        exit={isHome ? {height: '300px'} : {height: '32px'}}
-        transition={{duration: 1, ease: [0.6, 0.01, 0.05, 0.95]}}
+        exit={
+          isHome
+            ? {height: '300px'}
+            : {
+                height: '32px',
+                transition: {duration: 0.5, ease: [0.6, 0.01, 0.05, 0.95]},
+              }
+        }
+        transition={{
+          duration: 0.8,
+          ease: [0.6, 0.01, 0.05, 0.95],
+        }}
         role="banner"
         className="hidden bg-white lg:flex justify-between items-end fixed z-40 top-0  w-full px-[1.1rem] overflow-hidden"
       >

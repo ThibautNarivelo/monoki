@@ -1,5 +1,5 @@
 import type {AnimationProps} from 'framer-motion';
-import {motion} from 'framer-motion';
+import {AnimatePresence, motion} from 'framer-motion';
 
 type ShopMenuProps = {
   shop?: string;
@@ -9,6 +9,8 @@ type ShopMenuProps = {
   isHome?: boolean;
   onEnter?: () => void;
   onLeave?: () => void;
+  onOut?: () => void;
+  isOpen?: boolean;
 };
 
 export default function ShopMenu({
@@ -19,24 +21,38 @@ export default function ShopMenu({
   isHome,
   onEnter,
   onLeave,
+
+  isOpen,
 }: ShopMenuProps) {
   return (
-    <motion.div
-      //   initial={{y: '-100%'}}
-      initial={{y: isHome ? '100%' : '-100%'}}
-      //   animate={{y: 0}}
-      animate={{y: isHome ? 0 : 0}}
-      //   exit={{
-      //     y: '-100%',
-      //     transition: {duration: 2.5, ease: [0.6, 0.01, 0.05, 0.95]},
-      //   }}
-      exit={{y: isHome ? '-100%' : '-100%'}}
-      transition={{duration: 1, ease: [0.6, 0.01, 0.05, 0.95]}}
-      onMouseEnter={onEnter}
-      onMouseLeave={onLeave}
-      className={className}
-    >
-      coucou
-    </motion.div>
+    <div className="flex justify-around w-full h-full items-start gap-[4.1rem] p-[1.1rem] overflow-hidden">
+      <div className="h-full flex flex-col group">
+        <div className="subHeaderTitle relative inline-flex items-center pr-[.5rem] overflow-hidden">
+          Boutique femme
+          {/* <LinkArrow className="subHeaderIcon -translate-x-full" /> */}
+        </div>
+        <div className="subHeaderTitle relative inline-flex items-center pr-[.5rem] overflow-hidden">
+          Boutique homme
+        </div>
+        <div className="subHeaderTitle relative inline-flex items-center pr-[.5rem] overflow-hidden">
+          Bijoux
+        </div>
+        <div className="subHeaderTitle relative inline-flex items-center pr-[.5rem] overflow-hidden">
+          Accessoires
+        </div>
+      </div>
+      <div className="h-full flex flex-col w-full py-[1rem] group">
+        <div className="subHeaderLink inline-flex items-center">Tout</div>
+        <div className="subHeaderLink inline-flex items-center">Nouveautés</div>
+        <div className="subHeaderLink inline-flex items-center">Kimonos</div>
+        <div className="subHeaderLink inline-flex items-center">Tout</div>
+        <div className="subHeaderLink inline-flex items-center">Nouveautés</div>
+        <div className="subHeaderLink inline-flex items-center">Kimonos</div>
+        <div className="subHeaderLink inline-flex items-center">Kimonos</div>
+      </div>
+      <div className="bg-blue-200 w-[500px] h-full">
+        <span>IMAGE</span>
+      </div>
+    </div>
   );
 }

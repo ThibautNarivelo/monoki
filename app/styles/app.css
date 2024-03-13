@@ -208,4 +208,17 @@ shop-pay-button {
     @apply leading-[55px] text-[3rem] uppercase font-extrabold text-white tracking-tighter
       lg:text-[4rem];
   }
+
+  .subHeaderTitle {
+    @apply text-[1.5rem] truncate tracking-tighter font-switzer uppercase font-semibold text-neutral-400
+    hover:text-neutral-900 transition-colors duration-200;
+  }
+
+  .subHeaderLink {
+    @apply font-switzer text-[1rem] tracking-tighter uppercase;
+  }
+
+  .subHeaderIcon {
+    @apply w-[1rem] rotate-45 h-fit fill-neutral-900 stroke-neutral-900;
+  }
 }
