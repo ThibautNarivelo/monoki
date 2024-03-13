@@ -10,6 +10,8 @@ import type {
 } from 'storefrontapi.generated';
 import type {EnhancedMenu} from '~/lib/utils';
 
+import {LinkArrow} from '../icons';
+
 export default function ShopMenu({
   collection,
   womenCollection,
@@ -76,9 +78,10 @@ export default function ShopMenu({
                 to={item?.to}
                 onMouseEnter={() => handleMouseEnter(item?.title)}
                 onClick={() => handleMouseEnter(item?.title)}
-                className="subHeaderTitle flex justify-start"
+                className="subHeaderTitle flex justify-start items-baseline"
               >
                 {item?.title}
+                <LinkArrow className="subHeaderIcon rotate-45" />
               </Link>
             );
           })}
