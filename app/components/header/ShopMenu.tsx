@@ -28,6 +28,8 @@ export default function ShopMenu({
   const [isBijoux, setIsBijoux] = useState(false);
   const [isAccessoires, setIsAccessoires] = useState(false);
 
+  const [isHovered, setIsHovered] = useState(false);
+
   const handleMouseEnter = (title: string) => {
     switch (title) {
       case subMenu?.items[0]?.title:
@@ -63,6 +65,10 @@ export default function ShopMenu({
     }
   };
 
+  const handleCollectionHover = () => {
+    setIsHovered(true);
+  };
+
   return (
     <>
       {/* WOMEN */}
@@ -78,10 +84,10 @@ export default function ShopMenu({
                 to={item?.to}
                 onMouseEnter={() => handleMouseEnter(item?.title)}
                 onClick={() => handleMouseEnter(item?.title)}
-                className="subHeaderTitle flex justify-start items-baseline"
+                className="subHeaderTitle flex justify-start items-baseline gap-[.5rem] pr-[1rem] group"
               >
                 {item?.title}
-                <LinkArrow className="subHeaderIcon rotate-45" />
+                <LinkArrow className="subHeaderIcon rotate-45 opacity-0 group-hover:opacity-100" />
               </Link>
             );
           })}
