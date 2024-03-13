@@ -80,10 +80,23 @@ export async function loader({request, context}: LoaderFunctionArgs) {
 
   const seo = seoPayload.root({shop: layout.shop, url: request.url});
 
-  const collections = await storefront.query(ALL_COLLECTIONS_QUERY);
-  const womenCollections = await storefront.query(WOMEN_COLLECTIONS_QUERY);
+  const collections = await storefront.query(ALL_COLLECTIONS_QUERY, {
+    variables: {
+      language: storefront.i18n.language,
+    },
+  });
+  const womenCollections = await storefront.query(WOMEN_COLLECTIONS_QUERY, {
+    variables: {
+      language: storefront.i18n.language,
+    },
+  });
   const boyfriendCollections = await storefront.query(
     BOYFRIEND_COLLECTIONS_QUERY,
+    {
+      variables: {
+        language: storefront.i18n.language,
+      },
+    },
   );
 
   return defer(
@@ -312,7 +325,9 @@ async function getLayoutData({storefront, env}: AppLoadContext) {
 }
 
 export const ALL_COLLECTIONS_QUERY = `#graphql
-  query allCollections {
+  query allCollections(
+    $language: LanguageCode
+  ) @inContext(language: $language) {
     collections(first: 100, sortKey: TITLE) {
       edges {
         node {
@@ -336,7 +351,9 @@ export const ALL_COLLECTIONS_QUERY = `#graphql
 ` as const;
 
 export const WOMEN_COLLECTIONS_QUERY = `#graphql
-  query womenCollections {
+  query womenCollections(
+    $language: LanguageCode
+  ) @inContext(language: $language) {
     collections(first: 50, query: "femme", sortKey: TITLE) {
       edges {
         node {
@@ -360,7 +377,9 @@ export const WOMEN_COLLECTIONS_QUERY = `#graphql
 ` as const;
 
 export const BOYFRIEND_COLLECTIONS_QUERY = `#graphql
-  query boyfriendCollections {
+  query boyfriendCollections(
+    $language: LanguageCode
+  ) @inContext(language: $language) {
     collections(first: 50, query: "boyfriend", sortKey: TITLE) {
       edges {
         node {

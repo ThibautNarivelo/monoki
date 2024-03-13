@@ -123,7 +123,7 @@ export type MenuFragment = Pick<StorefrontAPI.Menu, 'id'> & {
 };
 
 export type AllCollectionsQueryVariables = StorefrontAPI.Exact<{
-  [key: string]: never;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
 }>;
 
 export type AllCollectionsQuery = {
@@ -145,7 +145,7 @@ export type AllCollectionsQuery = {
 };
 
 export type WomenCollectionsQueryVariables = StorefrontAPI.Exact<{
-  [key: string]: never;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
 }>;
 
 export type WomenCollectionsQuery = {
@@ -167,7 +167,7 @@ export type WomenCollectionsQuery = {
 };
 
 export type BoyfriendCollectionsQueryVariables = StorefrontAPI.Exact<{
-  [key: string]: never;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
 }>;
 
 export type BoyfriendCollectionsQuery = {
@@ -549,15 +549,15 @@ interface GeneratedQueryTypes {
     return: LayoutQuery;
     variables: LayoutQueryVariables;
   };
-  '#graphql\n  query allCollections {\n    collections(first: 100, sortKey: TITLE) {\n      edges {\n        node {\n          title\n          handle\n          id\n          image {\n            id\n            width\n            height\n            altText\n            url\n          }\n          titleCollections: metafield(key: "name", namespace: "collections", ) {\n          value\n        }\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  query allCollections(\n    $language: LanguageCode\n  ) @inContext(language: $language) {\n    collections(first: 100, sortKey: TITLE) {\n      edges {\n        node {\n          title\n          handle\n          id\n          image {\n            id\n            width\n            height\n            altText\n            url\n          }\n          titleCollections: metafield(key: "name", namespace: "collections", ) {\n          value\n        }\n        }\n      }\n    }\n  }\n': {
     return: AllCollectionsQuery;
     variables: AllCollectionsQueryVariables;
   };
-  '#graphql\n  query womenCollections {\n    collections(first: 50, query: "femme", sortKey: TITLE) {\n      edges {\n        node {\n          title\n          handle\n          id\n          image {\n            id\n            width\n            height\n            altText\n            url\n          }\n          titleCollections: metafield(key: "name", namespace: "collections") {\n            value\n          }\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  query womenCollections(\n    $language: LanguageCode\n  ) @inContext(language: $language) {\n    collections(first: 50, query: "femme", sortKey: TITLE) {\n      edges {\n        node {\n          title\n          handle\n          id\n          image {\n            id\n            width\n            height\n            altText\n            url\n          }\n          titleCollections: metafield(key: "name", namespace: "collections") {\n            value\n          }\n        }\n      }\n    }\n  }\n': {
     return: WomenCollectionsQuery;
     variables: WomenCollectionsQueryVariables;
   };
-  '#graphql\n  query boyfriendCollections {\n    collections(first: 50, query: "boyfriend", sortKey: TITLE) {\n      edges {\n        node {\n          title\n          handle\n          id\n          image {\n            id\n            width\n            height\n            altText\n            url\n          }\n          titleCollections: metafield(key: "name", namespace: "collections") {\n            value\n          }\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  query boyfriendCollections(\n    $language: LanguageCode\n  ) @inContext(language: $language) {\n    collections(first: 50, query: "boyfriend", sortKey: TITLE) {\n      edges {\n        node {\n          title\n          handle\n          id\n          image {\n            id\n            width\n            height\n            altText\n            url\n          }\n          titleCollections: metafield(key: "name", namespace: "collections") {\n            value\n          }\n        }\n      }\n    }\n  }\n': {
     return: BoyfriendCollectionsQuery;
     variables: BoyfriendCollectionsQueryVariables;
   };
