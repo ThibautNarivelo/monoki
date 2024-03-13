@@ -91,7 +91,10 @@ export default function ShopMenu({
                   key={item?.node?.id}
                   className="flex flex-row justify-between w-full"
                 >
-                  <Link to={item?.node?.handle} className="subHeaderLink">
+                  <Link
+                    to={`/collections/${item?.node?.handle} `}
+                    className="subHeaderLink"
+                  >
                     {item?.node?.titleCollections?.value || ''}
                   </Link>
                 </div>
@@ -116,7 +119,10 @@ export default function ShopMenu({
                   key={item?.node?.id}
                   className="flex flex-row justify-between w-full"
                 >
-                  <Link to={item?.node?.handle} className="subHeaderLink">
+                  <Link
+                    to={`/collections/${item?.node?.handle} `}
+                    className="subHeaderLink"
+                  >
                     {item?.node?.titleCollections?.value || ''}
                   </Link>
                 </div>
