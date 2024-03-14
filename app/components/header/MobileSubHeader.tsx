@@ -63,11 +63,13 @@ export default function MobileSubHeader({
     <div className="fixed flex flex-col h-screen w-full z-50 bg-white">
       {/* FIRST LEVEL */}
       <div className=" relative flex justify-between h-fit ">
-        <img
-          src="/logo/subLogo.png"
-          alt="logo"
-          className="w-[2rem] ml-[1.1rem]"
-        />
+        <Link to={'/'} onClick={onClose}>
+          <img
+            src="/logo/subLogo.png"
+            alt="logo"
+            className="w-[2rem] ml-[1.1rem]"
+          />
+        </Link>
         <Close
           onClick={onClose}
           className=" fill-neutral-900 w-[1rem] h-auto cursor-pointer mr-[1.1rem]"
@@ -220,21 +222,17 @@ export default function MobileSubHeader({
                   return (
                     <>
                       {item.node.handle !== 'femme' && (
-                        <div
-                          role="button"
-                          tabIndex={0}
-                          key={item?.node?.id}
+                        <Link
+                          to={`/collections/${item?.node?.handle} `}
                           onClick={onClose}
                           onKeyDown={onClose}
-                          className="subHeaderLinkMobile"
+                          className="subHeaderLinkMobile !py-[.8rem]"
                         >
-                          <Link to={`/collections/${item?.node?.handle} `}>
-                            <span className="px-[1.1rem]">
-                              {item?.node?.titleCollections?.value || ''}
-                            </span>
-                            <Separator />
-                          </Link>
-                        </div>
+                          <span className="px-[1.1rem]">
+                            {item?.node?.titleCollections?.value || ''}
+                          </span>
+                          <Separator />
+                        </Link>
                       )}
                     </>
                   );
@@ -247,21 +245,17 @@ export default function MobileSubHeader({
                   return (
                     <>
                       {item.node.handle !== 'boyfriend' && (
-                        <div
-                          role="button"
-                          tabIndex={0}
-                          key={item?.node?.id}
+                        <Link
+                          to={`/collections/${item?.node?.handle} `}
                           onClick={onClose}
                           onKeyDown={onClose}
-                          className="subHeaderLinkMobile"
+                          className="subHeaderLinkMobile !py-[.8rem]"
                         >
-                          <Link to={`/collections/${item?.node?.handle} `}>
-                            <span className="px-[1.1rem]">
-                              {item?.node?.titleCollections?.value || ''}
-                            </span>
-                            <Separator />
-                          </Link>
-                        </div>
+                          <span className="px-[1.1rem]">
+                            {item?.node?.titleCollections?.value || ''}
+                          </span>
+                          <Separator />
+                        </Link>
                       )}
                     </>
                   );
