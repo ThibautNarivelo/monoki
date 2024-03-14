@@ -130,11 +130,13 @@ export default function MobileSubHeader({
             className="fixed inset-0  bg-white "
           >
             <div className="relative flex justify-between h-fit">
-              <img
-                src="/logo/subLogo.png"
-                alt="logo"
-                className="w-[2rem] ml-[1.1rem]"
-              />
+              <Link to={'/'} onClick={onClose}>
+                <img
+                  src="/logo/subLogo.png"
+                  alt="logo"
+                  className="w-[2rem] ml-[1.1rem]"
+                />
+              </Link>
               <Close
                 onClick={onClose}
                 className=" fill-neutral-900 w-[1rem] h-auto cursor-pointer mr-[1.1rem]"

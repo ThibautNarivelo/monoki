@@ -58,14 +58,11 @@ export function CountrySelector({className}: {className?: string}) {
     >
       {/* <div className="cursor-default subHeaderLinkMobile">Country</div> */}
       <div className="relative">
-        <details
-          className="absolute w-full border rounded border-contrast/30  open:round-b-none overflow-clip"
-          ref={closeRef}
-        >
+        <details className="absolute w-full overflow-clip" ref={closeRef}>
           <summary className="subHeaderLinkMobile !text-neutral-400 ml-[1.1rem]">
             {selectedLocale.label}
           </summary>
-          <div className="w-full overflow-auto border-t border-contrast/30  bg-contrast/30 max-h-36">
+          <div className="w-full overflow-auto max-h-36">
             {countries &&
               Object.keys(countries).map((countryPath) => {
                 const countryLocale = countries[countryPath];
