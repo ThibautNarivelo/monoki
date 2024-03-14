@@ -228,6 +228,6 @@ shop-pay-button {
   }
 
   .iconHeaderMobile {
-    @apply w-6 -rotate-90 h-fit fill-transparent;
+    @apply w-6 -rotate-90 h-10 fill-transparent;
   }
 }
