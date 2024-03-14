@@ -220,7 +220,14 @@ export default function MobileSubHeader({
                   return (
                     <>
                       {item.node.handle !== 'femme' && (
-                        <div className="subHeaderLinkMobile">
+                        <div
+                          role="button"
+                          tabIndex={0}
+                          key={item?.node?.id}
+                          onClick={onClose}
+                          onKeyDown={onClose}
+                          className="subHeaderLinkMobile"
+                        >
                           <Link to={`/collections/${item?.node?.handle} `}>
                             <span className="px-[1.1rem]">
                               {item?.node?.titleCollections?.value || ''}
@@ -240,7 +247,14 @@ export default function MobileSubHeader({
                   return (
                     <>
                       {item.node.handle !== 'boyfriend' && (
-                        <div className="subHeaderLinkMobile">
+                        <div
+                          role="button"
+                          tabIndex={0}
+                          key={item?.node?.id}
+                          onClick={onClose}
+                          onKeyDown={onClose}
+                          className="subHeaderLinkMobile"
+                        >
                           <Link to={`/collections/${item?.node?.handle} `}>
                             <span className="px-[1.1rem]">
                               {item?.node?.titleCollections?.value || ''}
