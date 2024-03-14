@@ -223,7 +223,7 @@ shop-pay-button {
   }
 
   .subHeaderLinkMobile {
-    @apply text-[1.25rem] py-[.5rem] truncate tracking-tighter font-switzer uppercase text-neutral-900
+    @apply text-[1.25rem] py-[.1rem] truncate tracking-tighter font-switzer uppercase text-neutral-900
       relative flex justify-start items-baseline;
   }
 
