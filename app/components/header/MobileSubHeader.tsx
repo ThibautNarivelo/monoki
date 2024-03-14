@@ -1,6 +1,6 @@
 import {Link} from '@remix-run/react';
 import {AnimatePresence, motion} from 'framer-motion';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import type {EnhancedMenu} from '~/lib/utils';
 import type {WomenCollectionsQuery} from 'storefrontapi.generated';
@@ -11,6 +11,7 @@ import {CountrySelector} from '../CountrySelector';
 
 export default function MobileSubHeader({
   isOpen,
+  onOpen,
   onClose,
   menu,
   subMenu,
@@ -18,6 +19,7 @@ export default function MobileSubHeader({
   boysCollection,
 }: {
   isOpen?: boolean;
+  onOpen?: () => void;
   onClose?: () => void;
   menu?: EnhancedMenu;
   subMenu?: EnhancedMenu;
@@ -28,16 +30,7 @@ export default function MobileSubHeader({
   const [isWomen, setIsWomen] = useState(false); // false
   const [isBoyfriend, setIsBoyfriend] = useState(false);
 
-  // dremove the scroll bar from the body when the modal is open
-  if (typeof window !== 'undefined') {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-  }
-
-  const handleSecondLevel = () => {
+  const handleSecondLevelOpen = () => {
     setIsSecondLevelOpen(!isSecondLevelOpen);
   };
 
@@ -67,7 +60,7 @@ export default function MobileSubHeader({
   const isFrench = !isEnglish;
 
   return (
-    <div className="relative flex flex-col h-screen w-full z-50 bg-white">
+    <div className="fixed flex flex-col h-screen w-full z-50 bg-white">
       {/* FIRST LEVEL */}
       <div className=" relative flex justify-between h-fit ">
         <img
@@ -128,8 +121,11 @@ export default function MobileSubHeader({
           <motion.div
             initial={{x: '100%'}}
             animate={{x: 0}}
-            exit={{x: '100%'}}
-            transition={{duration: 0.75}}
+            exit={{
+              x: '100%',
+              transition: {duration: 0.4, ease: [0.6, 0.01, 0.05, 0.95]},
+            }}
+            transition={{duration: 0.4, ease: [0.6, 0.01, 0.05, 0.95]}}
             className="fixed inset-0  bg-white "
           >
             <div className="relative flex justify-between h-fit">
@@ -149,8 +145,8 @@ export default function MobileSubHeader({
                 <div
                   role="button"
                   tabIndex={0}
-                  onClick={handleSecondLevel}
-                  onKeyDown={handleSecondLevel}
+                  onClick={handleSecondLevelOpen}
+                  onKeyDown={handleSecondLevelOpen}
                   className="subHeaderLinkMobile relative ml-[1.1rem]"
                 >
                   <Arrow className="iconHeaderMobile absolute left-0 top-0 py-[.5rem]  !rotate-90" />

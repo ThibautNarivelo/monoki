@@ -131,8 +131,14 @@ function MobileHeader({
     setIsSmallHeader(!changeHeaderState);
   }, [isHome, y]);
 
-  const handleSubHeader = () => {
-    setIsSubHeader(!isSubHeader);
+  const handleSubHeaderOpen = () => {
+    setIsSubHeader(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const handleSubHeaderClose = () => {
+    setIsSubHeader(false);
+    document.body.style.overflow = 'auto';
   };
 
   return (
@@ -142,13 +148,17 @@ function MobileHeader({
           <motion.div
             initial={{x: '-100%'}}
             animate={{x: 0}}
-            exit={{x: '-100%', transition: {duration: 0.2}}}
-            transition={{duration: 0.5, ease: [0.6, 0.01, 0.05, 0.95]}}
-            className="z-50 block lg:hidden"
+            exit={{
+              x: '-100%',
+              transition: {duration: 0.4, ease: [0.6, 0.01, 0.05, 0.95]},
+            }}
+            transition={{duration: 0.4, ease: [0.6, 0.01, 0.05, 0.95]}}
+            className="z-50 block lg:hidden fixed inset-0"
           >
             <MobileSubHeader
               isOpen={isSubHeader}
-              onClose={handleSubHeader}
+              onOpen={handleSubHeaderOpen}
+              onClose={handleSubHeaderClose}
               subMenu={submenu}
               menu={menu}
               womenCollection={womenCollection}
@@ -159,19 +169,17 @@ function MobileHeader({
       </AnimatePresence>
       <motion.header
         role="banner"
-        initial={isHome ? {height: '200px'} : {height: '32px'}}
+        initial={isHome && y < 100 ? {height: '200px'} : {height: '32px'}}
         animate={isHome && y < 100 ? {height: '200px'} : {height: '32px'}}
         transition={{duration: 0.5, ease: [0.6, 0.01, 0.05, 0.95]}}
         className="fixed flex lg:hidden items-end justify-between w-full bg-white z-40 top-0 px-[.7rem]"
       >
-        <div className="flex items-center justify-start w-full gap-4">
-          <button
-            onClick={handleSubHeader}
-            className="relative flex items-center justify-center w-8 h-8"
-          >
-            <Burger className="headerIcon" />
-          </button>
-        </div>
+        <button
+          onClick={handleSubHeaderOpen}
+          className="relative flex items-center justify-center w-8 h-8"
+        >
+          <Burger className="headerIcon" />
+        </button>
 
         <Link
           to="/"
