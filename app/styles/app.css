@@ -211,7 +211,7 @@ shop-pay-button {
 
   .subHeaderTitle {
     @apply text-[1.5rem] truncate tracking-tighter font-switzer uppercase font-semibold text-neutral-400
-    hover:text-neutral-900 transition-colors duration-200;
+      hover:text-neutral-900 transition-colors duration-200;
   }
 
   .subHeaderLink {
@@ -220,5 +220,14 @@ shop-pay-button {
 
   .subHeaderIcon {
     @apply w-[1rem] rotate-45 h-fit fill-neutral-900 stroke-neutral-900;
+  }
+
+  .subHeaderLinkMobile {
+    @apply text-[1.25rem] py-[.5rem] truncate tracking-tighter font-switzer uppercase text-neutral-900
+      relative flex justify-start items-baseline;
+  }
+
+  .iconHeaderMobile {
+    @apply w-6 -rotate-90 h-fit fill-transparent;
   }
 }

@@ -22,5 +22,6 @@ export {Grid} from './Grid';
 export {FeaturedProducts} from './FeaturedProducts';
 export {AddToCartButton} from './cart/AddToCartButton';
 export {Underline} from './Underline';
+export {Separator} from './Separator';
 
 export * from './Icon';

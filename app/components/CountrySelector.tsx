@@ -10,7 +10,9 @@ import type {Localizations, Locale} from '~/lib/type';
 import {DEFAULT_LOCALE} from '~/lib/utils';
 import {useRootLoaderData} from '~/root';
 
-export function CountrySelector() {
+import {Arrow, Check, LinkArrow} from './icons';
+
+export function CountrySelector({className}: {className?: string}) {
   const fetcher = useFetcher();
   const closeRef = useRef<HTMLDetailsElement>(null);
   const rootData = useRootLoaderData();
@@ -53,15 +55,13 @@ export function CountrySelector() {
       className="grid w-full gap-4"
       onMouseLeave={closeDropdown}
     >
-      <Heading size="lead" className="cursor-default" as="h3">
-        Country
-      </Heading>
+      {/* <div className="cursor-default subHeaderLinkMobile">Country</div> */}
       <div className="relative">
         <details
           className="absolute w-full border rounded border-contrast/30  open:round-b-none overflow-clip"
           ref={closeRef}
         >
-          <summary className="flex items-center justify-between w-full px-4 py-3 cursor-pointer">
+          <summary className="subHeaderLinkMobile !text-neutral-400 ml-[1.1rem]">
             {selectedLocale.label}
           </summary>
           <div className="w-full overflow-auto border-t border-contrast/30  bg-contrast/30 max-h-36">
@@ -114,23 +114,24 @@ function Country({
         countryCode: countryLocale.country,
       }}
     >
-      <Button
-        className={clsx([
-          'text-contrast ',
-          'bg-primary  w-full p-2 transition rounded flex justify-start',
-          'items-center text-left cursor-pointer py-2 px-4',
-        ])}
+      <button
+        // className={clsx([
+        //   'text-contrast ',
+        //   'bg-primary  w-full p-2 transition rounded flex justify-start',
+        //   'items-center text-left cursor-pointer py-2 px-4',
+        // ])}
+        className="subHeaderLinkMobile flex !items-center !justify-between px-[1.1rem] w-full 
+          border-t-[1px] border-neutral-900"
         type="submit"
-        variant="primary"
         onClick={closeDropdown}
       >
-        {countryLocale.label}
+        <span>{countryLocale.label}</span>
         {isSelected ? (
-          <span className="ml-2">
-            <IconCheck />
-          </span>
+          <div className="ml-[1.1rem]">
+            <Arrow className="iconHeaderMobile !rotate-90" />
+          </div>
         ) : null}
-      </Button>
+      </button>
     </ChangeLocaleForm>
   );
 }

@@ -6,6 +6,7 @@ import {useEffect, useState} from 'react';
 
 import type {
   AllCollectionsQuery,
+  BoyfriendCollectionsQuery,
   WomenCollectionsQuery,
 } from 'storefrontapi.generated';
 import type {EnhancedMenu} from '~/lib/utils';
@@ -20,7 +21,7 @@ export default function ShopMenu({
 }: {
   collection: AllCollectionsQuery;
   womenCollection: WomenCollectionsQuery;
-  boysCollection: WomenCollectionsQuery;
+  boysCollection: BoyfriendCollectionsQuery;
   subMenu?: EnhancedMenu;
 }) {
   const [isWomen, setIsWomen] = useState(false);

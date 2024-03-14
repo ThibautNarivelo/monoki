@@ -204,7 +204,7 @@ export function IconCheck({
   return (
     <Icon {...props} fill="transparent" stroke={stroke}>
       <title>Check</title>
-      <circle cx="10" cy="10" r="7.25" strokeWidth="1.25" />
+      {/* <circle cx="10" cy="10" r="7.25" strokeWidth="1.25" /> */}
       <path
         strokeLinecap="round"
         strokeLinejoin="round"

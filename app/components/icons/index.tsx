@@ -5,3 +5,5 @@ export {Search} from './Search';
 export {Like} from './Like';
 export {LinkArrow} from './LinkArrow';
 export {Close} from './Close';
+export {Arrow} from './Arrow';
+export {Check} from './Check';

@@ -89,6 +89,10 @@ export function Header({
           title={title}
           openCart={openCart}
           openMenu={openMenu}
+          menu={menu}
+          submenu={subheader}
+          womenCollection={womenCollection}
+          boysCollection={boysCollection}
         />
       </>
     </>
@@ -101,12 +105,18 @@ function MobileHeader({
   openCart,
   openMenu,
   menu,
+  submenu,
+  womenCollection,
+  boysCollection,
 }: {
   title: string;
   isHome: boolean;
   openCart: () => void;
   openMenu: () => void;
   menu?: EnhancedMenu;
+  submenu?: EnhancedMenu;
+  womenCollection: WomenCollectionsQuery;
+  boysCollection: BoyfriendCollectionsQuery;
 }) {
   const params = useParams();
   const {y} = useWindowScroll();
@@ -134,12 +144,15 @@ function MobileHeader({
             animate={{x: 0}}
             exit={{x: '-100%', transition: {duration: 0.2}}}
             transition={{duration: 0.5, ease: [0.6, 0.01, 0.05, 0.95]}}
-            className="z-50 flex lg:hidden"
+            className="z-50 block lg:hidden"
           >
             <MobileSubHeader
-              isOpen={false}
+              isOpen={isSubHeader}
               onClose={handleSubHeader}
+              subMenu={submenu}
               menu={menu}
+              womenCollection={womenCollection}
+              boysCollection={boysCollection}
             />
           </motion.div>
         )}
