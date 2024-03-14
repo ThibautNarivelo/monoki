@@ -98,8 +98,10 @@ export default function MobileSubHeader({
               </div>
             ) : (
               <Link
-                to={item?.to}
-                className="subHeaderLinkMobile"
+                // to={item?.to}
+                // to={isFrench ? item?.to : item?.to.replace('/en-us', '')}
+                to={isFrench ? item?.to : item?.to.replace('', '/en-us')}
+                className="subHeaderLinkMobile bg-red-300"
                 onClick={onClose}
               >
                 <div className="w-full flex items-center  px-[1.1rem]">
@@ -165,12 +167,15 @@ export default function MobileSubHeader({
               )}
 
               {/* WOMEN LEVEL */}
+
+              {/* ALL BUTTON */}
               {isWomen && (
                 <div className="subHeaderLinkMobile relative !items-center mr-[1.1rem]">
                   {womenCollection?.collections?.edges.map((item) => {
                     return (
                       <>
-                        {item.node.handle === 'femme' && (
+                        {(item.node.titleCollections?.value === 'All' ||
+                          item.node.titleCollections?.value === 'Tout') && (
                           <div
                             role="button"
                             tabIndex={0}
@@ -179,8 +184,14 @@ export default function MobileSubHeader({
                             onKeyDown={onClose}
                             className="flex flex-row justify-between w-full"
                           >
-                            <Link to={`/collections/${item?.node?.handle} `}>
-                              {item.node.titleCollections?.value || 'Femme'}
+                            <Link
+                              to={
+                                isFrench
+                                  ? `/collections/${item?.node?.handle}`
+                                  : `/en-us/collections/${item?.node?.handle}`
+                              }
+                            >
+                              {item.node.titleCollections?.value || 'ALL'}
                             </Link>
                           </div>
                         )}
@@ -203,8 +214,14 @@ export default function MobileSubHeader({
                             onKeyDown={onClose}
                             className="flex flex-row justify-between w-full"
                           >
-                            <Link to={`/collections/${item?.node?.handle} `}>
-                              {item.node.titleCollections?.value || 'Boyfriend'}
+                            <Link
+                              to={
+                                isFrench
+                                  ? `/collections/${item?.node?.handle}`
+                                  : `/en-us/collections/${item?.node?.handle}`
+                              }
+                            >
+                              {item.node.titleCollections?.value || 'ALL'}
                             </Link>
                           </div>
                         )}
@@ -223,13 +240,17 @@ export default function MobileSubHeader({
                     <>
                       {item.node.handle !== 'femme' && (
                         <Link
-                          to={`/collections/${item?.node?.handle} `}
+                          to={
+                            isFrench
+                              ? `/collections/${item?.node?.handle}`
+                              : `/en-us/collections/${item?.node?.handle}`
+                          }
                           onClick={onClose}
                           onKeyDown={onClose}
                           className="subHeaderLinkMobile !py-[.8rem]"
                         >
                           <span className="px-[1.1rem]">
-                            {item?.node?.titleCollections?.value || ''}
+                            {item?.node?.titleCollections?.value || 'All'}
                           </span>
                           <Separator />
                         </Link>
@@ -246,13 +267,17 @@ export default function MobileSubHeader({
                     <>
                       {item.node.handle !== 'boyfriend' && (
                         <Link
-                          to={`/collections/${item?.node?.handle} `}
+                          to={
+                            isFrench
+                              ? `/collections/${item?.node?.handle}`
+                              : `/en-us/collections/${item?.node?.handle}`
+                          }
                           onClick={onClose}
                           onKeyDown={onClose}
                           className="subHeaderLinkMobile !py-[.8rem]"
                         >
                           <span className="px-[1.1rem]">
-                            {item?.node?.titleCollections?.value || ''}
+                            {item?.node?.titleCollections?.value || 'All'}
                           </span>
                           <Separator />
                         </Link>
