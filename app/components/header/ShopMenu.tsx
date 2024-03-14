@@ -70,6 +70,11 @@ export default function ShopMenu({
     setIsHovered(true);
   };
 
+  const isEnglish =
+    typeof window !== 'undefined' &&
+    window.location.pathname.includes('/en-us');
+  const isFrench = !isEnglish;
+
   return (
     <>
       {/* WOMEN */}
@@ -82,7 +87,8 @@ export default function ShopMenu({
             return (
               <Link
                 key={item?.id}
-                to={item?.to}
+                // to={item?.to}
+                to={isFrench ? `${item?.to}` : `/en-us${item?.to}`}
                 onMouseEnter={() => handleMouseEnter(item?.title)}
                 onClick={() => handleMouseEnter(item?.title)}
                 className="subHeaderTitle flex justify-start items-baseline gap-[.5rem] pr-[1rem] group"
@@ -102,7 +108,11 @@ export default function ShopMenu({
                   className="flex flex-row justify-between w-full"
                 >
                   <Link
-                    to={`/collections/${item?.node?.handle} `}
+                    to={
+                      isFrench
+                        ? `/collections/${item?.node?.handle}`
+                        : `/en-us/collections/${item?.node?.handle}`
+                    }
                     className="subHeaderLink"
                   >
                     {item?.node?.titleCollections?.value || ''}
@@ -130,7 +140,11 @@ export default function ShopMenu({
                   className="flex flex-row justify-between w-full"
                 >
                   <Link
-                    to={`/collections/${item?.node?.handle} `}
+                    to={
+                      isFrench
+                        ? `/collections/${item?.node?.handle}`
+                        : `/en-us/collections/${item?.node?.handle}`
+                    }
                     className="subHeaderLink"
                   >
                     {item?.node?.titleCollections?.value || ''}

@@ -101,7 +101,7 @@ export default function MobileSubHeader({
                 // to={item?.to}
                 // to={isFrench ? item?.to : item?.to.replace('/en-us', '')}
                 to={isFrench ? item?.to : item?.to.replace('', '/en-us')}
-                className="subHeaderLinkMobile bg-red-300"
+                className="subHeaderLinkMobile"
                 onClick={onClose}
               >
                 <div className="w-full flex items-center  px-[1.1rem]">

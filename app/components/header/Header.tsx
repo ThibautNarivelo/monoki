@@ -355,6 +355,11 @@ function DesktopHeader({
     setIsSmallHeader(!changeHeaderState);
   }, [isHome, y]);
 
+  const isEnglish =
+    typeof window !== 'undefined' &&
+    window.location.pathname.includes('/en-us');
+  const isFrench = !isEnglish;
+
   return (
     <>
       <AnimatePresence>
@@ -440,14 +445,12 @@ function DesktopHeader({
                 transition={{duration: 1, ease: [0.6, 0.01, 0.05, 0.95]}}
               >
                 <Link
-                  to={menu.items[0].to}
+                  // to={menu.items[0].to}
+                  to={isFrench ? `/products` : `/en-us/products`}
                   target={menu.items[0].target}
                   prefetch="intent"
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseExit}
-                  className={({isActive}) =>
-                    isActive ? 'pb-1 border-b -mb-px overflow-hidden' : 'pb-1'
-                  }
                 >
                   {menu.items[0].title}
                 </Link>
@@ -464,7 +467,12 @@ function DesktopHeader({
                 }}
               >
                 <Link
-                  to={menu.items[1].to}
+                  // to={menu.items[1].to}
+                  to={
+                    isFrench
+                      ? `/collections/${menu.items[1].to}`
+                      : `/en-us/collections/${menu.items[1].to}`
+                  }
                   target={menu.items[1].target}
                   prefetch="intent"
                   className={({isActive}) =>
@@ -486,7 +494,12 @@ function DesktopHeader({
                 }}
               >
                 <Link
-                  to={menu.items[2].to}
+                  // to={menu.items[2].to}
+                  to={
+                    isFrench
+                      ? `/collections/${menu.items[2].to}`
+                      : `/en-us/collections/${menu.items[2].to}`
+                  }
                   target={menu.items[2].target}
                   prefetch="intent"
                   className={({isActive}) =>
