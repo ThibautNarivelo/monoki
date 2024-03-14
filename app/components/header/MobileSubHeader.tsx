@@ -77,7 +77,7 @@ export default function MobileSubHeader({
 
       {subMenu?.items.map((item) => {
         return (
-          <React.Fragment key={item?.id}>
+          <div key={item?.id} className="h-fit">
             {item?.tags.includes('femme') ||
             item?.tags.includes('boyfriend') ||
             item?.tags.includes('women') ? (
@@ -107,7 +107,7 @@ export default function MobileSubHeader({
                 <Separator />
               </Link>
             )}
-          </React.Fragment>
+          </div>
         );
       })}
       <CountrySelector />
