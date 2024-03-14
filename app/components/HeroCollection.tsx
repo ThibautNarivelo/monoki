@@ -67,8 +67,8 @@ function PageLink({page}: {page: PageNode}) {
                         ease: [0.6, 0.01, 0.05, 0.95],
                       }}
                       className="relative flex justify-start w-fit items-baseline 
-                    font-didot text-[1rem] text-white uppercase overflow-hidden
-                    lg:text-[1.125rem]"
+                        font-didot text-[1rem] text-white uppercase overflow-hidden
+                        lg:text-[1.125rem]"
                     >
                       <span className="mt-[-5px] lg:mt-[.5px]">
                         {page.linkTitle?.value}
