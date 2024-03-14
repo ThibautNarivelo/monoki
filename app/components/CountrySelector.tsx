@@ -47,6 +47,7 @@ export function CountrySelector({className}: {className?: string}) {
 
   const closeDropdown = useCallback(() => {
     closeRef.current?.removeAttribute('open');
+    document.body.style.overflow = 'auto';
   }, []);
 
   return (

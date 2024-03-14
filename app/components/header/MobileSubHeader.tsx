@@ -111,9 +111,6 @@ export default function MobileSubHeader({
         );
       })}
       <CountrySelector />
-      {/* <div className="subHeaderLinkMobile bg-red-100">
-        <Separator />
-      </div> */}
 
       {/* SECOND LEVEL */}
       <AnimatePresence>
@@ -140,28 +137,34 @@ export default function MobileSubHeader({
               />
               <Separator />
             </div>
-            <div className="relative flex justify-between h-fit">
+            <div className="relative flex justify-between h-auto items-center">
               {isFrench ? (
                 <div
                   role="button"
                   tabIndex={0}
                   onClick={handleSecondLevelOpen}
                   onKeyDown={handleSecondLevelOpen}
-                  className="subHeaderLinkMobile relative ml-[1.1rem]"
+                  className="subHeaderLinkMobile !items-center ml-[1.1rem]"
                 >
-                  <Arrow className="iconHeaderMobile absolute left-0 top-0 py-[.5rem]  !rotate-90" />
-                  <span className="ml-[2rem]">Retour</span>
+                  <Arrow className="iconHeaderMobile !rotate-90" />
+                  <span className="ml-[.5rem]">Retour</span>
                 </div>
               ) : (
-                <span className="subHeaderLinkMobile ml-[3.1rem]">
-                  Go Back{' '}
-                  <Arrow className="iconHeaderMobile absolute left-0 top-0 mx-[1.1rem] !rotate-90" />
-                </span>
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onClick={handleSecondLevelOpen}
+                  onKeyDown={handleSecondLevelOpen}
+                  className="subHeaderLinkMobile !items-center ml-[1.1rem]"
+                >
+                  <Arrow className="iconHeaderMobile !rotate-90" />
+                  <span className="ml-[.5rem]">Go back</span>
+                </div>
               )}
 
               {/* WOMEN LEVEL */}
               {isWomen && (
-                <div className="subHeaderLinkMobile relative mr-[1.1rem]">
+                <div className="subHeaderLinkMobile relative !items-center mr-[1.1rem]">
                   {womenCollection?.collections?.edges.map((item) => {
                     return (
                       <>
@@ -185,7 +188,7 @@ export default function MobileSubHeader({
                 </div>
               )}
               {isBoyfriend && (
-                <div className="subHeaderLinkMobile relative mr-[1.1rem]">
+                <div className="subHeaderLinkMobile relative !items-center mr-[1.1rem]">
                   {boysCollection?.collections?.edges.map((item) => {
                     return (
                       <>
@@ -215,17 +218,18 @@ export default function MobileSubHeader({
               <div className="relative flex flex-col justify-between h-fit">
                 {womenCollection?.collections?.edges.map((item) => {
                   return (
-                    <div key={item?.node?.id} className="subHeaderLinkMobile">
-                      <Link
-                        to={`/collections/${item?.node?.handle} `}
-                        onClick={onClose}
-                      >
-                        <span className="px-[1.1rem]">
-                          {item?.node?.titleCollections?.value || ''}
-                        </span>
-                        <Separator />
-                      </Link>
-                    </div>
+                    <>
+                      {item.node.handle !== 'femme' && (
+                        <div className="subHeaderLinkMobile">
+                          <Link to={`/collections/${item?.node?.handle} `}>
+                            <span className="px-[1.1rem]">
+                              {item?.node?.titleCollections?.value || ''}
+                            </span>
+                            <Separator />
+                          </Link>
+                        </div>
+                      )}
+                    </>
                   );
                 })}
               </div>
@@ -234,17 +238,18 @@ export default function MobileSubHeader({
               <div className="relative flex flex-col justify-between h-fit">
                 {boysCollection?.collections?.edges.map((item) => {
                   return (
-                    <div key={item?.node?.id} className="subHeaderLinkMobile">
-                      <Link
-                        to={`/collections/${item?.node?.handle} `}
-                        onClick={onClose}
-                      >
-                        <span className="px-[1.1rem]">
-                          {item?.node?.titleCollections?.value || ''}
-                        </span>
-                        <Separator />
-                      </Link>
-                    </div>
+                    <>
+                      {item.node.handle !== 'boyfriend' && (
+                        <div className="subHeaderLinkMobile">
+                          <Link to={`/collections/${item?.node?.handle} `}>
+                            <span className="px-[1.1rem]">
+                              {item?.node?.titleCollections?.value || ''}
+                            </span>
+                            <Separator />
+                          </Link>
+                        </div>
+                      )}
+                    </>
                   );
                 })}
               </div>

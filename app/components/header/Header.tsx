@@ -65,14 +65,6 @@ export function Header({
   return (
     <>
       <CartDrawer isOpen={isCartOpen} onClose={closeCart} />
-      {/* <AnimatePresence>
-        {isDrawerOpen && menu && (
-          <div className="h-screen w-screen">
-            <MenuDrawer isOpen={isMenuOpen} onClose={closeMenu} menu={menu} />
-            <div className="bg-red-200">hello</div>
-          </div>
-        )}
-      </AnimatePresence> */}
       <>
         <DesktopHeader
           isHome={isHome}
