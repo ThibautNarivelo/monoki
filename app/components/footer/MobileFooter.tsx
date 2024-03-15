@@ -20,39 +20,36 @@ export default function DesktopFooter({
 }) {
   return (
     <div
-      className="hidden lg:grid grid-cols-2 relative z-30 bg-white w-full h-[300px] gap-[1rem] px-[1.1rem] pt-[3.5rem]
-       justify-between items-end"
+      className="flex flex-col lg:hidden relative z-30 bg-white w-full h-full px-[1.1rem] pt-[3rem] gap-[5vw]
+       justify-start items-center"
     >
-      <div className="flex flex-col justify-end items-start w-full gap-[.5rem]  max-w-max">
-        <h2 className=" font-switzer text-[5.5rem] uppercase tracking-[-5px] leading-[75px]">
+      <div className="flex flex-col h-full">
+        <h2 className=" font-switzer text-[4.6rem] uppercase tracking-[-5px] leading-[75px]">
           Join the magic
         </h2>
-        <form className="flex w-full gap-[.5rem]">
+        <form className="flex flex-col w-full ">
           <input
             type="email"
             placeholder={isFrench ? 'Adresse e-mail' : 'email'}
-            className="w-full flex-1 h-[35px] bg-white
+            className="w-fullh-[40px] bg-white
             placeholder-neutral-400 text-neutral-900 font-switzer"
           />
+          <span className="text-[0.6rem] text-neutral-400 font-switzer">
+            {isFrench ? '*Champs obligatoires' : '*Required fields.'}
+          </span>
           <button
             type="submit"
-            className="px-[3rem] h-[35px] bg-yellow-500 text-[1rem] font-switzer uppercase tracking-tighter text-neutral-900"
+            className="mt-[1rem] px-[4rem] h-[40px] bg-yellow-500 text-[1rem] font-switzer uppercase tracking-tighter text-neutral-900"
           >
             {isFrench ? 'Continuer' : 'Continue'}
           </button>
         </form>
-        <span className="text-[0.6rem] text-neutral-400 font-switzer">
-          {isFrench ? '*Champs obligatoires' : '*Required fields.'}
-        </span>
-        <h1 className="font-didot uppercase text-[10.1rem] leading-[140px] tracking-[-20px] mt-[.5rem] ">
-          MONOKI
-        </h1>
       </div>
 
-      <div className="relative grid grid-cols-4 h-full justify-start items-start pt-2">
+      <div className="hidden relative flex-grow justify-start  gap-[6vw] mt-[.75rem]">
         {/* CATEGORY */}
         {/* FOLLOW US COLUMN */}
-        <div className="flex flex-col gap-[2rem] ">
+        <div className="flex flex-col gap-[2rem]">
           <span className="footerTitle">
             {isFrench ? 'Suivez-nous' : 'Follow us'}
           </span>
@@ -70,9 +67,6 @@ export default function DesktopFooter({
                 </Link>
               ))}
           </div>
-          <span className="absolute bottom-4 left-0 text-[.6rem] font-switzer">
-            © MONOKI {new Date().getFullYear()}. All rights reserved
-          </span>
         </div>
         {/* CUSTOMER SERVICES COLUMN */}
         <div className="flex flex-col gap-[2rem]">
@@ -122,6 +116,9 @@ export default function DesktopFooter({
           <CountrySelector />
         </div>
       </div>
+      <h1 className="hidden font-didot uppercase text-[8.5rem] leading-[120px] tracking-[-20px] mt-[1rem]">
+        MONOKI
+      </h1>
     </div>
   );
 }

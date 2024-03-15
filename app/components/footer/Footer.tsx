@@ -9,6 +9,7 @@ import {
   infosItems,
 } from './FilteredItems';
 import DesktopFooter from './DesktopFooter';
+import MobileFooter from './MobileFooter';
 
 export default function Footer({menu}: {menu: EnhancedMenu}) {
   const isEnglish =
@@ -18,6 +19,7 @@ export default function Footer({menu}: {menu: EnhancedMenu}) {
   return (
     <>
       <DesktopFooter menu={menu} isFrench={isFrench} />
+      <MobileFooter menu={menu} isFrench={isFrench} />
     </>
   );
 }
