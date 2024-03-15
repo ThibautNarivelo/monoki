@@ -369,10 +369,8 @@ function DesktopHeader({
             animate={{height: '350px'}}
             exit={{height: 0, transition: {duration: 0.2}}}
             transition={{duration: 0.5, ease: [0.6, 0.01, 0.05, 0.95]}}
-            className={`${
-              isHome && y < 100 ? 'translate-y-[300px]' : 'translate-y-[32px]'
-            } fixed bg-white inset-x-0 z-40 hidden lg:flex 
-              transition-transform duration-[.5s] ease-in-out-monoki overflow-hidden`}
+            className="fixed bg-white inset-x-0 z-40 hidden lg:flex 
+            transition-transform duration-[.5s] ease-in-out-monoki overflow-hidden"
             onMouseEnter={handleMouseEnter}
             onMouseOver={handleMouseEnter}
             onMouseLeave={handleMouseExit}
@@ -393,7 +391,7 @@ function DesktopHeader({
           isHome
             ? {height: '300px'}
             : {
-                height: '32px',
+                height: '30px',
                 transition: {duration: 0.5, ease: [0.6, 0.01, 0.05, 0.95]},
               }
         }

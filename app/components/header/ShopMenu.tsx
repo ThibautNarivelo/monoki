@@ -78,7 +78,7 @@ export default function ShopMenu({
   return (
     <>
       {/* WOMEN */}
-      <div className="w-full flex justify-start iten gap-[4rem] p-[1.1rem] ">
+      <div className="w-full flex justify-start gap-[4rem] p-[1.1rem] ">
         <div
           // className="bg-red-200 flex flex-col justify-around w-full h-full items-start gap-[4.1rem] p-[1.1rem] overflow-hidden"
           className="flex flex-col justify-start"

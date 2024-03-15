@@ -103,7 +103,7 @@ export default function Homepage() {
       className={`${
         isHome && y < 100
           ? 'mt-[200px] lg:mt-[300px]'
-          : 'mt-[32px] lg:mt-[100px]'
+          : 'mt-[32px] lg:mt-[32px]'
       } overflow-hidden transition-all duration-[.5s] ease-in-out-monoki`}
     >
       <HeroCollection pages={pages} />

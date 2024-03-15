@@ -5,12 +5,9 @@ import clsx from 'clsx';
 import type {CartBuyerIdentityInput} from '@shopify/hydrogen/storefront-api-types';
 import {CartForm} from '@shopify/hydrogen';
 
-import {Heading, Button, IconCheck} from '~/components';
 import type {Localizations, Locale} from '~/lib/type';
 import {DEFAULT_LOCALE} from '~/lib/utils';
 import {useRootLoaderData} from '~/root';
-
-import {Arrow, Check, LinkArrow} from './icons';
 
 export function CountrySelector({className}: {className?: string}) {
   const fetcher = useFetcher();
@@ -53,13 +50,18 @@ export function CountrySelector({className}: {className?: string}) {
   return (
     <section
       ref={observerRef}
-      className="grid w-full gap-4"
+      className="grid w-full gap-4 lg:gap-0 cursor-pointer"
       onMouseLeave={closeDropdown}
     >
-      {/* <div className="cursor-default subHeaderLinkMobile">Country</div> */}
       <div className="relative">
-        <details className="absolute w-full overflow-clip" ref={closeRef}>
-          <summary className="subHeaderLinkMobile !text-neutral-400 ml-[1.1rem]">
+        <details
+          className="absolute lg:relative w-full overflow-clip"
+          ref={closeRef}
+        >
+          <summary
+            className="subHeaderLinkMobile lg:footerLink !text-neutral-400 ml-[1.1rem] lg:ml-0
+          "
+          >
             {selectedLocale.label}
           </summary>
           <div className="w-full overflow-auto max-h-36">
@@ -113,22 +115,15 @@ function Country({
       }}
     >
       <button
-        // className={clsx([
-        //   'text-contrast ',
-        //   'bg-primary  w-full p-2 transition rounded flex justify-start',
-        //   'items-center text-left cursor-pointer py-2 px-4',
-        // ])}
-        className="subHeaderLinkMobile flex !items-center !justify-between px-[1.1rem] w-full 
-          border-t-[1px] border-neutral-900"
+        className={
+          isSelected
+            ? 'hidden'
+            : 'subHeaderLinkMobile px-[1.1rem] lg:footerLink lg:px-0 lg:w-full hover:text-neutral-900'
+        }
         type="submit"
         onClick={closeDropdown}
       >
-        <span>{countryLocale.label}</span>
-        {isSelected ? (
-          <div className="ml-[1.1rem]">
-            <Arrow className="iconHeaderMobile !rotate-90" />
-          </div>
-        ) : null}
+        {!isSelected ? <span>{countryLocale.label}</span> : null}
       </button>
     </ChangeLocaleForm>
   );

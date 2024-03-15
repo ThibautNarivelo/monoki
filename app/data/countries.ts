@@ -2,13 +2,13 @@ import type {Localizations} from '~/lib/type';
 
 export const countries: Localizations = {
   default: {
-    label: 'France (EUR €)',
+    label: 'FR - EUR',
     language: 'FR',
     country: 'FR',
     currency: 'EUR',
   },
   '/en-us': {
-    label: 'United States (USD $)',
+    label: 'EN - USD',
     language: 'EN',
     country: 'US',
     currency: 'USD',

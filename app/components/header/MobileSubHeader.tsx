@@ -98,8 +98,6 @@ export default function MobileSubHeader({
               </div>
             ) : (
               <Link
-                // to={item?.to}
-                // to={isFrench ? item?.to : item?.to.replace('/en-us', '')}
                 to={isFrench ? item?.to : item?.to.replace('', '/en-us')}
                 className="subHeaderLinkMobile"
                 onClick={onClose}

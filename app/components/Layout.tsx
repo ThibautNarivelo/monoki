@@ -1,26 +1,8 @@
-import {Await} from '@remix-run/react';
 import {Disclosure} from '@headlessui/react';
-import {Suspense, useMemo} from 'react';
+import {Suspense} from 'react';
 
-import {
-  Drawer,
-  Text,
-  Heading,
-  IconMenu,
-  IconCaret,
-  Section,
-  CountrySelector,
-  Cart,
-  CartLoading,
-  Link,
-} from '~/components';
-import {
-  type EnhancedMenu,
-  type ChildEnhancedMenuItem,
-  useIsHomePath,
-} from '~/lib/utils';
-import {useIsHydrated} from '~/hooks/useIsHydrated';
-import {useRootLoaderData} from '~/root';
+import {Text, Heading, IconCaret, Link} from '~/components';
+import {type EnhancedMenu, type ChildEnhancedMenuItem} from '~/lib/utils';
 import type {
   AllCollectionsQuery,
   BoyfriendCollectionsQuery,
@@ -29,17 +11,21 @@ import type {
 } from 'storefrontapi.generated.d';
 
 import {Header} from './header/Header';
-import {CartBag} from './icons';
 import Footer from './footer/Footer';
 
 type LayoutProps = {
-  collection: AllCollectionsQuery;
-  children: React.ReactNode;
   layout?: LayoutQuery & {
     headerMenu?: EnhancedMenu | null;
     subHeaderMenu?: EnhancedMenu | null;
     footerMenu?: EnhancedMenu | null;
   };
+  collection: AllCollectionsQuery;
+  children: React.ReactNode;
+  womenCollection: WomenCollectionsQuery;
+  boysCollection: BoyfriendCollectionsQuery;
+  menu: EnhancedMenu;
+  onClose: () => void;
+  item: ChildEnhancedMenuItem;
 };
 
 export function Layout({
@@ -48,21 +34,11 @@ export function Layout({
   boysCollection,
   children,
   layout,
-}: {
-  collection: AllCollectionsQuery;
-  womenCollection: WomenCollectionsQuery;
-  boysCollection: BoyfriendCollectionsQuery;
-  children: React.ReactNode;
-  layout?: LayoutQuery & {
-    headerMenu?: EnhancedMenu | null;
-    subHeaderMenu?: EnhancedMenu | null;
-    footerMenu?: EnhancedMenu | null;
-  };
-}) {
+}: LayoutProps) {
   const {headerMenu, subHeaderMenu, footerMenu} = layout || {};
   return (
     <>
-      <div className="flex flex-col min-h-screen">
+      <div className="min-h-screen">
         <div className="">
           <a href="#mainContent" className="sr-only">
             Skip to content
@@ -88,13 +64,7 @@ export function Layout({
   );
 }
 
-export function MenuMobileNav({
-  menu,
-  onClose,
-}: {
-  menu: EnhancedMenu;
-  onClose: () => void;
-}) {
+export function MenuMobileNav({menu, onClose}: LayoutProps) {
   return (
     <nav className="grid gap-4 p-6 sm:gap-6 sm:px-12 sm:py-8">
       {/* Top level menu items */}
@@ -146,7 +116,7 @@ export function MenuMobileNav({
 //   );
 // }
 
-function FooterLink({item}: {item: ChildEnhancedMenuItem}) {
+function FooterLink({item}: LayoutProps) {
   if (item.to.startsWith('http')) {
     return (
       <a href={item.to} target={item.target} rel="noopener noreferrer">
@@ -162,7 +132,7 @@ function FooterLink({item}: {item: ChildEnhancedMenuItem}) {
   );
 }
 
-function FooterMenu({menu}: {menu?: EnhancedMenu}) {
+function FooterMenu({menu}: LayoutProps) {
   const styles = {
     section: 'grid gap-4',
     nav: 'grid gap-2 pb-6',
@@ -195,7 +165,8 @@ function FooterMenu({menu}: {menu?: EnhancedMenu}) {
                       <Disclosure.Panel static>
                         <nav className={styles.nav}>
                           {item.items.map((subItem: ChildEnhancedMenuItem) => (
-                            <FooterLink key={subItem.id} item={subItem} />
+                            <>hello</>
+                            // <FooterLink key={subItem.id} item={subItem} />
                           ))}
                         </nav>
                       </Disclosure.Panel>
