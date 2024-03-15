@@ -189,6 +189,7 @@ export function ErrorBoundary({error}: {error: Error}) {
           boysCollection={rootData?.boyfriendCollections}
           layout={rootData?.layout}
           key={`${locale.language}-${locale.country}`}
+          item={undefined}
         >
           {isRouteError ? (
             <>

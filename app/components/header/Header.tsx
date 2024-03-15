@@ -339,7 +339,7 @@ function DesktopHeader({
   const [isBigHeader, setIsBigHeader] = useState(true);
   const [isSmallHeader, setIsSmallHeader] = useState(false);
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(true);
 
   const handleMouseEnter = () => {
     setIsMenuOpen(true);
@@ -365,9 +365,18 @@ function DesktopHeader({
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            initial={{height: 0}}
-            animate={{height: '350px'}}
-            exit={{height: 0, transition: {duration: 0.2}}}
+            initial={isHome ? {height: '0px'} : {height: '32px'}}
+            animate={
+              isHome ? {height: '350px'} : {height: '350px', marginTop: '32px'}
+            }
+            exit={
+              isHome
+                ? {height: '0px'}
+                : {
+                    height: '0px',
+                    transition: {duration: 0.5, ease: [0.6, 0.01, 0.05, 0.95]},
+                  }
+            }
             transition={{duration: 0.5, ease: [0.6, 0.01, 0.05, 0.95]}}
             className="fixed bg-white inset-x-0 z-40 hidden lg:flex 
             transition-transform duration-[.5s] ease-in-out-monoki overflow-hidden"
@@ -468,8 +477,8 @@ function DesktopHeader({
                   // to={menu.items[1].to}
                   to={
                     isFrench
-                      ? `/collections/${menu.items[1].to}`
-                      : `/en-us/collections/${menu.items[1].to}`
+                      ? `${menu.items[1].to}`
+                      : `/en-us${menu.items[1].to}`
                   }
                   target={menu.items[1].target}
                   prefetch="intent"
@@ -495,8 +504,8 @@ function DesktopHeader({
                   // to={menu.items[2].to}
                   to={
                     isFrench
-                      ? `/collections/${menu.items[2].to}`
-                      : `/en-us/collections/${menu.items[2].to}`
+                      ? `${menu.items[2].to}`
+                      : `/en-us${menu.items[2].to}`
                   }
                   target={menu.items[2].target}
                   prefetch="intent"
