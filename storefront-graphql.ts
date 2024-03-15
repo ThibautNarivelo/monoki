@@ -337,6 +337,19 @@ export const COLLECTION_QUERY = `#graphql
           endCursor
           startCursor
         }
+        edges {
+          node {
+            images(first: 10) {
+              nodes {
+                altText
+                height
+                id
+                src
+                url
+              }
+            }
+          }
+      }
       }
     }
     collections(first: 100) {

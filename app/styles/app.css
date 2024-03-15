@@ -241,4 +241,12 @@ shop-pay-button {
   .footerLink {
     @apply text-[1rem] font-switzer text-neutral-400 leading-5 tracking-tighter;
   }
+
+  .sortLink {
+    @apply font-switzer text-[1rem] tracking-tighter uppercase text-neutral-900;
+  }
+
+  .sortSubLink {
+    @apply font-switzer text-[.8rem] tracking-tighter uppercase text-neutral-900;
+  }
 }

@@ -60,27 +60,20 @@ export function ProductCard({
         to={`/products/${product.handle}`}
         prefetch="intent"
       >
-        <div className={clsx('grid gap-4', className)}>
+        <div className="grid gap-4">
           <div className="card-image aspect-[4/5] bg-primary/5">
-            {image && (
-              <Image
-                className="object-cover w-full fadeIn"
-                sizes="(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw"
-                aspectRatio="4/5"
-                data={image}
-                alt={image.altText || `Picture of ${product.title}`}
-                loading={loading}
-              />
-            )}
-            <Text
-              as="label"
-              size="fine"
-              className="absolute top-0 right-0 m-4 text-right text-notice"
-            >
-              {cardLabel}
-            </Text>
+            {/* {image && ( */}
+            <Image
+              className="object-cover w-full fadeIn"
+              sizes="(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw"
+              aspectRatio="4/5"
+              data={image || undefined}
+              alt={image.altText || `Picture of ${product.title}`}
+              loading={loading}
+            />
+            {/* )} */}
           </div>
-          <div className="grid gap-1">
+          <div className="flex">
             <Text
               className="w-full overflow-hidden whitespace-nowrap text-ellipsis "
               as="h3"

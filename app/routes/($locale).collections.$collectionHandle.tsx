@@ -32,6 +32,7 @@ import {FILTER_URL_PREFIX} from '~/components/SortFilter';
 import {getImageLoadingPriority, PAGINATION_SIZE} from '~/lib/const';
 import {parseAsCurrency} from '~/lib/utils';
 import {COLLECTION_QUERY} from 'storefront-graphql';
+import {CollectionDetailsQuery} from 'storefrontapi.generated';
 
 export const headers = routeHeaders;
 
@@ -150,19 +151,14 @@ export default function Collection() {
   const {ref, inView} = useInView();
 
   return (
-    <>
-      <PageHeader heading={collection.title}>
-        {collection?.description && (
-          <div className="flex items-baseline justify-between w-full">
-            <div>
-              <Text format width="narrow" as="p" className="inline-block">
-                {collection.description}
-              </Text>
-            </div>
-          </div>
-        )}
-      </PageHeader>
-      <Section>
+    <div className="relative pt-[32px] px-[1.1rem]">
+      {collection?.description && (
+        <h1 className="w-full text-[4.6875rem] tracking-[-5px] font-switzer uppercase">
+          {collection.description}
+        </h1>
+      )}
+
+      <div>
         <SortFilter
           filters={collection.products.filters as Filter[]}
           appliedFilters={appliedFilters}
@@ -185,6 +181,9 @@ export default function Collection() {
                   </Button>
                 </div>
                 <ProductsLoadedOnScroll
+                  collection={
+                    collection as CollectionDetailsQuery['collection']
+                  }
                   nodes={nodes}
                   inView={inView}
                   nextPageUrl={nextPageUrl}
@@ -205,8 +204,8 @@ export default function Collection() {
             )}
           </Pagination>
         </SortFilter>
-      </Section>
-    </>
+      </div>
+    </div>
   );
 }
 
@@ -216,12 +215,14 @@ function ProductsLoadedOnScroll({
   nextPageUrl,
   hasNextPage,
   state,
+  collection,
 }: {
   nodes: any;
   inView: boolean;
   nextPageUrl: string;
   hasNextPage: boolean;
   state: any;
+  collection: CollectionDetailsQuery['collection'];
 }) {
   const navigate = useNavigate();
 
@@ -242,6 +243,7 @@ function ProductsLoadedOnScroll({
           key={product.id}
           product={product}
           loading={getImageLoadingPriority(i)}
+          collection={collection}
         />
       ))}
     </Grid>
@@ -273,11 +275,11 @@ function getSortValuesFromParam(sortParam: SortParam | null): {
         sortKey: 'CREATED',
         reverse: true,
       };
-    case 'featured':
-      return {
-        sortKey: 'MANUAL',
-        reverse: false,
-      };
+    // case 'featured':
+    //   return {
+    //     sortKey: 'MANUAL',
+    //     reverse: false,
+    //   };
     default:
       return {
         sortKey: 'RELEVANCE',
