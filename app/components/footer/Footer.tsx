@@ -3,11 +3,6 @@ import type {EnhancedMenu} from '~/lib/utils';
 import {Link} from '../Link';
 import {CountrySelector} from '../CountrySelector';
 
-import {
-  customerServicesItems,
-  followUsItems,
-  infosItems,
-} from './FilteredItems';
 import DesktopFooter from './DesktopFooter';
 import MobileFooter from './MobileFooter';
 

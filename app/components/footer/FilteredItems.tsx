@@ -4,16 +4,13 @@ export const searchItems = ['Search'];
 
 export const followUsItems = ['Facebook', 'Instagram', 'Youtube'];
 
-export const customerServicesItems = [
+export const infosItems = [
   'Boutiques',
   'Shops',
   'Envois & Retours',
   'Shipping & Returns',
   'Contacter',
   'Contact',
-];
-
-export const infosItems = [
   'À propos de nous',
   'About Us',
   'CGV',

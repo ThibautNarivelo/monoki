@@ -239,6 +239,6 @@ shop-pay-button {
   }
 
   .footerLink {
-    @apply text-[1rem] font-switzer text-neutral-400 tracking-tighter;
+    @apply text-[1rem] font-switzer text-neutral-400 leading-5 tracking-tighter;
   }
 }
