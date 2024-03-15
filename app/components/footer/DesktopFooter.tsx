@@ -20,8 +20,8 @@ export default function DesktopFooter({
 }) {
   return (
     <div
-      className="relative z-30 bg-white w-full h-full px-[1.1rem] pt-[3rem] gap-[5vw]
-      flex justify-between items-start"
+      className="hidden lg:flex relative z-30 bg-white w-full h-full px-[1.1rem] pt-[3rem] gap-[5vw]
+       justify-between items-start"
     >
       <div className="flex flex-col h-full">
         <h2 className=" font-switzer text-[4.6rem] uppercase tracking-[-5px] leading-[75px]">
