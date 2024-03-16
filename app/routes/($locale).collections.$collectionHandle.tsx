@@ -270,52 +270,47 @@ export default function Collection() {
   const isFrench = !isEnglish;
 
   return (
-    // <SortFilter filters={products.products.filters} children={undefined}>
-    <div className="pt-[32px] bg-red-200 px-[1.1rem]">
+    <div className="pt-[32px]">
       {products.collection?.description && (
-        <h1 className="w-full text-[4.6875rem] tracking-[-5px] font-switzer uppercase">
-          {products.collection.description}
-        </h1>
-      )}
-
-      <div className="grid grid-cols-4 gap-10">
-        {products.products.edges.map((product) => (
-          <div key={product.node.id} className="relative">
-            <h1 className="absolute bottom-0 left-0 right-0 bg-white">
-              {product.node.title}
-            </h1>
-            <Link
-              // to={`/products/${product.node.handle}`}
-              to={
-                isEnglish
-                  ? `/en-us/products/${product.node.handle}`
-                  : `/products/${product.node.handle}`
-              }
-            >
-              <Image
-                src={
-                  isHovered === product.node.id
-                    ? product.node.images.nodes[0].url
-                    : product.node.images.nodes[1].url
-                }
-                loading="lazy"
-                sizes="(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw"
-                onMouseEnter={() => setIsHovered(product.node.id)}
-                onMouseLeave={() => setIsHovered(null)}
-              />
-              <span className="absolute bottom-0 right-0 bg-white">
-                {products.products.nodes[0].priceRange.maxVariantPrice.amount}{' '}
-                {
-                  products.products.nodes[0].priceRange.maxVariantPrice
-                    .currencyCode
-                }
-              </span>
-            </Link>
+        <>
+          <h1 className="bg-orange-200 text-[3rem]">
+            {products.collection.description}
+          </h1>
+          <div className="grid grid-cols-4">
+            {products.products.edges.map((product) => (
+              <div key={product.node.id}>
+                <Link to={`/products/${product.node.handle}`}>
+                  <Image
+                    // src={product.node.images.nodes[0].url}
+                    src={
+                      isHovered === product.node.id
+                        ? product.node.images.nodes[1].url
+                        : product.node.images.nodes[0].url
+                    }
+                    alt={product.node.title}
+                    onMouseEnter={() => setIsHovered(product.node.id)}
+                    onMouseLeave={() => setIsHovered(null)}
+                  />
+                  <span>{product.node.title}</span>
+                  <span>
+                    {
+                      products.products.nodes[0].priceRange.maxVariantPrice
+                        .amount
+                    }
+                  </span>
+                  <span>
+                    {
+                      products.products.nodes[0].priceRange.maxVariantPrice
+                        .currencyCode
+                    }
+                  </span>
+                </Link>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
     </div>
-    // </SortFilter>
   );
 }
 
