@@ -9,22 +9,13 @@ import type {
 } from '@shopify/hydrogen/storefront-api-types';
 import {
   AnalyticsPageType,
-  Pagination,
   flattenConnection,
   getPaginationVariables,
   Image,
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 
-import {
-  PageHeader,
-  Section,
-  Text,
-  SortFilter,
-  Grid,
-  ProductCard,
-  Button,
-} from '~/components';
+import {SortFilter, Grid, ProductCard} from '~/components';
 import {PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
 import {routeHeaders} from '~/data/cache';
 import {seoPayload} from '~/lib/seo.server';
@@ -200,47 +191,6 @@ export default function Collection() {
         </div>
       </SortFilter>
     </div>
-  );
-}
-
-function ProductsLoadedOnScroll({
-  nodes,
-  inView,
-  nextPageUrl,
-  hasNextPage,
-  state,
-  collection,
-}: {
-  nodes: any;
-  inView: boolean;
-  nextPageUrl: string;
-  hasNextPage: boolean;
-  state: any;
-  collection: CollectionDetailsQuery['collection'];
-}) {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (inView && hasNextPage) {
-      navigate(nextPageUrl, {
-        replace: true,
-        preventScrollReset: true,
-        state,
-      });
-    }
-  }, [inView, navigate, state, nextPageUrl, hasNextPage]);
-
-  return (
-    <Grid layout="products" data-test="product-grid">
-      {nodes.map((product: any, i: number) => (
-        <ProductCard
-          key={product.id}
-          product={product}
-          loading={getImageLoadingPriority(i)}
-          // collection={product }
-        />
-      ))}
-    </Grid>
   );
 }
 
