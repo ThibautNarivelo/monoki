@@ -68,7 +68,7 @@ export function ProductCard({
               sizes="(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw"
               aspectRatio="4/5"
               data={image || undefined}
-              alt={image.altText || `Picture of ${product.title}`}
+              alt={image?.altText || `Picture of ${product.title}`}
               loading={loading}
             />
             {/* )} */}

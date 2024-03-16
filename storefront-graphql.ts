@@ -466,13 +466,26 @@ export const COLLECTION_QUERY = `#graphql
         }
         edges {
           node {
+            title
+            id
+            handle
             images(first: 10) {
               nodes {
-                altText
-                height
                 id
-                src
+                width
+                height
+                altText
                 url
+              }
+            }
+            priceRange {
+              maxVariantPrice {
+                amount
+                currencyCode
+              }
+              minVariantPrice {
+                amount
+                currencyCode
               }
             }
           }

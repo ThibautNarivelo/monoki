@@ -33,7 +33,7 @@ import {FILTER_URL_PREFIX} from '~/components/SortFilter';
 import {getImageLoadingPriority, PAGINATION_SIZE} from '~/lib/const';
 import {parseAsCurrency} from '~/lib/utils';
 import {COLLECTION_QUERY, CUSTOM_ALL_PRODUCTS_QUERY} from 'storefront-graphql';
-import {CollectionDetailsQuery} from 'storefrontapi.generated';
+import type {CollectionDetailsQuery} from 'storefrontapi.generated';
 
 export const headers = routeHeaders;
 
@@ -148,114 +148,11 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   });
 }
 
-// export default function Collection() {
-//   const {collection, collections, appliedFilters} =
-//     useLoaderData<typeof loader>();
-
-//   const {ref, inView} = useInView();
-
-//   return (
-//     <div className="relative pt-[32px] px-[1.1rem]">
-//       {collection?.description && (
-//         <h1 className="w-full text-[4.6875rem] tracking-[-5px] font-switzer uppercase">
-//           {collection.description}
-//         </h1>
-//       )}
-
-//       <div>
-//         <SortFilter
-//           filters={collection.products.filters as Filter[]}
-//           appliedFilters={appliedFilters}
-//           collections={collections}
-//         >
-//           <Pagination connection={collection.products}>
-//             {({
-//               nodes,
-//               isLoading,
-//               PreviousLink,
-//               NextLink,
-//               nextPageUrl,
-//               hasNextPage,
-//               state,
-//             }) => (
-//               <>
-//                 <div className="flex items-center justify-center mb-6">
-//                   <Button as={PreviousLink} variant="secondary" width="full">
-//                     {isLoading ? 'Loading...' : 'Load previous'}
-//                   </Button>
-//                 </div>
-//                 <ProductsLoadedOnScroll
-//                   collection={
-//                     collection as CollectionDetailsQuery['collection']
-//                   }
-//                   nodes={nodes}
-//                   inView={inView}
-//                   nextPageUrl={nextPageUrl}
-//                   hasNextPage={hasNextPage}
-//                   state={state}
-//                 />
-//                 <div className="flex items-center justify-center mt-6">
-//                   <Button
-//                     ref={ref}
-//                     as={NextLink}
-//                     variant="secondary"
-//                     width="full"
-//                   >
-//                     {isLoading ? 'Loading...' : 'Load more products'}
-//                   </Button>
-//                 </div>
-//               </>
-//             )}
-//           </Pagination>
-//         </SortFilter>
-//       </div>
-//     </div>
-//   );
-// }
-
-// function ProductsLoadedOnScroll({
-//   nodes,
-//   inView,
-//   nextPageUrl,
-//   hasNextPage,
-//   state,
-//   collection,
-// }: {
-//   nodes: any;
-//   inView: boolean;
-//   nextPageUrl: string;
-//   hasNextPage: boolean;
-//   state: any;
-//   collection: CollectionDetailsQuery['collection'];
-// }) {
-//   const navigate = useNavigate();
-
-//   useEffect(() => {
-//     if (inView && hasNextPage) {
-//       navigate(nextPageUrl, {
-//         replace: true,
-//         preventScrollReset: true,
-//         state,
-//       });
-//     }
-//   }, [inView, navigate, state, nextPageUrl, hasNextPage]);
-
-//   return (
-//     <Grid layout="products" data-test="product-grid">
-//       {nodes.map((product: any, i: number) => (
-//         <ProductCard
-//           key={product.id}
-//           product={product}
-//           loading={getImageLoadingPriority(i)}
-//           collection={collection}
-//         />
-//       ))}
-//     </Grid>
-//   );
-// }
-
 export default function Collection() {
-  const products = useLoaderData<typeof loader>();
+  const {collection, collections, appliedFilters} =
+    useLoaderData<typeof loader>();
+
+  const {ref, inView} = useInView();
 
   const [isHovered, setIsHovered] = useState<string | null>(null);
 
@@ -265,49 +162,141 @@ export default function Collection() {
   const isFrench = !isEnglish;
 
   return (
-    <div className="pt-[32px] bg-blue-200">
-      {/* <SortFilter filters={products.collection?.products.filters as Filter[]}> */}
-      {products.collection?.description && (
-        <div className="px-[1.1rem]">
-          <h1 className="bg-orange-200 text-[3rem]">
-            {products.collection.description}
-          </h1>
-          <div className="grid grid-cols-4">
-            {products.products.edges.map((product) => (
-              <Link
-                key={product.node.id}
-                to={
-                  isEnglish
-                    ? `/en-us/products/${product.node.handle}`
-                    : `/products/${product.node.handle}`
-                }
-              >
-                <Image
-                  src={
-                    isHovered === product.node.id
-                      ? product.node.images.nodes[1].url
-                      : product.node.images.nodes[0].url
-                  }
-                  alt={product.node.title}
-                  onMouseEnter={() => setIsHovered(product.node.id)}
-                  onMouseLeave={() => setIsHovered(null)}
-                />
-                <div className="flex justify-between">
-                  <span>{product.node.title}</span>
-                  <span>
-                    {product.node.priceRange.maxVariantPrice.amount}
-                    {isEnglish ? ' $' : '€'}
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
+    <div className="relative pt-[32px] px-[1.1rem]">
+      {collection?.description && (
+        <h1 className="w-full text-[4.6875rem] tracking-[-5px] font-switzer uppercase">
+          {collection.description}
+        </h1>
       )}
-      {/* </SortFilter> */}
+      <SortFilter filters={collection.products.filters as Filter[]}>
+        <div className="grid grid-cols-4 gap-[.5rem]">
+          {collection.products.edges.map((product) => (
+            <Link
+              key={product.node.id}
+              to={`/products/${product.node.handle}`}
+              prefetch="intent"
+            >
+              <Image
+                src={
+                  isHovered === product.node.id
+                    ? product.node.images.nodes[1].url
+                    : product.node.images.nodes[0].url
+                }
+                alt={product.node.title}
+                loading="lazy"
+                onMouseEnter={() => setIsHovered(product.node.id)}
+                onMouseLeave={() => setIsHovered(null)}
+              />
+              <div className="flex flex-row justify-between">
+                <span>{product.node.title}</span>
+                <span>
+                  {product.node.priceRange.maxVariantPrice.amount}
+                  {isEnglish ? '$' : '€'}
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </SortFilter>
     </div>
   );
 }
+
+function ProductsLoadedOnScroll({
+  nodes,
+  inView,
+  nextPageUrl,
+  hasNextPage,
+  state,
+  collection,
+}: {
+  nodes: any;
+  inView: boolean;
+  nextPageUrl: string;
+  hasNextPage: boolean;
+  state: any;
+  collection: CollectionDetailsQuery['collection'];
+}) {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      navigate(nextPageUrl, {
+        replace: true,
+        preventScrollReset: true,
+        state,
+      });
+    }
+  }, [inView, navigate, state, nextPageUrl, hasNextPage]);
+
+  return (
+    <Grid layout="products" data-test="product-grid">
+      {nodes.map((product: any, i: number) => (
+        <ProductCard
+          key={product.id}
+          product={product}
+          loading={getImageLoadingPriority(i)}
+          collection={collection}
+        />
+      ))}
+    </Grid>
+  );
+}
+
+// export default function Collection() {
+//   const products = useLoaderData<typeof loader>();
+
+//   const [isHovered, setIsHovered] = useState<string | null>(null);
+
+//   const isEnglish =
+//     typeof window !== 'undefined' &&
+//     window.location.pathname.includes('/en-us');
+//   const isFrench = !isEnglish;
+
+//   return (
+//     <div className="pt-[32px] bg-blue-200">
+//       {/* <SortFilter filters={products.collection?.products.filters as Filter[]}> */}
+//       {products.collection?.description && (
+//         <div className="px-[1.1rem]">
+//           <h1 className="bg-orange-200 text-[3rem]">
+//             {products.collection.description}
+//           </h1>
+//           <div className="grid grid-cols-4">
+//             {products.products.edges.map((product) => (
+//               <Link
+//                 key={product.node.id}
+//                 to={
+//                   isEnglish
+//                     ? `/en-us/products/${product.node.handle}`
+//                     : `/products/${product.node.handle}`
+//                 }
+//               >
+//                 <Image
+//                   src={
+//                     isHovered === product.node.id
+//                       ? product.node.images.nodes[1].url
+//                       : product.node.images.nodes[0].url
+//                   }
+//                   alt={product.node.title}
+//                   onMouseEnter={() => setIsHovered(product.node.id)}
+//                   onMouseLeave={() => setIsHovered(null)}
+//                 />
+//                 <div className="flex justify-between">
+//                   <span>{product.node.title}</span>
+//                   <span>
+//                     {product.node.priceRange.maxVariantPrice.amount}
+//                     {isEnglish ? ' $' : '€'}
+//                   </span>
+//                 </div>
+//               </Link>
+//             ))}
+//           </div>
+//         </div>
+//       )}
+//       {/* </SortFilter> */}
+//     </div>
+//   );
+// }
 
 function getSortValuesFromParam(sortParam: SortParam | null): {
   sortKey: ProductCollectionSortKeys;
