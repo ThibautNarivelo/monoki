@@ -1,6 +1,6 @@
-import {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {json, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {useLoaderData, useNavigate} from '@remix-run/react';
+import {Link, useLoaderData, useNavigate} from '@remix-run/react';
 import {useInView} from 'react-intersection-observer';
 import type {
   Filter,
@@ -12,6 +12,7 @@ import {
   Pagination,
   flattenConnection,
   getPaginationVariables,
+  Image,
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 
@@ -31,7 +32,7 @@ import type {SortParam} from '~/components/SortFilter';
 import {FILTER_URL_PREFIX} from '~/components/SortFilter';
 import {getImageLoadingPriority, PAGINATION_SIZE} from '~/lib/const';
 import {parseAsCurrency} from '~/lib/utils';
-import {COLLECTION_QUERY} from 'storefront-graphql';
+import {COLLECTION_QUERY, CUSTOM_ALL_PRODUCTS_QUERY} from 'storefront-graphql';
 import {CollectionDetailsQuery} from 'storefrontapi.generated';
 
 export const headers = routeHeaders;
@@ -62,6 +63,8 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     },
     [] as ProductFilter[],
   );
+
+  const {products} = await context.storefront.query(CUSTOM_ALL_PRODUCTS_QUERY);
 
   const {collection, collections} = await context.storefront.query(
     COLLECTION_QUERY,
@@ -132,6 +135,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     .filter((filter): filter is NonNullable<typeof filter> => filter !== null);
 
   return json({
+    products,
     collection,
     appliedFilters,
     collections: flattenConnection(collections),
@@ -144,109 +148,155 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   });
 }
 
-export default function Collection() {
-  const {collection, collections, appliedFilters} =
-    useLoaderData<typeof loader>();
+// export default function Collection() {
+//   const {collection, collections, appliedFilters} =
+//     useLoaderData<typeof loader>();
 
-  const {ref, inView} = useInView();
+//   const {ref, inView} = useInView();
+
+//   return (
+//     <div className="relative pt-[32px] px-[1.1rem]">
+//       {collection?.description && (
+//         <h1 className="w-full text-[4.6875rem] tracking-[-5px] font-switzer uppercase">
+//           {collection.description}
+//         </h1>
+//       )}
+
+//       <div>
+//         <SortFilter
+//           filters={collection.products.filters as Filter[]}
+//           appliedFilters={appliedFilters}
+//           collections={collections}
+//         >
+//           <Pagination connection={collection.products}>
+//             {({
+//               nodes,
+//               isLoading,
+//               PreviousLink,
+//               NextLink,
+//               nextPageUrl,
+//               hasNextPage,
+//               state,
+//             }) => (
+//               <>
+//                 <div className="flex items-center justify-center mb-6">
+//                   <Button as={PreviousLink} variant="secondary" width="full">
+//                     {isLoading ? 'Loading...' : 'Load previous'}
+//                   </Button>
+//                 </div>
+//                 <ProductsLoadedOnScroll
+//                   collection={
+//                     collection as CollectionDetailsQuery['collection']
+//                   }
+//                   nodes={nodes}
+//                   inView={inView}
+//                   nextPageUrl={nextPageUrl}
+//                   hasNextPage={hasNextPage}
+//                   state={state}
+//                 />
+//                 <div className="flex items-center justify-center mt-6">
+//                   <Button
+//                     ref={ref}
+//                     as={NextLink}
+//                     variant="secondary"
+//                     width="full"
+//                   >
+//                     {isLoading ? 'Loading...' : 'Load more products'}
+//                   </Button>
+//                 </div>
+//               </>
+//             )}
+//           </Pagination>
+//         </SortFilter>
+//       </div>
+//     </div>
+//   );
+// }
+
+// function ProductsLoadedOnScroll({
+//   nodes,
+//   inView,
+//   nextPageUrl,
+//   hasNextPage,
+//   state,
+//   collection,
+// }: {
+//   nodes: any;
+//   inView: boolean;
+//   nextPageUrl: string;
+//   hasNextPage: boolean;
+//   state: any;
+//   collection: CollectionDetailsQuery['collection'];
+// }) {
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     if (inView && hasNextPage) {
+//       navigate(nextPageUrl, {
+//         replace: true,
+//         preventScrollReset: true,
+//         state,
+//       });
+//     }
+//   }, [inView, navigate, state, nextPageUrl, hasNextPage]);
+
+//   return (
+//     <Grid layout="products" data-test="product-grid">
+//       {nodes.map((product: any, i: number) => (
+//         <ProductCard
+//           key={product.id}
+//           product={product}
+//           loading={getImageLoadingPriority(i)}
+//           collection={collection}
+//         />
+//       ))}
+//     </Grid>
+//   );
+// }
+
+export default function Collection() {
+  const products = useLoaderData<typeof loader>();
+
+  const [isHovered, setIsHovered] = useState<string | null>(null);
+
+  // const handleMouseEnter = () => {
+  //   setIsHovered(true);
+  // };
+
+  // const handleMouseLeave = () => {
+  //   setIsHovered(false);
+  // };
 
   return (
-    <div className="relative pt-[32px] px-[1.1rem]">
-      {collection?.description && (
+    <div className="pt-[32px] bg-red-200 px-[1.1rem]">
+      {products.collection?.description && (
         <h1 className="w-full text-[4.6875rem] tracking-[-5px] font-switzer uppercase">
-          {collection.description}
+          {products.collection.description}
         </h1>
       )}
 
-      <div>
-        <SortFilter
-          filters={collection.products.filters as Filter[]}
-          appliedFilters={appliedFilters}
-          collections={collections}
-        >
-          <Pagination connection={collection.products}>
-            {({
-              nodes,
-              isLoading,
-              PreviousLink,
-              NextLink,
-              nextPageUrl,
-              hasNextPage,
-              state,
-            }) => (
-              <>
-                <div className="flex items-center justify-center mb-6">
-                  <Button as={PreviousLink} variant="secondary" width="full">
-                    {isLoading ? 'Loading...' : 'Load previous'}
-                  </Button>
-                </div>
-                <ProductsLoadedOnScroll
-                  collection={
-                    collection as CollectionDetailsQuery['collection']
-                  }
-                  nodes={nodes}
-                  inView={inView}
-                  nextPageUrl={nextPageUrl}
-                  hasNextPage={hasNextPage}
-                  state={state}
-                />
-                <div className="flex items-center justify-center mt-6">
-                  <Button
-                    ref={ref}
-                    as={NextLink}
-                    variant="secondary"
-                    width="full"
-                  >
-                    {isLoading ? 'Loading...' : 'Load more products'}
-                  </Button>
-                </div>
-              </>
-            )}
-          </Pagination>
-        </SortFilter>
+      <div className=" grid grid-cols-4 gap-10">
+        {products.products.edges.map((product) => (
+          <div key={product.node.id} className="relative">
+            <h1 className="absolute bottom-0 left-0 right-0 bg-white">
+              {product.node.title}
+            </h1>
+            <Link to={`/products/${product.node.handle}`}>
+              <Image
+                src={
+                  isHovered === product.node.id
+                    ? product.node.images.nodes[0].url
+                    : product.node.images.nodes[1].url
+                }
+                loading="lazy"
+                onMouseEnter={() => setIsHovered(product.node.id)}
+                onMouseLeave={() => setIsHovered(null)}
+              />
+            </Link>
+          </div>
+        ))}
       </div>
     </div>
-  );
-}
-
-function ProductsLoadedOnScroll({
-  nodes,
-  inView,
-  nextPageUrl,
-  hasNextPage,
-  state,
-  collection,
-}: {
-  nodes: any;
-  inView: boolean;
-  nextPageUrl: string;
-  hasNextPage: boolean;
-  state: any;
-  collection: CollectionDetailsQuery['collection'];
-}) {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (inView && hasNextPage) {
-      navigate(nextPageUrl, {
-        replace: true,
-        preventScrollReset: true,
-        state,
-      });
-    }
-  }, [inView, navigate, state, nextPageUrl, hasNextPage]);
-
-  return (
-    <Grid layout="products" data-test="product-grid">
-      {nodes.map((product: any, i: number) => (
-        <ProductCard
-          key={product.id}
-          product={product}
-          loading={getImageLoadingPriority(i)}
-          collection={collection}
-        />
-      ))}
-    </Grid>
   );
 }
 

@@ -490,3 +490,34 @@ export const RECOMMENDED_PRODUCTS_QUERY = `#graphql
   }
   ${PRODUCT_CARD_FRAGMENT}
 ` as const;
+
+export const CUSTOM_ALL_PRODUCTS_QUERY = `#graphql
+  query CustomAllProducts {
+  products(first: 100) {
+    nodes {
+      availableForSale
+    }
+    filters {
+      id
+      label
+      type
+    }
+    edges {
+      node {
+        title
+        id
+        handle
+        images(first: 10) {
+          nodes {
+            id
+            width
+            height
+            altText
+            url
+          }
+        }
+      }
+    }
+  }
+}
+` as const;

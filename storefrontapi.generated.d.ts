@@ -886,6 +886,29 @@ export type ProductRecommendationsQuery = {
   };
 };
 
+export type CustomAllProductsQueryVariables = StorefrontAPI.Exact<{
+  [key: string]: never;
+}>;
+
+export type CustomAllProductsQuery = {
+  products: {
+    nodes: Array<Pick<StorefrontAPI.Product, 'availableForSale'>>;
+    filters: Array<Pick<StorefrontAPI.Filter, 'id' | 'label' | 'type'>>;
+    edges: Array<{
+      node: Pick<StorefrontAPI.Product, 'title' | 'id' | 'handle'> & {
+        images: {
+          nodes: Array<
+            Pick<
+              StorefrontAPI.Image,
+              'id' | 'width' | 'height' | 'altText' | 'url'
+            >
+          >;
+        };
+      };
+    }>;
+  };
+};
+
 interface GeneratedQueryTypes {
   '#graphql\n  query layout(\n    $language: LanguageCode\n    $headerMenuHandle: String!\n    $subHeaderMenuHandle: String!\n    $footerMenuHandle: String!\n  ) @inContext(language: $language) {\n    shop {\n      ...Shop\n    }\n    headerMenu: menu(handle: $headerMenuHandle) {\n      ...Menu\n    }\n    subHeaderMenu: menu(handle: $subHeaderMenuHandle) {\n      ...Menu\n    }\n    footerMenu: menu(handle: $footerMenuHandle) {\n      ...Menu\n    }\n  }\n  fragment Shop on Shop {\n    id\n    name\n    description\n    primaryDomain {\n      url\n    }\n    brand {\n      logo {\n        image {\n          url\n        }\n      }\n    }\n  }\n  fragment MenuItem on MenuItem {\n    id\n    resourceId\n    tags\n    title\n    type\n    url\n  }\n  fragment ChildMenuItem on MenuItem {\n    ...MenuItem\n  }\n  fragment ParentMenuItem on MenuItem {\n    ...MenuItem\n    items {\n      ...ChildMenuItem\n    }\n  }\n  fragment Menu on Menu {\n    id\n    items {\n      ...ParentMenuItem\n    }\n  }\n': {
     return: LayoutQuery;
@@ -938,6 +961,10 @@ interface GeneratedQueryTypes {
   '#graphql\n  query productRecommendations(\n    $productId: ID!\n    $count: Int\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    recommended: productRecommendations(productId: $productId) {\n      ...ProductCard\n    }\n    additional: products(first: $count, sortKey: BEST_SELLING) {\n      nodes {\n        ...ProductCard\n      }\n    }\n  }\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    variants(first: 1) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n      }\n    }\n  }\n\n': {
     return: ProductRecommendationsQuery;
     variables: ProductRecommendationsQueryVariables;
+  };
+  '#graphql\n  query CustomAllProducts {\n  products(first: 100) {\n    nodes {\n      availableForSale\n    }\n    filters {\n      id\n      label\n      type\n    }\n    edges {\n      node {\n        title\n        id\n        handle\n        images(first: 10) {\n          nodes {\n            id\n            width\n            height\n            altText\n            url\n          }\n        }\n      }\n    }\n  }\n}\n': {
+    return: CustomAllProductsQuery;
+    variables: CustomAllProductsQueryVariables;
   };
 }
 
