@@ -14,6 +14,7 @@ import {
   Image,
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
+import {AnimatePresence, motion} from 'framer-motion';
 
 import {SortFilter, Grid, ProductCard} from '~/components';
 import {PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
@@ -140,8 +141,6 @@ export default function Collection() {
   const {collection, collections, appliedFilters} =
     useLoaderData<typeof loader>();
 
-  const {ref, inView} = useInView();
-
   const [isHovered, setIsHovered] = useState<string | null>(null);
 
   const isEnglish =
@@ -161,24 +160,39 @@ export default function Collection() {
         appliedFilters={appliedFilters}
         collections={collections}
       >
-        <div className="grid grid-cols-4 gap-[.5rem]">
+        <div className="grid grid-rows-1 md:grid-cols-2 lg:grid-cols-4 gap-[.5rem]">
           {collection.products.edges.map((product) => (
             <Link
               key={product.node.id}
               to={`/products/${product.node.handle}`}
               prefetch="intent"
             >
-              <Image
-                src={
-                  isHovered === product.node.id
-                    ? product.node.images.nodes[1].url
-                    : product.node.images.nodes[0].url
-                }
-                alt={product.node.title}
-                loading="lazy"
-                onMouseEnter={() => setIsHovered(product.node.id)}
-                onMouseLeave={() => setIsHovered(null)}
-              />
+              <motion.div className="relative">
+                <Image
+                  src={product.node.images.nodes[0].url}
+                  alt={product.node.title}
+                  loading="lazy"
+                  style={{
+                    opacity: isHovered === product.node.id ? 0 : 1,
+                    transition: 'opacity .7s',
+                    position: 'absolute',
+                  }}
+                  onMouseEnter={() => setIsHovered(product.node.id)}
+                  onMouseLeave={() => setIsHovered(null)}
+                />
+                <Image
+                  src={product.node.images.nodes[1].url}
+                  alt={product.node.title}
+                  loading="lazy"
+                  style={{
+                    opacity: isHovered === product.node.id ? 1 : 0,
+                    transition: 'opacity .7s',
+                  }}
+                  onMouseEnter={() => setIsHovered(product.node.id)}
+                  onMouseLeave={() => setIsHovered(null)}
+                />
+              </motion.div>
+
               <div className="flex flex-row justify-between">
                 <span>{product.node.title}</span>
                 <span>
