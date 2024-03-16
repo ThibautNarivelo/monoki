@@ -64,12 +64,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     [] as ProductFilter[],
   );
 
-  const {products} = await context.storefront.query(CUSTOM_ALL_PRODUCTS_QUERY, {
-    variables: {
-      country: context.storefront.i18n.country,
-      language: context.storefront.i18n.language,
-    },
-  });
+  const {products} = await context.storefront.query(CUSTOM_ALL_PRODUCTS_QUERY);
 
   const {collection, collections} = await context.storefront.query(
     COLLECTION_QUERY,
@@ -270,51 +265,46 @@ export default function Collection() {
   const isFrench = !isEnglish;
 
   return (
-    <div className="pt-[32px]">
+    <div className="pt-[32px] bg-blue-200">
+      {/* <SortFilter filters={products.collection?.products.filters as Filter[]}> */}
       {products.collection?.description && (
-        <>
+        <div className="px-[1.1rem]">
           <h1 className="bg-orange-200 text-[3rem]">
             {products.collection.description}
           </h1>
           <div className="grid grid-cols-4">
             {products.products.edges.map((product) => (
-              <div key={product.node.id}>
-                <Link
-                  to={
-                    isEnglish
-                      ? `/en-us/products/${product.node.handle}`
-                      : `/products/${product.node.handle}`
+              <Link
+                key={product.node.id}
+                to={
+                  isEnglish
+                    ? `/en-us/products/${product.node.handle}`
+                    : `/products/${product.node.handle}`
+                }
+              >
+                <Image
+                  src={
+                    isHovered === product.node.id
+                      ? product.node.images.nodes[1].url
+                      : product.node.images.nodes[0].url
                   }
-                >
-                  <Image
-                    src={
-                      isHovered === product.node.id
-                        ? product.node.images.nodes[1].url
-                        : product.node.images.nodes[0].url
-                    }
-                    alt={product.node.title}
-                    onMouseEnter={() => setIsHovered(product.node.id)}
-                    onMouseLeave={() => setIsHovered(null)}
-                  />
+                  alt={product.node.title}
+                  onMouseEnter={() => setIsHovered(product.node.id)}
+                  onMouseLeave={() => setIsHovered(null)}
+                />
+                <div className="flex justify-between">
                   <span>{product.node.title}</span>
                   <span>
-                    {
-                      products.products.nodes[0].priceRange.maxVariantPrice
-                        .amount
-                    }
+                    {product.node.priceRange.maxVariantPrice.amount}
+                    {isEnglish ? ' $' : '€'}
                   </span>
-                  <span>
-                    {
-                      products.products.nodes[0].priceRange.maxVariantPrice
-                        .currencyCode
-                    }
-                  </span>
-                </Link>
-              </div>
+                </div>
+              </Link>
             ))}
           </div>
-        </>
+        </div>
       )}
+      {/* </SortFilter> */}
     </div>
   );
 }
