@@ -64,7 +64,12 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     [] as ProductFilter[],
   );
 
-  const {products} = await context.storefront.query(CUSTOM_ALL_PRODUCTS_QUERY);
+  const {products} = await context.storefront.query(CUSTOM_ALL_PRODUCTS_QUERY, {
+    variables: {
+      country: context.storefront.i18n.country,
+      language: context.storefront.i18n.language,
+    },
+  });
 
   const {collection, collections} = await context.storefront.query(
     COLLECTION_QUERY,
@@ -259,15 +264,13 @@ export default function Collection() {
 
   const [isHovered, setIsHovered] = useState<string | null>(null);
 
-  // const handleMouseEnter = () => {
-  //   setIsHovered(true);
-  // };
-
-  // const handleMouseLeave = () => {
-  //   setIsHovered(false);
-  // };
+  const isEnglish =
+    typeof window !== 'undefined' &&
+    window.location.pathname.includes('/en-us');
+  const isFrench = !isEnglish;
 
   return (
+    // <SortFilter filters={products.products.filters} children={undefined}>
     <div className="pt-[32px] bg-red-200 px-[1.1rem]">
       {products.collection?.description && (
         <h1 className="w-full text-[4.6875rem] tracking-[-5px] font-switzer uppercase">
@@ -275,13 +278,20 @@ export default function Collection() {
         </h1>
       )}
 
-      <div className=" grid grid-cols-4 gap-10">
+      <div className="grid grid-cols-4 gap-10">
         {products.products.edges.map((product) => (
           <div key={product.node.id} className="relative">
             <h1 className="absolute bottom-0 left-0 right-0 bg-white">
               {product.node.title}
             </h1>
-            <Link to={`/products/${product.node.handle}`}>
+            <Link
+              // to={`/products/${product.node.handle}`}
+              to={
+                isEnglish
+                  ? `/en-us/products/${product.node.handle}`
+                  : `/products/${product.node.handle}`
+              }
+            >
               <Image
                 src={
                   isHovered === product.node.id
@@ -289,14 +299,23 @@ export default function Collection() {
                     : product.node.images.nodes[1].url
                 }
                 loading="lazy"
+                sizes="(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw"
                 onMouseEnter={() => setIsHovered(product.node.id)}
                 onMouseLeave={() => setIsHovered(null)}
               />
+              <span className="absolute bottom-0 right-0 bg-white">
+                {products.products.nodes[0].priceRange.maxVariantPrice.amount}{' '}
+                {
+                  products.products.nodes[0].priceRange.maxVariantPrice
+                    .currencyCode
+                }
+              </span>
             </Link>
           </div>
         ))}
       </div>
     </div>
+    // </SortFilter>
   );
 }
 

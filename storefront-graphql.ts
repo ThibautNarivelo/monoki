@@ -492,10 +492,20 @@ export const RECOMMENDED_PRODUCTS_QUERY = `#graphql
 ` as const;
 
 export const CUSTOM_ALL_PRODUCTS_QUERY = `#graphql
-  query CustomAllProducts {
+  query CustomAllProducts($country: CountryCode, $language: LanguageCode) @inContext(country: $country, language: $language) {
   products(first: 100) {
     nodes {
       availableForSale
+           priceRange {
+        maxVariantPrice {
+          amount
+          currencyCode
+        }
+        minVariantPrice {
+          amount
+          currencyCode
+        }
+      }
     }
     filters {
       id

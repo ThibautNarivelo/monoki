@@ -887,12 +887,26 @@ export type ProductRecommendationsQuery = {
 };
 
 export type CustomAllProductsQueryVariables = StorefrontAPI.Exact<{
-  [key: string]: never;
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
 }>;
 
 export type CustomAllProductsQuery = {
   products: {
-    nodes: Array<Pick<StorefrontAPI.Product, 'availableForSale'>>;
+    nodes: Array<
+      Pick<StorefrontAPI.Product, 'availableForSale'> & {
+        priceRange: {
+          maxVariantPrice: Pick<
+            StorefrontAPI.MoneyV2,
+            'amount' | 'currencyCode'
+          >;
+          minVariantPrice: Pick<
+            StorefrontAPI.MoneyV2,
+            'amount' | 'currencyCode'
+          >;
+        };
+      }
+    >;
     filters: Array<Pick<StorefrontAPI.Filter, 'id' | 'label' | 'type'>>;
     edges: Array<{
       node: Pick<StorefrontAPI.Product, 'title' | 'id' | 'handle'> & {
@@ -962,7 +976,7 @@ interface GeneratedQueryTypes {
     return: ProductRecommendationsQuery;
     variables: ProductRecommendationsQueryVariables;
   };
-  '#graphql\n  query CustomAllProducts {\n  products(first: 100) {\n    nodes {\n      availableForSale\n    }\n    filters {\n      id\n      label\n      type\n    }\n    edges {\n      node {\n        title\n        id\n        handle\n        images(first: 10) {\n          nodes {\n            id\n            width\n            height\n            altText\n            url\n          }\n        }\n      }\n    }\n  }\n}\n': {
+  '#graphql\n  query CustomAllProducts($country: CountryCode, $language: LanguageCode) @inContext(country: $country, language: $language) {\n  products(first: 100) {\n    nodes {\n      availableForSale\n           priceRange {\n        maxVariantPrice {\n          amount\n          currencyCode\n        }\n        minVariantPrice {\n          amount\n          currencyCode\n        }\n      }\n    }\n    filters {\n      id\n      label\n      type\n    }\n    edges {\n      node {\n        title\n        id\n        handle\n        images(first: 10) {\n          nodes {\n            id\n            width\n            height\n            altText\n            url\n          }\n        }\n      }\n    }\n  }\n}\n': {
     return: CustomAllProductsQuery;
     variables: CustomAllProductsQueryVariables;
   };
