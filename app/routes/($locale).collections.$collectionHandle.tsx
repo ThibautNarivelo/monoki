@@ -279,9 +279,14 @@ export default function Collection() {
           <div className="grid grid-cols-4">
             {products.products.edges.map((product) => (
               <div key={product.node.id}>
-                <Link to={`/products/${product.node.handle}`}>
+                <Link
+                  to={
+                    isEnglish
+                      ? `/en-us/products/${product.node.handle}`
+                      : `/products/${product.node.handle}`
+                  }
+                >
                   <Image
-                    // src={product.node.images.nodes[0].url}
                     src={
                       isHovered === product.node.id
                         ? product.node.images.nodes[1].url
