@@ -9,6 +9,7 @@ import {
   ShopPayButton,
   VariantSelector,
   getSelectedProductOptions,
+  Image,
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 import clsx from 'clsx';
@@ -145,70 +146,67 @@ export default function Product() {
 
   return (
     <>
-      <Section className="px-0 md:px-8 lg:px-12">
-        <div className="grid items-start md:gap-6 lg:gap-20 md:grid-cols-2 lg:grid-cols-3">
-          <ProductGallery
-            media={media.nodes}
-            className="w-full lg:col-span-2"
-          />
-          <div className="sticky md:-mb-nav md:top-nav md:-translate-y-nav md:h-screen md:pt-nav hiddenScroll md:overflow-y-scroll">
-            <section className="flex flex-col w-full max-w-xl gap-8 p-6 md:mx-auto md:max-w-sm md:px-0">
-              <div className="grid gap-2">
-                <Heading as="h1" className="whitespace-normal">
-                  {title}
-                </Heading>
-                {vendor && (
-                  <Text className={'opacity-50 font-medium'}>{vendor}</Text>
-                )}
-              </div>
-              <Suspense fallback={<ProductForm variants={[]} />}>
-                <Await
-                  errorElement="There was a problem loading related products"
-                  resolve={variants}
-                >
-                  {(resp) => (
-                    <ProductForm
-                      variants={resp.product?.variants.nodes || []}
+      <section className="pt-[32px] px-[1.1rem]">
+        {/* TITLE */}
+        <h1 className="productTitle">{title}</h1>
+        <div className="w-full h-full bg-green-200 flex flex-row justify-between items-start gap-[.5rem]">
+          {/* DESCRIPTION */}
+          <div className="bg-red-200 sticky top-1/2 w-1/3 flex flex-col justify-center items-start gap-[1.5rem]">
+            {descriptionHtml && (
+              <>
+                <p className="footerLink uppercase">Description</p>
+                <div
+                  dangerouslySetInnerHTML={{__html: descriptionHtml}}
+                  // className="prose"
+                  className="sortLink"
+                />
+              </>
+            )}
+          </div>
+          {/* GALLERY */}
+          <div className="relative w-1/3 min-h-full bg-blue-100 overflow-y-scroll hiddenScroll">
+            {media.nodes.map((media) => {
+              const image =
+                media.__typename === 'MediaImage' ? media.image : null;
+              return (
+                <div key={media.id || image?.id}>
+                  {image && (
+                    <Image
+                      data={image}
+                      aspectRatio={'4/5'}
+                      sizes={'(min-width: 48em) 30vw, 90vw'}
+                      className="object-cover w-full h-full"
                     />
                   )}
-                </Await>
-              </Suspense>
-              <div className="grid gap-4 py-4">
-                {descriptionHtml && (
-                  <ProductDetail
-                    title="Product Details"
-                    content={descriptionHtml}
-                  />
+                </div>
+              );
+            })}
+          </div>
+          {/* CAT */}
+          <div className="bg-red-200 sticky top-1/2 w-1/3 flex flex-col justify-center items-center gap-[1.5rem]">
+            <Suspense fallback={<ProductForm variants={[]} />}>
+              <Await
+                errorElement="There was a problem loading related products"
+                resolve={variants}
+              >
+                {(resp) => (
+                  <ProductForm variants={resp.product?.variants.nodes || []} />
                 )}
-                {shippingPolicy?.body && (
-                  <ProductDetail
-                    title="Shipping"
-                    content={getExcerpt(shippingPolicy.body)}
-                    learnMore={`/policies/${shippingPolicy.handle}`}
-                  />
-                )}
-                {refundPolicy?.body && (
-                  <ProductDetail
-                    title="Returns"
-                    content={getExcerpt(refundPolicy.body)}
-                    learnMore={`/policies/${refundPolicy.handle}`}
-                  />
-                )}
-              </div>
-            </section>
+              </Await>
+            </Suspense>
           </div>
         </div>
-      </Section>
-      <Suspense fallback={<Skeleton className="h-32" />}>
-        <Await
-          errorElement="There was a problem loading related products"
-          resolve={recommended}
-        >
-          {(products) => (
-            <ProductSwimlane title="Related Products" products={products} />
-          )}
-        </Await>
-      </Suspense>
+        <Suspense fallback={<Skeleton className="h-32" />}>
+          <Await
+            errorElement="There was a problem loading related products"
+            resolve={recommended}
+          >
+            {(products) => (
+              <ProductSwimlane title="Related Products" products={products} />
+            )}
+          </Await>
+        </Suspense>
+      </section>
     </>
   );
 }
@@ -395,182 +393,6 @@ export function ProductForm({
     </div>
   );
 }
-
-function ProductDetail({
-  title,
-  content,
-  learnMore,
-}: {
-  title: string;
-  content: string;
-  learnMore?: string;
-}) {
-  return (
-    <Disclosure key={title} as="div" className="grid w-full gap-2">
-      {({open}) => (
-        <>
-          <Disclosure.Button className="text-left">
-            <div className="flex justify-between">
-              <Text size="lead" as="h4">
-                {title}
-              </Text>
-              <IconClose
-                className={clsx(
-                  'transition-transform transform-gpu duration-200',
-                  !open && 'rotate-[45deg]',
-                )}
-              />
-            </div>
-          </Disclosure.Button>
-
-          <Disclosure.Panel className={'pb-4 pt-2 grid gap-2'}>
-            <div
-              className="prose"
-              dangerouslySetInnerHTML={{__html: content}}
-            />
-            {learnMore && (
-              <div className="">
-                <Link
-                  className="pb-px border-b border-primary/30 text-primary/50"
-                  to={learnMore}
-                >
-                  Learn more
-                </Link>
-              </div>
-            )}
-          </Disclosure.Panel>
-        </>
-      )}
-    </Disclosure>
-  );
-}
-
-// const PRODUCT_VARIANT_FRAGMENT = `#graphql
-//   fragment ProductVariantFragment on ProductVariant {
-//     id
-//     availableForSale
-//     selectedOptions {
-//       name
-//       value
-//     }
-//     image {
-//       id
-//       url
-//       altText
-//       width
-//       height
-//     }
-//     price {
-//       amount
-//       currencyCode
-//     }
-//     compareAtPrice {
-//       amount
-//       currencyCode
-//     }
-//     sku
-//     title
-//     unitPrice {
-//       amount
-//       currencyCode
-//     }
-//     product {
-//       title
-//       handle
-//     }
-//   }
-// `;
-
-// const PRODUCT_QUERY = `#graphql
-//   query Product(
-//     $country: CountryCode
-//     $language: LanguageCode
-//     $handle: String!
-//     $selectedOptions: [SelectedOptionInput!]!
-//   ) @inContext(country: $country, language: $language) {
-//     product(handle: $handle) {
-//       id
-//       title
-//       vendor
-//       handle
-//       descriptionHtml
-//       description
-//       options {
-//         name
-//         values
-//       }
-//       selectedVariant: variantBySelectedOptions(selectedOptions: $selectedOptions, ignoreUnknownOptions: true, caseInsensitiveMatch: true) {
-//         ...ProductVariantFragment
-//       }
-//       media(first: 7) {
-//         nodes {
-//           ...Media
-//         }
-//       }
-//       variants(first: 1) {
-//         nodes {
-//           ...ProductVariantFragment
-//         }
-//       }
-//       seo {
-//         description
-//         title
-//       }
-//     }
-//     shop {
-//       name
-//       primaryDomain {
-//         url
-//       }
-//       shippingPolicy {
-//         body
-//         handle
-//       }
-//       refundPolicy {
-//         body
-//         handle
-//       }
-//     }
-//   }
-//   ${MEDIA_FRAGMENT}
-//   ${PRODUCT_VARIANT_FRAGMENT}
-// ` as const;
-
-// const VARIANTS_QUERY = `#graphql
-//   query variants(
-//     $country: CountryCode
-//     $language: LanguageCode
-//     $handle: String!
-//   ) @inContext(country: $country, language: $language) {
-//     product(handle: $handle) {
-//       variants(first: 250) {
-//         nodes {
-//           ...ProductVariantFragment
-//         }
-//       }
-//     }
-//   }
-//   ${PRODUCT_VARIANT_FRAGMENT}
-// ` as const;
-
-// const RECOMMENDED_PRODUCTS_QUERY = `#graphql
-//   query productRecommendations(
-//     $productId: ID!
-//     $count: Int
-//     $country: CountryCode
-//     $language: LanguageCode
-//   ) @inContext(country: $country, language: $language) {
-//     recommended: productRecommendations(productId: $productId) {
-//       ...ProductCard
-//     }
-//     additional: products(first: $count, sortKey: BEST_SELLING) {
-//       nodes {
-//         ...ProductCard
-//       }
-//     }
-//   }
-//   ${PRODUCT_CARD_FRAGMENT}
-// ` as const;
 
 async function getRecommendedProducts(
   storefront: Storefront,

@@ -188,7 +188,7 @@ export default function Collection() {
         appliedFilters={appliedFilters}
         collections={collections}
       >
-        <div className="grid grid-rows-1 md:grid-cols-2 lg:grid-cols-4  gap-[4rem]">
+        <div className="grid grid-rows-1 md:grid-cols-2 lg:grid-cols-4  gap-[5vw]">
           {collection.products.edges.map((product) => (
             <Link
               key={product.node.id}
@@ -199,7 +199,10 @@ export default function Collection() {
               {product.node.images.nodes
                 .slice(0, 2)
                 .map((image, index, arr) => (
-                  <motion.div key={image.id} className="flex-1">
+                  <motion.div
+                    key={image.id}
+                    className="flex-1 flex justify-center items-center"
+                  >
                     <Image
                       src={image.url}
                       alt={product.node.title}
@@ -213,7 +216,8 @@ export default function Collection() {
                         (index === 0 && product.node.id !== isHovered)
                           ? 'block'
                           : 'hidden'
-                      } w-full h-[400px] object-cover scale-[97%] hover:scale-100 transition-transform duration-[.4s] ease-in-out`}
+                      } w-full object-center object-cover scale-[97%] hover:scale-100 transition-transform duration-[.4s] ease-in-out
+                        lg:h-[30vw] lg:max-w-[30vw]`}
                     />
                   </motion.div>
                 ))}

@@ -158,13 +158,6 @@ shop-pay-button {
     animation: fadeInAnimation ease 500ms forwards;
   }
 
-  .hiddenScroll {
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
-
   .strike {
     position: relative;
     &::before {
@@ -193,6 +186,13 @@ shop-pay-button {
   }
 
   /* CUSTOM CLASS */
+
+  .hiddenScroll {
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 
   .absolute-center {
     @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
@@ -235,7 +235,7 @@ shop-pay-button {
   }
 
   .footerTitle {
-    @apply text-[1rem] font-switzer uppercase  text-neutral-900 tracking-tighter;
+    @apply text-[1rem] font-switzer uppercase text-neutral-900 tracking-tighter;
   }
 
   .footerLink {
@@ -248,5 +248,9 @@ shop-pay-button {
 
   .sortSubLink {
     @apply font-switzer text-[.8rem] tracking-tighter uppercase text-neutral-900;
+  }
+
+  .productTitle {
+    @apply font-switzer text-[4.6875rem] tracking-tighter leading-[70px] uppercase text-neutral-900;
   }
 }
