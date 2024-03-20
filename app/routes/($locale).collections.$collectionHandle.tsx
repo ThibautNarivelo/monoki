@@ -150,21 +150,37 @@ export default function Collection() {
 
   return (
     <div className="relative pt-[32px] px-[1.1rem] pb-[20vh]">
-      {collection?.metafield && (
-        <h1 className="w-full text-[4.6875rem] tracking-[-5px] font-switzer uppercase">
-          {collection.description}
-        </h1>
-      )}
-      <div className="flex gap-[1rem]">
-        {collection.metafield?.references?.nodes.map((node) => (
-          <Link
-            key={node.id}
-            to={`/collections/${node.handle}`}
-            className="text-[1rem] font-switzer uppercase"
-          >
-            {node.description}
-          </Link>
-        ))}
+      <div className="flex flex-col ">
+        {collection?.metafield && (
+          <h1 className="w-full text-[4.6875rem] tracking-[-5px] leading-[75px]  font-switzer uppercase">
+            {collection.description}
+          </h1>
+        )}
+        <div
+          className="hidden lg:flex lg:flex-row gap-x-[1rem]  pb-[2rem] 
+            lg:pb-[5rem]"
+        >
+          {collection.metafield?.references?.nodes.map((node) => (
+            <Link
+              key={node.id}
+              to={`/collections/${node.handle}`}
+              className="relative text-[1rem] font-switzer uppercase leading-[25px] pt-[1rem] group overflow-hidden
+              lg:pt-0"
+            >
+              <p className="group-hover:translate-y-[-100%] transition-transform ease-in-out-monoki duration-500">
+                {node.description}
+              </p>
+              <p
+                className="absolute inset-0 translate-y-[100%] group
+              group-hover:translate-y-[0%] 
+              transition-transform duration-300 ease-in-out-monoki"
+              >
+                {node.description}
+                <div className="absolute bottom-0 bg-neutral-900 h-[1px] w-[0%] group-hover:w-[100%] transition-all duration-[.8s] ease-in-out-monoki" />
+              </p>
+            </Link>
+          ))}
+        </div>
       </div>
 
       <SortFilter
