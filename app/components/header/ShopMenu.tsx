@@ -65,7 +65,7 @@ export default function ShopMenu({
                 className="subHeaderTitle flex justify-start items-center gap-[.5rem] pr-[1rem] group  h-[2.5rem]"
               >
                 {item?.title}
-                <LinkArrow className="subHeaderIcon max-h-fit overflow-hidden bg-none max-w-fit rotate-45 opacity-100 group-hover:opacity-100" />
+                <LinkArrow className="subHeaderIcon max-h-fit overflow-hidden bg-none max-w-fit rotate-45 opacity-0 group-hover:opacity-100" />
               </Link>
             );
           })}
