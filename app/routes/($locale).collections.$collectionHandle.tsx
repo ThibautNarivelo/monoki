@@ -162,7 +162,7 @@ export default function Collection() {
             to={`/collections/${node.handle}`}
             className="text-[1rem] font-switzer uppercase"
           >
-            {node.metafield?.value}
+            {node.description}
           </Link>
         ))}
       </div>
@@ -172,7 +172,7 @@ export default function Collection() {
         appliedFilters={appliedFilters}
         collections={collections}
       >
-        <div className="grid grid-rows-1 md:grid-cols-2 lg:grid-cols-4 gap-[2rem]">
+        <div className="grid grid-rows-1 md:grid-cols-2 lg:grid-cols-4  gap-[4rem]">
           {collection.products.edges.map((product) => (
             <Link
               key={product.node.id}
@@ -197,7 +197,7 @@ export default function Collection() {
                         (index === 0 && product.node.id !== isHovered)
                           ? 'block'
                           : 'hidden'
-                      } w-full h-full object-cover object-center scale-[95%] hover:scale-100 transition-transform duration-300 ease-in-out`}
+                      } w-full h-[400px] object-cover scale-[97%] hover:scale-100 transition-transform duration-[.4s] ease-in-out`}
                     />
                   </motion.div>
                 ))}

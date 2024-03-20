@@ -452,7 +452,12 @@ function DesktopHeader({
                 transition={{duration: 1, ease: [0.6, 0.01, 0.05, 0.95]}}
               >
                 <Link
-                  to={isFrench ? `/products` : `/en-us/products`}
+                  // to={isFrench ? `/products` : `/en-us/products`}
+                  to={
+                    isFrench
+                      ? `${menu.items[0].to}`
+                      : `/en-us${menu.items[0].to}`
+                  }
                   target={menu.items[0].target}
                   prefetch="intent"
                   onMouseEnter={handleMouseEnter}
