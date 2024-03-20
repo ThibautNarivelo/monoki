@@ -178,34 +178,29 @@ export default function Collection() {
               key={product.node.id}
               to={`/products/${product.node.handle}`}
               prefetch="intent"
+              className="min-h-full h-full flex flex-col"
             >
-              <motion.div className="relative">
-                <Image
-                  src={product.node.images.nodes[0].url}
-                  alt={product.node.title}
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  loading="lazy"
-                  style={{
-                    opacity: isHovered === product.node.id ? 0 : 1,
-                    transition: 'opacity .7s',
-                    position: 'absolute',
-                  }}
-                  onMouseEnter={() => setIsHovered(product.node.id)}
-                  onMouseLeave={() => setIsHovered(null)}
-                />
-                <Image
-                  src={product.node.images.nodes[1].url}
-                  alt={product.node.title}
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  loading="lazy"
-                  style={{
-                    opacity: isHovered === product.node.id ? 1 : 0,
-                    transition: 'opacity .7s',
-                  }}
-                  onMouseEnter={() => setIsHovered(product.node.id)}
-                  onMouseLeave={() => setIsHovered(null)}
-                />
-              </motion.div>
+              {product.node.images.nodes
+                .slice(0, 2)
+                .map((image, index, arr) => (
+                  <motion.div key={image.id} className="flex-1">
+                    <Image
+                      src={image.url}
+                      alt={product.node.title}
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      loading="lazy"
+                      onMouseEnter={() => setIsHovered(product.node.id)}
+                      onMouseLeave={() => setIsHovered(null)}
+                      className={`${
+                        (index === 1 && product.node.id === isHovered) ||
+                        (index === 0 && arr.length === 1) ||
+                        (index === 0 && product.node.id !== isHovered)
+                          ? 'block'
+                          : 'hidden'
+                      } w-full h-full object-cover object-center scale-[95%] hover:scale-100 transition-transform duration-300 ease-in-out`}
+                    />
+                  </motion.div>
+                ))}
 
               <div className="flex flex-row justify-between">
                 <span>{product.node.title}</span>
