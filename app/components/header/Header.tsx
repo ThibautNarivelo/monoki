@@ -452,7 +452,6 @@ function DesktopHeader({
                 transition={{duration: 1, ease: [0.6, 0.01, 0.05, 0.95]}}
               >
                 <Link
-                  // to={menu.items[0].to}
                   to={isFrench ? `/products` : `/en-us/products`}
                   target={menu.items[0].target}
                   prefetch="intent"
@@ -474,7 +473,6 @@ function DesktopHeader({
                 }}
               >
                 <Link
-                  // to={menu.items[1].to}
                   to={
                     isFrench
                       ? `${menu.items[1].to}`
@@ -501,7 +499,6 @@ function DesktopHeader({
                 }}
               >
                 <Link
-                  // to={menu.items[2].to}
                   to={
                     isFrench
                       ? `${menu.items[2].to}`

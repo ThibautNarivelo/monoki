@@ -75,7 +75,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     throw new Response('collection', {status: 404});
   }
 
-  const seo = seoPayload.collection({collection, url: request.url});
+  // const seo = seoPayload.collection({collection, url: request.url});
 
   const allFilterValues = collection.products.filters.flatMap(
     (filter) => filter.values,
@@ -133,7 +133,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
       collectionHandle,
       resourceId: collection.id,
     },
-    seo,
+    // seo,
   });
 }
 
@@ -149,18 +149,30 @@ export default function Collection() {
   const isFrench = !isEnglish;
 
   return (
-    <div className="relative pt-[32px] px-[1.1rem]">
-      {collection?.description && (
+    <div className="relative pt-[32px] px-[1.1rem] pb-[20vh]">
+      {collection?.metafield && (
         <h1 className="w-full text-[4.6875rem] tracking-[-5px] font-switzer uppercase">
           {collection.description}
         </h1>
       )}
+      <div className="flex gap-[1rem]">
+        {collection.metafield?.references?.nodes.map((node) => (
+          <Link
+            key={node.id}
+            to={`/collections/${node.handle}`}
+            className="text-[1rem] font-switzer uppercase"
+          >
+            {node.metafield?.value}
+          </Link>
+        ))}
+      </div>
+
       <SortFilter
         filters={collection.products.filters as Filter[]}
         appliedFilters={appliedFilters}
         collections={collections}
       >
-        <div className="grid grid-rows-1 md:grid-cols-2 lg:grid-cols-4 gap-[.5rem]">
+        <div className="grid grid-rows-1 md:grid-cols-2 lg:grid-cols-4 gap-[2rem]">
           {collection.products.edges.map((product) => (
             <Link
               key={product.node.id}
@@ -171,6 +183,7 @@ export default function Collection() {
                 <Image
                   src={product.node.images.nodes[0].url}
                   alt={product.node.title}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   loading="lazy"
                   style={{
                     opacity: isHovered === product.node.id ? 0 : 1,
@@ -183,6 +196,7 @@ export default function Collection() {
                 <Image
                   src={product.node.images.nodes[1].url}
                   alt={product.node.title}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   loading="lazy"
                   style={{
                     opacity: isHovered === product.node.id ? 1 : 0,

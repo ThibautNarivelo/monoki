@@ -424,6 +424,23 @@ export const COLLECTION_QUERY = `#graphql
       handle
       title
       description
+      metafield(key: "Link", namespace: "subcollection") {
+        id
+        value
+        references(first: 10) {
+          nodes {
+            ... on Collection {
+              id
+              title
+              handle
+              description
+              metafield(key: "name", namespace: "collections") {
+              value
+              }
+            }
+          }
+        }
+      }
       seo {
         description
         title
