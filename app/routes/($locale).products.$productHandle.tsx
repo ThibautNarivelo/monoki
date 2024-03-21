@@ -149,9 +149,9 @@ export default function Product() {
       <section className="pt-[32px] px-[1.1rem]">
         {/* TITLE */}
         <h1 className="productTitle">{title}</h1>
-        <div className="w-full h-full bg-green-200 flex flex-row justify-between items-start gap-[.5rem]">
+        <div className="w-full h-full flex flex-row justify-between items-start gap-[.5rem]">
           {/* DESCRIPTION */}
-          <div className="bg-red-200 sticky top-1/2 w-1/3 flex flex-col justify-center items-start gap-[1.5rem]">
+          <div className="sticky top-1/2 w-1/3 flex flex-col justify-center items-start gap-[1.5rem]">
             {descriptionHtml && (
               <>
                 <p className="footerLink uppercase">Description</p>
@@ -183,7 +183,7 @@ export default function Product() {
             })}
           </div>
           {/* CAT */}
-          <div className="bg-red-200 sticky top-1/2 w-1/3 flex flex-col justify-center px-[3rem] gap-[1.5rem]">
+          <div className="sticky top-1/2 w-1/3 flex flex-col justify-center px-[3rem] gap-[1.5rem]">
             <Suspense fallback={<ProductForm variants={[]} />}>
               <Await
                 errorElement="There was a problem loading related products"
@@ -238,9 +238,46 @@ export function ProductForm({
     quantity: 1,
   };
 
+  const isEnglish =
+    typeof window !== 'undefined' &&
+    window.location.pathname.includes('/en-us');
+  const isFrench = !isEnglish;
+
   return (
-    <div className="grid gap-10">
-      <div className="grid gap-4">
+    <div className="flex flex-col gap-[1rem]">
+      {/* CUSTOM COLOR */}
+      <div className="flex justify-start gap-[1rem]">
+        {product.customVariant?.references?.edges?.map((edge) => {
+          const customVariant = edge?.node;
+          if (!customVariant) return null;
+
+          return (
+            <Link
+              key={customVariant.id}
+              to={`/products/${customVariant.handle}`}
+              className="relative flex justify-center items-center h-7 w-7 group border-[1px] border-neutral-900 overflow-hidden
+                hover:border-none"
+            >
+              <span className="absolute top-[-20px] z-10 opacity-0 group-hover:opacity-100 text-[.8rem] font-switzer uppercase">
+                {customVariant.nameOfColor?.value}
+              </span>
+              <div
+                style={{
+                  backgroundColor: customVariant.color?.value || 'transparent',
+                }}
+                className="absolute inset-0 m-[2px] group-hover:translate-y-[-100%] transition-transform duration-150"
+              />
+              <div
+                style={{
+                  backgroundColor: customVariant.color?.value || 'transparent',
+                }}
+                className="absolute inset-0 m-[2px] translate-y-[110%] group-hover:translate-y-0 transition-transform duration-150"
+              />
+            </Link>
+          );
+        })}
+      </div>
+      <div className="flex flex-col gap-[1rem]">
         <VariantSelector
           handle={product.handle}
           options={product.options}
@@ -248,13 +285,8 @@ export function ProductForm({
         >
           {({option}) => {
             return (
-              <div
-                key={option.name}
-                className="flex flex-col flex-wrap mb-4 gap-y-2 last:mb-0"
-              >
-                <Heading as="legend" size="lead" className="min-w-[4rem]">
-                  {option.name}
-                </Heading>
+              <div key={option.name} className="flex flex-col flex-wrap">
+                {/* <div className="min-w-[4rem]">{option.name}</div> */}
                 <div className="flex flex-wrap items-baseline gap-4">
                   <div className="relative w-full">
                     <Listbox>
@@ -262,19 +294,14 @@ export function ProductForm({
                         <>
                           <Listbox.Button
                             ref={closeRef}
-                            className={clsx(
-                              'flex items-center justify-between w-full py-3 px-4 border border-primary bg-violet-300',
-                              open
-                                ? 'rounded-b md:rounded-t md:rounded-b-none'
-                                : 'rounded',
-                            )}
+                            className="flex items-center justify-between w-full py-[.70rem] px-[1rem] border border-neutral-900 rounded-[2px]"
                           >
                             <span>{option.value}</span>
                             <IconCaret direction={open ? 'up' : 'down'} />
                           </Listbox.Button>
                           <Listbox.Options
                             className={clsx(
-                              'border-primary hiddenScroll  bg-rose-800 absolute bottom-12 z-30 grid min-h-full w-full overflow-y-scroll rounded-t border px-2 py-2 transition-[max-height] duration-150 sm:bottom-auto md:rounded-b md:rounded-t-none md:border-t-0 md:border-b',
+                              'border-neutral-900 hiddenScroll bg-white bg-opacity-80 backdrop-blur-sm absolute bottom-12 z-30 grid min-h-full w-full overflow-y-scroll border transition-[max-height] duration-150 sm:bottom-auto md:rounded-b md:rounded-t-none md:border-t-0 md:border-b',
                               open ? 'max-h-48' : 'max-h-0',
                             )}
                           >
@@ -288,8 +315,8 @@ export function ProductForm({
                                     to={to}
                                     preventScrollReset
                                     className={clsx(
-                                      'text-primary w-full p-2 transition rounded flex justify-start items-center text-left cursor-pointer',
-                                      active && 'bg-primary/10',
+                                      'text-neutral-900 w-full p-2 transition flex justify-between items-center text-left cursor-pointer px-4',
+                                      active && 'bg-neutral-900/80 text-white',
                                     )}
                                     onClick={() => {
                                       if (!closeRef?.current) return;
@@ -316,34 +343,14 @@ export function ProductForm({
             );
           }}
         </VariantSelector>
-        {/* CUSTOM COLOR */}
-        {product.customVariant?.references?.edges?.map((edge) => {
-          const customVariant = edge?.node;
-          if (!customVariant) return null;
 
-          return (
-            <Link
-              key={customVariant.id}
-              to={`/products/${customVariant.handle}`}
-              className="relative flex justify-center items-center"
-            >
-              <div className="z-10">{customVariant.nameOfColor?.value}</div>
-              <div
-                style={{
-                  backgroundColor: customVariant.color?.value || 'transparent',
-                }}
-                className="absolute inset-0"
-              />
-            </Link>
-          );
-        })}
         {/* BUY BUTTON */}
         {selectedVariant && (
-          <div className="grid items-stretch gap-4">
+          <div className="flex flex-col gap-[1rem]">
             {isOutOfStock ? (
-              <Button variant="secondary" disabled>
-                <Text>Sold out</Text>
-              </Button>
+              <button className="bg-neutral-400 py-[.75rem] sortLink">
+                <span>{isFrench ? 'Épuisé' : 'Sold out'}</span>
+              </button>
             ) : (
               <AddToCartButton
                 lines={[
@@ -359,26 +366,24 @@ export function ProductForm({
                   totalValue: parseFloat(productAnalytics.price),
                 }}
               >
-                <Text
-                  as="span"
-                  className="flex items-center justify-center gap-2"
-                >
-                  <span>Add to Cart</span> <span>·</span>{' '}
+                <div className="flex items-center justify-between py-[.75rem] px-[1rem]">
                   <Money
                     withoutTrailingZeros
                     data={selectedVariant?.price!}
                     as="span"
                     data-test="price"
                   />
+                  <span className="sortLink !text-white">
+                    {isFrench ? 'Ajouter au panier' : 'Add to cart'}
+                  </span>
                   {isOnSale && (
                     <Money
                       withoutTrailingZeros
                       data={selectedVariant?.compareAtPrice!}
                       as="span"
-                      className="opacity-50 strike"
                     />
                   )}
-                </Text>
+                </div>
               </AddToCartButton>
             )}
             {!isOutOfStock && (
