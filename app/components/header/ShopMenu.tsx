@@ -92,13 +92,13 @@ export default function ShopMenu({
                 </div>
               );
             })}
-            <div className="absolute top-0 right-0 overflow-hidden">
+            <div className="absolute top-0 right-0 overflow-hidden w-1/3">
               <Image
                 src={womenCollection.collections.edges[0].node.image?.url || ''}
                 alt={womenCollection.collections.edges[0].node.title || ''}
                 // width={item?.node?.image?.width || 100}
                 // height={item?.node?.image?.height || 100}
-                className="object-cover max-h-[300px]"
+                className="object-contain object-right max-h-[300px]"
               />
             </div>
           </div>
@@ -124,13 +124,13 @@ export default function ShopMenu({
                 </div>
               );
             })}
-            <div className="absolute top-0 right-0 overflow-hidden">
+            <div className="absolute top-0 right-0 overflow-hidden w-1/3">
               <Image
                 src={boysCollection.collections.edges[0].node.image?.url || ''}
                 // alt={item?.node?.image?.altText || ''}
                 // width={item?.node?.image?.width || 100}
                 // height={item?.node?.image?.height || 100}
-                className="object-cover max-h-[300px]"
+                className="object-contain object-right max-h-[300px]"
               />
             </div>
           </div>
