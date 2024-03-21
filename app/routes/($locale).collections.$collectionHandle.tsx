@@ -150,7 +150,7 @@ export default function Collection() {
 
   return (
     <div className="relative pt-[32px] px-[1.1rem] pb-[20vh]">
-      <div className="flex flex-col relative">
+      <div className="flex flex-col relative pt-[1.5rem]">
         {collection?.metafield && (
           <h1 className="w-full collectionTitle">{collection.description}</h1>
         )}
