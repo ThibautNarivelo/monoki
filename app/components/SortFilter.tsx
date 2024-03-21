@@ -48,7 +48,7 @@ export function SortFilter({
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      <div className="flex items-center justify-between w-full">
+      <div className="flex items-center justify-between w-full h-[1rem]">
         <button
           onClick={() => setIsOpen(!isOpen)}
           className={
@@ -338,19 +338,22 @@ export default function SortMenu() {
 
   return (
     <Menu as="div" className="relative">
-      <Menu.Button className="flex items-center">
+      <Menu.Button className="flex justify-between items-center">
         <span className="px-2">
           <span className="sortLink">
             {isEnglish ? 'Sort by /' : 'Trier par /'}
           </span>
           <span className="sortLink">{(activeItem || items[0]).label}</span>
         </span>
-        <Arrow className="fill-transparent w-3 h-fit" />
+        <Arrow className="fill-transparent w-4 h-auto" />
       </Menu.Button>
 
       <Menu.Items
         as="nav"
-        className="absolute border-neutral-900 divide-y-2 border-[.5px] right-0 flex flex-col p-3 text-right rounded-sm bg-white backdrop-blur-sm bg-opacity-50"
+        className="absolute z-30 top-8 right-0 flex flex-col p-3 text-right bg-white
+          backdrop-blur-sm bg-opacity-50
+          border-neutral-900  border-[.5px]
+          divide-neutral-900 divide-y-[.5px]"
       >
         <AnimatePresence>
           {items.map((item) => (
