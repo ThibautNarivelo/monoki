@@ -337,7 +337,10 @@ export const PRODUCT_QUERY = `#graphql
             ... on Metaobject {
               id
               handle
-              field(key: "colour") {
+              color: field(key: "colour") {
+                value
+              }
+              nameOfColor: field(key: "nom_de_la_couleur") {
                 value
               }
             }

@@ -316,26 +316,25 @@ export function ProductForm({
             );
           }}
         </VariantSelector>
+        {/* CUSTOM COLOR */}
         {product.customVariant?.references?.edges?.map((edge) => {
           const customVariant = edge?.node;
           if (!customVariant) return null;
 
           return (
-            <div key={customVariant.id} className="flex flex-col gap-2">
-              <Link
-                to={`/products/${customVariant.handle}`}
-                className="relative flex justify-center items-center"
-              >
-                <div className="z-10">{customVariant.handle}</div>
-                <div
-                  style={{
-                    backgroundColor:
-                      customVariant.field?.value || 'transparent',
-                  }}
-                  className="absolute inset-0"
-                />
-              </Link>
-            </div>
+            <Link
+              key={customVariant.id}
+              to={`/products/${customVariant.handle}`}
+              className="relative flex justify-center items-center"
+            >
+              <div className="z-10">{customVariant.nameOfColor?.value}</div>
+              <div
+                style={{
+                  backgroundColor: customVariant.color?.value || 'transparent',
+                }}
+                className="absolute inset-0"
+              />
+            </Link>
           );
         })}
         {/* BUY BUTTON */}
