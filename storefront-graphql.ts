@@ -329,6 +329,22 @@ export const PRODUCT_QUERY = `#graphql
       handle
       descriptionHtml
       description
+      customVariant: metafield(namespace: "custom", key: "product_color_variant") {
+      value
+      references(first: 10) {
+        edges {
+          node {
+            ... on Metaobject {
+              id
+              handle
+              field(key: "colour") {
+                value
+              }
+            }
+          }
+        }
+      }
+    }
       options {
         name
         values

@@ -183,7 +183,7 @@ export default function Product() {
             })}
           </div>
           {/* CAT */}
-          <div className="bg-red-200 sticky top-1/2 w-1/3 flex flex-col justify-center items-center gap-[1.5rem]">
+          <div className="bg-red-200 sticky top-1/2 w-1/3 flex flex-col justify-center px-[3rem] gap-[1.5rem]">
             <Suspense fallback={<ProductForm variants={[]} />}>
               <Await
                 errorElement="There was a problem loading related products"
@@ -256,87 +256,89 @@ export function ProductForm({
                   {option.name}
                 </Heading>
                 <div className="flex flex-wrap items-baseline gap-4">
-                  {option.values.length > 7 ? (
-                    <div className="relative w-full">
-                      <Listbox>
-                        {({open}) => (
-                          <>
-                            <Listbox.Button
-                              ref={closeRef}
-                              className={clsx(
-                                'flex items-center justify-between w-full py-3 px-4 border border-primary',
-                                open
-                                  ? 'rounded-b md:rounded-t md:rounded-b-none'
-                                  : 'rounded',
-                              )}
-                            >
-                              <span>{option.value}</span>
-                              <IconCaret direction={open ? 'up' : 'down'} />
-                            </Listbox.Button>
-                            <Listbox.Options
-                              className={clsx(
-                                'border-primary bg-contrast absolute bottom-12 z-30 grid h-48 w-full overflow-y-scroll rounded-t border px-2 py-2 transition-[max-height] duration-150 sm:bottom-auto md:rounded-b md:rounded-t-none md:border-t-0 md:border-b',
-                                open ? 'max-h-48' : 'max-h-0',
-                              )}
-                            >
-                              {option.values
-                                .filter((value) => value.isAvailable)
-                                .map(({value, to, isActive}) => (
-                                  <Listbox.Option
-                                    key={`option-${option.name}-${value}`}
-                                    value={value}
-                                  >
-                                    {({active}) => (
-                                      <Link
-                                        to={to}
-                                        preventScrollReset
-                                        className={clsx(
-                                          'text-primary w-full p-2 transition rounded flex justify-start items-center text-left cursor-pointer',
-                                          active && 'bg-primary/10',
-                                        )}
-                                        onClick={() => {
-                                          if (!closeRef?.current) return;
-                                          closeRef.current.click();
-                                        }}
-                                      >
-                                        {value}
-                                        {isActive && (
-                                          <span className="ml-2">
-                                            <IconCheck />
-                                          </span>
-                                        )}
-                                      </Link>
+                  <div className="relative w-full">
+                    <Listbox>
+                      {({open}) => (
+                        <>
+                          <Listbox.Button
+                            ref={closeRef}
+                            className={clsx(
+                              'flex items-center justify-between w-full py-3 px-4 border border-primary bg-violet-300',
+                              open
+                                ? 'rounded-b md:rounded-t md:rounded-b-none'
+                                : 'rounded',
+                            )}
+                          >
+                            <span>{option.value}</span>
+                            <IconCaret direction={open ? 'up' : 'down'} />
+                          </Listbox.Button>
+                          <Listbox.Options
+                            className={clsx(
+                              'border-primary hiddenScroll  bg-rose-800 absolute bottom-12 z-30 grid min-h-full w-full overflow-y-scroll rounded-t border px-2 py-2 transition-[max-height] duration-150 sm:bottom-auto md:rounded-b md:rounded-t-none md:border-t-0 md:border-b',
+                              open ? 'max-h-48' : 'max-h-0',
+                            )}
+                          >
+                            {option.values.map(({value, to, isActive}) => (
+                              <Listbox.Option
+                                key={`option-${option.name}-${value}`}
+                                value={value}
+                              >
+                                {({active}) => (
+                                  <Link
+                                    to={to}
+                                    preventScrollReset
+                                    className={clsx(
+                                      'text-primary w-full p-2 transition rounded flex justify-start items-center text-left cursor-pointer',
+                                      active && 'bg-primary/10',
                                     )}
-                                  </Listbox.Option>
-                                ))}
-                            </Listbox.Options>
-                          </>
-                        )}
-                      </Listbox>
-                    </div>
-                  ) : (
-                    option.values.map(({value, isAvailable, isActive, to}) => (
-                      <Link
-                        key={option.name + value}
-                        to={to}
-                        preventScrollReset
-                        prefetch="intent"
-                        replace
-                        className={clsx(
-                          'leading-none py-1 border-b-[1.5px] cursor-pointer transition-all duration-200',
-                          isActive ? 'border-primary/50' : 'border-primary/0',
-                          isAvailable ? 'opacity-100' : 'opacity-50',
-                        )}
-                      >
-                        {value}
-                      </Link>
-                    ))
-                  )}
+                                    onClick={() => {
+                                      if (!closeRef?.current) return;
+                                      closeRef.current.click();
+                                    }}
+                                  >
+                                    {value}
+                                    {isActive && (
+                                      <span className="ml-2">
+                                        <IconCheck />
+                                      </span>
+                                    )}
+                                  </Link>
+                                )}
+                              </Listbox.Option>
+                            ))}
+                          </Listbox.Options>
+                        </>
+                      )}
+                    </Listbox>
+                  </div>
                 </div>
               </div>
             );
           }}
         </VariantSelector>
+        {product.customVariant?.references?.edges?.map((edge) => {
+          const customVariant = edge?.node;
+          if (!customVariant) return null;
+
+          return (
+            <div key={customVariant.id} className="flex flex-col gap-2">
+              <Link
+                to={`/products/${customVariant.handle}`}
+                className="relative flex justify-center items-center"
+              >
+                <div className="z-10">{customVariant.handle}</div>
+                <div
+                  style={{
+                    backgroundColor:
+                      customVariant.field?.value || 'transparent',
+                  }}
+                  className="absolute inset-0"
+                />
+              </Link>
+            </div>
+          );
+        })}
+        {/* BUY BUTTON */}
         {selectedVariant && (
           <div className="grid items-stretch gap-4">
             {isOutOfStock ? (
