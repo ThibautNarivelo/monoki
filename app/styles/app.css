@@ -250,7 +250,16 @@ shop-pay-button {
     @apply font-switzer text-[.8rem] tracking-tighter uppercase text-neutral-900;
   }
 
+  .collectionTitle {
+    @apply w-full text-[2rem] tracking-tighter leading-10  font-switzer uppercase
+      lg:text-[4.6875rem] lg:tracking-[-5px] lg:leading-[75px];
+  }
+
   .productTitle {
     @apply font-switzer text-[4.6875rem] tracking-tighter leading-[70px] uppercase text-neutral-900;
+  }
+
+  .productDescription {
+    @apply font-switzer text-[1rem] tracking-tighter text-neutral-900;
   }
 }

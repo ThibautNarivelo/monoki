@@ -16,7 +16,7 @@ import {
 import invariant from 'tiny-invariant';
 import {AnimatePresence, motion} from 'framer-motion';
 
-import {SortFilter, Grid, ProductCard} from '~/components';
+import {SortFilter, Grid, ProductCard, Separator} from '~/components';
 import {PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
 import {routeHeaders} from '~/data/cache';
 import {seoPayload} from '~/lib/seo.server';
@@ -150,14 +150,13 @@ export default function Collection() {
 
   return (
     <div className="relative pt-[32px] px-[1.1rem] pb-[20vh]">
-      <div className="flex flex-col ">
+      <div className="flex flex-col relative">
         {collection?.metafield && (
-          <h1 className="w-full text-[4.6875rem] tracking-[-5px] leading-[75px]  font-switzer uppercase">
-            {collection.description}
-          </h1>
+          <h1 className="w-full collectionTitle">{collection.description}</h1>
         )}
+
         <div
-          className="hidden lg:flex lg:flex-row gap-x-[1rem]  pb-[2rem] 
+          className="hidden lg:flex lg:flex-row gap-x-[1rem] pb-[2rem]
             lg:pb-[5rem]"
         >
           {collection.metafield?.references?.nodes.map((node) => (
@@ -182,57 +181,58 @@ export default function Collection() {
           ))}
         </div>
       </div>
-
-      <SortFilter
-        filters={collection.products.filters as Filter[]}
-        appliedFilters={appliedFilters}
-        collections={collections}
-      >
-        <div className="grid grid-rows-1 md:grid-cols-2 lg:grid-cols-4  gap-[5vw]">
-          {collection.products.edges.map((product) => (
-            <Link
-              key={product.node.id}
-              to={`/products/${product.node.handle}`}
-              prefetch="intent"
-              className="min-h-full h-full flex flex-col"
-            >
-              {product.node.images.nodes
-                .slice(0, 2)
-                .map((image, index, arr) => (
-                  <motion.div
-                    key={image.id}
-                    className="flex-1 flex justify-center items-center"
-                  >
-                    <Image
-                      src={image.url}
-                      alt={product.node.title}
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      loading="lazy"
-                      onMouseEnter={() => setIsHovered(product.node.id)}
-                      onMouseLeave={() => setIsHovered(null)}
-                      className={`${
-                        (index === 1 && product.node.id === isHovered) ||
-                        (index === 0 && arr.length === 1) ||
-                        (index === 0 && product.node.id !== isHovered)
-                          ? 'block'
-                          : 'hidden'
-                      } w-full object-center object-cover scale-[97%] hover:scale-100 transition-transform duration-[.4s] ease-in-out
+      <section className="pt-[1rem] lg:pt-0">
+        <SortFilter
+          filters={collection.products.filters as Filter[]}
+          appliedFilters={appliedFilters}
+          collections={collections}
+        >
+          <div className="grid grid-rows-1 md:grid-cols-2 lg:grid-cols-4 gap-[5vw]">
+            {collection.products.edges.map((product) => (
+              <Link
+                key={product.node.id}
+                to={`/products/${product.node.handle}`}
+                prefetch="intent"
+                className="min-h-full h-full flex flex-col"
+              >
+                {product.node.images.nodes
+                  .slice(0, 2)
+                  .map((image, index, arr) => (
+                    <motion.div
+                      key={image.id}
+                      className="flex-1 flex justify-center items-center"
+                    >
+                      <Image
+                        src={image.url}
+                        alt={product.node.title}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        loading="lazy"
+                        onMouseEnter={() => setIsHovered(product.node.id)}
+                        onMouseLeave={() => setIsHovered(null)}
+                        className={`${
+                          (index === 1 && product.node.id === isHovered) ||
+                          (index === 0 && arr.length === 1) ||
+                          (index === 0 && product.node.id !== isHovered)
+                            ? 'block'
+                            : 'hidden'
+                        } w-full object-center object-cover scale-[97%] hover:scale-100 transition-transform duration-[.4s] ease-in-out
                         lg:h-[30vw] lg:max-w-[30vw]`}
-                    />
-                  </motion.div>
-                ))}
+                      />
+                    </motion.div>
+                  ))}
 
-              <div className="flex flex-row justify-between">
-                <span>{product.node.title}</span>
-                <span>
-                  {product.node.priceRange.maxVariantPrice.amount}
-                  {isEnglish ? '$' : '€'}
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </SortFilter>
+                <div className="flex flex-row justify-between">
+                  <span>{product.node.title}</span>
+                  <span>
+                    {product.node.priceRange.maxVariantPrice.amount}
+                    {isEnglish ? '$' : '€'}
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </SortFilter>
+      </section>
     </div>
   );
 }

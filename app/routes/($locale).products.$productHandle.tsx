@@ -158,7 +158,7 @@ export default function Product() {
                 <div
                   dangerouslySetInnerHTML={{__html: descriptionHtml}}
                   // className="prose"
-                  className="sortLink"
+                  className="productDescription"
                 />
               </>
             )}
