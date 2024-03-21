@@ -604,7 +604,7 @@ function DesktopHeader({
           </Link>
         </div>
 
-        <div className="flex items-center justify-end gap-[.6rem] overflow-hidden">
+        <div className="flex items-center justify-end gap-[.6rem] overflow-hidden h-[2rem]">
           <Form
             method="get"
             action={params.locale ? `/${params.locale}/search` : '/search'}
