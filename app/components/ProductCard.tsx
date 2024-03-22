@@ -61,8 +61,7 @@ export function ProductCard({
         prefetch="intent"
       >
         <div className="grid gap-4">
-          <div className="card-image aspect-[4/5] bg-primary/5">
-            {/* {image && ( */}
+          <div className="card-image h-[10rem] max-h-[20rem] aspect-[4/5] bg-primary/5">
             <Image
               className="object-cover w-full fadeIn"
               sizes="(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw"
@@ -71,7 +70,6 @@ export function ProductCard({
               alt={image?.altText || `Picture of ${product.title}`}
               loading={loading}
             />
-            {/* )} */}
           </div>
           <div className="flex">
             <Text
