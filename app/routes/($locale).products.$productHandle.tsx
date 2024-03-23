@@ -22,6 +22,7 @@ import {
   ImagesDesktop,
   ImagesMobile,
 } from '~/components/ui';
+import { ImageVignette } from '~/components/ImageVignette';
 
 export const headers = routeHeaders;
 
@@ -142,13 +143,14 @@ export default function Product() {
           {descriptionHtml && (
             <Description dangerouslySetInnerHTML={{__html: descriptionHtml}} />
           )}
-          <ImagesDesktop media={media} />
+          <ImageVignette media={media} />
+          {/* <ImagesDesktop media={media} />
           <ImagesMobile
             media={media}
             currentImg={currentImg}
             onPrevClick={onPrevClick}
             onNextClick={onNextClick}
-          />
+          /> */}
           {/* CAT */}
           <div className="sticky top-1/2 lg:w-1/4 flex flex-col justify-center px-[3rem] gap-[1.5rem]">
             <Suspense
