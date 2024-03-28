@@ -1,4 +1,4 @@
-import {Link} from '@remix-run/react';
+import {Link, useParams} from '@remix-run/react';
 import {AnimatePresence, motion, useInView} from 'framer-motion';
 import React, {useEffect, useState} from 'react';
 import {Image} from '@shopify/hydrogen';
@@ -12,6 +12,8 @@ import {Underline} from './Underline';
 type PageNode = AllPagesQuery['pages']['nodes'][0];
 
 function PageLink({page}: {page: PageNode}) {
+  const params = useParams();
+  const locale = params.locale;
   const ref = React.useRef<HTMLAnchorElement>(null);
   const inView = useInView(ref, {amount: 0.15});
   const {y} = useWindowScroll();
@@ -26,7 +28,11 @@ function PageLink({page}: {page: PageNode}) {
       <Link
         key={page.id}
         ref={ref}
-        to={`/collections/${page.collectionLink?.reference?.handle}` || '/'}
+        to={{
+          pathname: locale
+            ? `/${locale}/collections/${page.collectionLink?.reference?.handle}`
+            : `/collections/${page.collectionLink?.reference?.handle}`,
+        }}
         className={`${
           hasLink ? 'cursor-pointer pointer-events-auto' : 'pointer-events-none'
         } relative overflow-hidden`}
